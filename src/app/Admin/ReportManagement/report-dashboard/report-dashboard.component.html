@@ -1,0 +1,426 @@
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+  <div class="col-sm-12 text-Medium">
+    <label class="col-sm-10 text-Medium" style="text-align: center;">{{'ReportsDashboard'| translate}}</label>
+
+    <label class="col-sm-10 Poppins-Regular text-small"
+      style="word-break: break-all;text-align: center;">{{eventName}}</label>
+
+  </div>
+</div>
+<div class="container mt-6" style="flex: 1 1 0; position: relative; width: 100%;height: 100%;">
+  <div class="row gy-2">
+    <div class="col-lg-4">
+      <div class=" box card box-shadow p-4 ">
+        <img src="assets/Images/registration-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'RegistrationReport' | translate}}</h5>
+          <p class="card-text">{{"Viewreportsonyourevent'sRegistrationactivity." | translate}}</p>
+          <a [routerLink]="['/admin/events/Registrationreport', eventId]" class="btn btn-primary">{{'RegistrationReport'
+            | translate}}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/invitation-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'InvitationReport' | translate}}</h5>
+          <p class="card-text">{{"Viewreportsonyourevent'sInvitationactivity." | translate}}</p>
+          <a [routerLink]="['/admin/events/Invitationreport', eventId]" class="btn btn-primary">{{'Invitation'
+            |translate}}</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/invite-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'InvitefriendReport' | translate}}</h5>
+          <p class="card-text">{{'Viewreportsonyoureventinvitefriendactivity.' | translate}}</p>
+          <a [routerLink]="['/admin/events/Invitefriendreport', eventId]" class="btn btn-primary">{{'Invitefriend' |
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/live-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'AttendedLiveReport' | translate}}</h5>
+          <p class="card-text">{{'ViewreportsonyoureventsAttendedLiveactivity.' | translate}}</p>
+          <a [routerLink]="['/admin/events/AttendedLivereport', eventId]" class="btn btn-primary">{{'AttendedLive' |
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/overall-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'OverallAttendedReport' | translate}}</h5>
+          <p class="card-text">{{'ViewreportsonyoureventOverallAttendedactivity.' | translate}}</p>
+          <a [routerLink]="['/admin/events/Overallattendedreport', eventId]" class="btn btn-primary">{{'OverallAttended'
+            | translate}}</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/quiz-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'Quizreport' | translate}}</h5>
+          <p class="card-text">{{'ViewreportsonyoureventsQuizactivity.' | translate}}</p>
+          <a [routerLink]="['/admin/events/Quizreport', eventId]" class="btn btn-primary">{{'Quiz' | translate}}</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/poll-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'PollReport' | translate}}</h5>
+          <p class="card-text">{{'ViewreportsonyoureventsPollactivity.' | translate}}</p>
+          <a [routerLink]="['/admin/events/Pollreport', eventId]" class="btn btn-primary">{{'Poll' | translate}}</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/broadcasting-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'BroadcastmessageReport' | translate}}</h5>
+          <p class="card-text">{{'ViewreportsonyoureventsBroadcastmessageactivity.' | translate}}</p>
+          <a [routerLink]="['/admin/events/broadcastreport', eventId]" class="btn btn-primary">{{'BroadcastMessage'
+            |translate}}</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/clickaction-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'ClickActionsReport' | translate}}</h5>
+          <p class="card-text">{{'ViewreportsonyoureventsBroadcastmessageactivity.' | translate}}</p>
+          <a [routerLink]="['/admin/events/Clickactionsreport', eventId]" class="btn btn-primary">{{'ClickActions' |
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/video-chat-icon.png" class="card-img-top"
+          style="width:80px;height:70px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'VideowatchedReport' | translate}}</h5>
+          <p class="card-text">{{'ViewreportsonyoureventsVideowatchedactivity.' | translate}}</p>
+          <a [routerLink]="['/admin/events/VideoWatchedreport', eventId]" class="btn btn-primary">{{'VideoWatched' |
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-sm-4">
+      <div class="card box-shadow">
+        <img src="assets/Images/commercial-icon.png" class="card-img-top"
+          style="width:55px;height:60px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'MessagingAnnouncementReport' | translate}}</h5>
+          <p class="card-text">{{'ViewreportsonyoureventMessagingactivity.' | translate}}</p>
+          <a [routerLink]="['/admin/events/MessagingAnnouncementreport', eventId]" class="btn btn-primary">{{'Messaging'
+            | translate}}</a>
+        </div>
+      </div>
+    </div> -->
+    <!-- <div class="col-sm-4">
+      <div class="card box-shadow">
+        <img src="assets/Images/share-icon.png" class="card-img-top"
+          style="width:55px;height:60px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'SocialSharingReport' | translate}}</h5>
+          <p class="card-text">{{'ViewreportsonyoureventsSocialSharingactivity.' | translate}}</p>
+          <a [routerLink]="['/admin/events/SocialSharingreport', eventId]" class="btn btn-primary">{{'SocialSharing' |
+            translate}}</a>
+        </div>
+      </div>
+    </div> -->
+    <!-- <div class="col-sm-4">
+      <div class="card box-shadow">
+        <img src="assets/Images/summary-icon.png" class="card-img-top"
+          style="width:55px;height:60px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'SummaryReport' | translate}}</h5>
+          <p class="card-text">{{'ViewreportsonyoureventsQuickSummaryactivity.' | translate}}</p>
+          <a [routerLink]="['/admin/events/QuickSummaryreport', eventId]" class="btn btn-primary">{{'QuickSummary' |
+            translate}}</a>
+        </div>
+      </div>
+    </div> -->
+    <div class="col-lg-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/banner-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'BannerClickedReport' | translate}}</h5>
+          <p class="card-text">{{"Viewreportsonyourevent'sBannerClickedactivity."| translate}}</p>
+          <a [routerLink]="['/admin/events/BannerClickedreport', eventId]" class="btn btn-primary">{{'BannerClicked' |
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-lg-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/content-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'ContentConsumptionReport' | translate}}</h5>
+          <p class="card-text">{{'ViewreportsonyoureventsContentConsumptionactivity.' | translate}} </p>
+          <a [routerLink]="['/admin/events/ContentConsumptionreport', eventId]"
+            class="btn btn-primary">{{'ContentConsumption' | translate}} </a>
+        </div>
+      </div>
+    </div> -->
+    <div class="col-lg-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/brick-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'WallMessageReport' | translate}}</h5>
+          <p class="card-text">{{'ViewreportsonyoureventsWallMessageactivity.' | translate}}</p>
+          <a [routerLink]="['/admin/events/WallMessagereports', eventId]" class="btn btn-primary">{{'WallMessage' |
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/access-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'WabinarAccessReport'| translate}}</h5>
+          <p class="card-text">{{"Viewreportsonyourevent'sWabinarAccessactivity."| translate}}</p>
+          <a [routerLink]="['/admin/events/WabinarAccessreport', eventId]" class="btn btn-primary">{{'WabinarAccess'|
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/content-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'ContentConsumptionReport'| translate}}</h5>
+          <p class="card-text">{{"Viewreportsonyourevent'sContentConsumptionactivity."| translate}}</p>
+          <a [routerLink]="['/admin/events/ContentConsumreport', eventId]"
+            class="btn btn-primary">{{'ContentConsumption'|
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-sm-4">
+      <div class="card box-shadow">
+        <img src="assets/Images/room-icon.png" class="card-img-top"
+          style="width:60px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">Room Entry Report</h5>
+          <p class="card-text">View reports on your event's Room Entry activity.</p>
+          <a href="admin/events/RoomEntryreport/ad664963-ce96-45a4-09f8-08d9d4392ec4"
+            class="btn btn-primary">RoomEntry</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="card box-shadow">
+        <img src="assets/Images/booth-icon.png" class="card-img-top"
+          style="width:60px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">Booth Entry Report</h5>
+          <p class="card-text">View reports on your event's Booth Entry activity.</p>
+          <a href="admin/events/BoothEntryreport/ad664963-ce96-45a4-09f8-08d9d4392ec4"
+            class="btn btn-primary">BoothEntry</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="card box-shadow">
+        <img src="assets/Images/access-icon.png" class="card-img-top"
+          style="width:60px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">Wabinar access Report</h5>
+          <p class="card-text">View reports on your event's Wabinar access activity.</p>
+          <a href="admin/events/WabinarAccessreport/ad664963-ce96-45a4-09f8-08d9d4392ec4"
+            class="btn btn-primary">WabinarAccess</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="card box-shadow">
+        <img src="assets/Images/login-icon.png" class="card-img-top"
+          style="width:60px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">Sponsor login Report</h5>
+          <p class="card-text">View reports on your event's Sponsor login activity.</p>
+          <a href="admin/events/Sponsorloginreport/ad664963-ce96-45a4-09f8-08d9d4392ec4"
+            class="btn btn-primary">Sponsorlogin</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="card box-shadow">
+        <img src="assets/Images/messaging-icon.png" class="card-img-top"
+          style="width:60px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">Messaging Marquee Report</h5>
+          <p class="card-text">View reports on your event's Messaging Marquee activity.</p>
+          <a href="admin/events/MessagingMarqueereport/ad664963-ce96-45a4-09f8-08d9d4392ec4"
+            class="btn btn-primary">MessagingMarquee</a>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+
+
+    <div class="col-lg-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/summary-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'SummaryReport'| translate}}</h5>
+          <p class="card-text">{{"Viewreportsonyourevent'sQuickSummaryactivity."| translate}}</p>
+          <a [routerLink]="['/admin/events/QuickSummaryreport', eventId]" class="btn btn-primary">{{'QuickSummary'|
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/topBooth-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'TopBoothReport' | translate}}</h5>
+          <p class="card-text">{{'ViewreportsonyoureventsTopBoothreportactivity.' | translate}}</p>
+          <a [routerLink]="['/admin/events/TopBoothreport', eventId]" class="btn btn-primary">{{'TopBooth' |
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-3 col-md-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/top-documents-icon.png" class="card-img-top"
+          style="width:80px;height:75px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'TopDocumentsReport'| translate}}</h5>
+          <p class="card-text">{{"Viewreportsonyourevent'sTopDocumentsactivity."| translate}}</p>
+          <a [routerLink]="['/admin/events/TopDocumentsreport', eventId]" class="btn btn-primary">{{'TopDocuments'|
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-sm-3 col-md-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/total-duration-icon.png" class="card-img-top"
+          style="width:80px;height:75px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'TotalDurationByRoomReport'| translate}}</h5>
+          <p class="card-text">{{"Viewreportsonyourevent'sTotalDurationByRoomactivity."| translate}}</p>
+          <a [routerLink]="['/admin/events/TotalDurationByRoomreport', eventId]"
+            class="btn btn-primary">{{'TotalDuration'|
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-sm-3 col-md-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/top spaces-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'TopSpacesReport'| translate}}</h5>
+          <p class="card-text">{{"Viewreportsonyourevent'sTopSpacesactivity."| translate}}</p>
+          <a [routerLink]="['/admin/events/TopSpacesreport', eventId]" class="btn btn-primary">{{'TopSpaces'|
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-sm-3 col-md-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/webinar-icon.png" class="card-img-top"
+          style="width:80px;height:75px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'TopWebinarReport'| translate}}</h5>
+          <p class="card-text">{{"Viewreportsonyourevent'sTopwebinaractivity."| translate}}</p>
+          <a [routerLink]="['/admin/events/TopWebinarreport', eventId]" class="btn btn-primary">{{'Topwebinar'|
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-3 col-md-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/ondemand-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'AttendedOndemandReport'| translate}}</h5>
+          <p class="card-text">{{"ViewreportsonyoureventsAttendedOndemandctivity."| translate}}</p>
+          <a [routerLink]="['/admin/events/AttendeeOnDemandReport', eventId]"
+            class="btn btn-primary">{{'AttendedOndemand'|
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-sm-3 col-md-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/marquee-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'MarqueeMessageReport'| translate}}</h5>
+          <p class="card-text">{{"MarqueeMessageReport"| translate}}</p>
+          <a [routerLink]="['/admin/events/MarqueeMessageReport', eventId]"
+            class="btn btn-primary">{{'MarqueeMessageReport'|
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-sm-3 col-md-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/room-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'RoomEntryReport'| translate}}</h5>
+          <p class="card-text">{{"Viewreportsonyourevent'sRoothEntryactivity."| translate}}</p>
+          <a [routerLink]="['/admin/events/Roomentryreport', eventId]" class="btn btn-primary">{{'RoomEntry'|
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-sm-3 col-md-4">
+      <div class="box card box-shadow p-4">
+        <img src="assets/Images/booth-icon.png" class="card-img-top"
+          style="width:75px;height:65px;padding-top:10px;padding-left: 5px;" alt="Card" />
+        <div class="card-body">
+          <h5 class="card-title">{{'BoothEntryReport'| translate}}</h5>
+          <p class="card-text">{{"Viewreportsonyourevent'sBoothEntryactivity."| translate}}</p>
+          <a [routerLink]="['/admin/events/Boothentryrepport', eventId]" class="btn btn-primary">{{'BoomEntry'|
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>

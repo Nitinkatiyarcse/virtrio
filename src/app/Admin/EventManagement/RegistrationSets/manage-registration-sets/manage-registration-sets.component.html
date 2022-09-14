@@ -1,0 +1,93 @@
+<div>
+    <div class="bg-white" style="padding-left: 20px;padding-bottom: 10px !important;">
+        <div class="pageHeader" style="margin-bottom: 0px;;">
+            <label style="margin-top:20px;">{{'ManageRegistrationSets'| translate}}</label>
+            <a *ngIf="isEventDatesExpired" id="btnAddUser" [routerLink]="['../../../registrationset/add',getbyIdViewModel.id]" style="padding-top: 10px;margin-top:30px;">
+
+                <i class="fa fa-calendar-plus-o text-primary" type="button" tooltip="{{ 'AddRegistrationSet' | translate}}" style=" -webkit-transform: scaleX(-1);  transform: scaleX(-1);"></i>
+            </a>
+            <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+        </div>
+
+    </div>
+
+
+    <div class="flex-container row bg-white" id="usrListItems" style="margin-top: 25px;padding: 20px;margin-left: 0px;margin-right: 0px;">
+
+        <div *ngIf='NoRecordFoundMessage' class="text-danger text-center">
+            {{ 'NoRecordFound' | translate}}
+
+        </div>
+        <div *ngIf='!NoRecordFoundMessage' class="row">
+            <table *ngIf="this.allRegistrationSetsByEvent" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            <a style="cursor: pointer;" (click)='sortByName()'> {{'Name' | translate}}</a>
+                        </th>
+                        <th>
+                            <a style="cursor: pointer;" (click)='sortByStartDate()'> {{'StartDate' | translate}}</a>
+                        </th>
+
+                        <th>
+                            <a style="cursor: pointer;" (click)='sortByEndDate()'> {{'EndDate' | translate}}</a>
+                        </th>
+                        <th>
+                            <a style="cursor: pointer;" (click)='sortByEndDate()'> {{'URLSlug' | translate}}</a>
+                        </th>
+
+                        <th>
+                            <a style="cursor: pointer;" (click)='sortByEndDate()'> {{'LoginPageUrl' | translate}}</a>
+                        </th>
+
+                        <th>
+                            <a style="cursor: pointer;" (click)='sortByEndDate()'>
+                                {{'RegistrationPageUrl' | translate}}</a>
+                        </th>
+
+                        <th>
+                            <a style="cursor: pointer;" (click)='sortByEndDate()'> {{'ThankyouPageUrl' | translate}}</a>
+                        </th>
+
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr *ngFor='let item of allRegistrationSetsByEvent'>
+                        <td style="border: none;">{{item.name}}</td>
+                        <td style="border: none;"> {{item.startDate | date:'dd MMMM, yyyy'}} {{item.startTime | date:'HH:mm:ss'}}</td>
+
+                        <td style="border: none;">{{item.endDate | date:'dd MMMM, yyyy'}} {{item.endTime | date:'HH:mm:ss'}}</td>
+                        <td style="border: none;">{{item.urlSlug}}</td>
+
+                        <td style="border: none;">
+                            <a target="_blank" href='{{appUrl+item.events.clients.urlSlug+"/"+item.events.urlSlug+"/"+(item.urlSlug?item.urlSlug+"/":"")+"login"}}'>{{'Login' | translate}}</a>
+                        </td>
+                        <td style="border: none;"> <a target="_blank" href='{{appUrl+item.events.clients.urlSlug+"/"+item.events.urlSlug+"/"+(item.urlSlug?item.urlSlug+"/":"")+"register"}}'>{{'Register' | translate}}</a>
+                        </td>
+                        <td style="border: none;"> <a target="_blank" href='{{appUrl+item.events.clients.urlSlug+"/"+item.events.urlSlug+"/"+(item.urlSlug?item.urlSlug+"/":"")+"thankyou"}}'>{{'Thankyou' | translate}}</a>
+                        </td>
+
+                        <td style="border: none;">
+                            <div *ngIf="isEventDatesExpired" class="dropdown">
+                                <a href="#" data-bs-toggle="dropdown" class="text-muted"><i class="fa fa-gear"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item Poppins-Regular" id="btnDetails" (click)='setRegistrationSetName(item.name)' [routerLink]="['../../../registrationset/manageloginpage', item.registrationSetId,item.eventId]">{{'CreateLoginPage'| translate}}</a>
+                                    <a class="dropdown-item Poppins-Regular" id="btnUpdate" (click)='setRegistrationSetName(item.name)' [routerLink]="['../../../registrationset/manageregistrationpage', item.registrationSetId,item.eventId]">{{'ManageRegistrationPage'| translate}}</a>
+                                    <a class="dropdown-item Poppins-Regular" id="btnCopyUser" (click)='setRegistrationSetName(item.name)' [routerLink]="['../../../registrationset/managethankyoupage', item.registrationSetId,item.eventId]">{{'ManageThankyouPage'|translate}}</a>
+                                    <a class="dropdown-item Poppins-Regular" id="btnUpdate" (click)='setRegistrationSetName(item.name)' [routerLink]="['../../../registrationset/update',item.registrationSetId,item.eventId]">{{'update'|translate}}</a>
+                                    <a class="dropdown-item Poppins-Regular" (click)="deleteRegistrationSet(item.registrationSetId)" id="btnDelete">{{'Delete'|translate}}</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</div>

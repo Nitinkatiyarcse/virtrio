@@ -1,0 +1,41 @@
+<div class="modal-dialog modal-lg" role="document" style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-content">
+        <form class="form-group" #AddToChatQueueForm="ngForm">
+            <div class="modal-header">
+                <h5 class="modal-title">{{'addTochatQueue'|translate}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group  mb-2">
+                    <label class="form-lable Poppins-Regular">{{'Name'| translate}}</label>
+                    <input type="text" name="imgItem_addToChatQueue_name" id="imgItem_addToChatQueue_name" [(ngModel)]="addToChatQueue.name" class="form-control Poppins-Regular" value="" required maxlength="30" />
+                </div>
+
+                <div class="form-group  mb-2">
+                    <label class="form-lable Poppins-Regular">{{'chatQueueTitle'| translate}}</label>
+                    <input type="text" name="imgItem_addToChatQueue_chatQueueTitle" id="imgItem_addToChatQueue_chatQueueTitle" [(ngModel)]="addToChatQueue.chatQueueTitle" class="form-control Poppins-Regular" value="" required maxlength="30" />
+                </div>
+
+
+                <div class="form-group  mb-2">
+                    <label class="form-lable Poppins-Regular">{{'onLineChatQueueDesc'| translate}}</label>
+                    <textarea type="text" name="imgItem_addToChatQueue_onLineChatQueueDesc" id="imgItem_addToChatQueue_onLineChatQueueDesc" [(ngModel)]="addToChatQueue.onLineChatQueueDesc" class="form-control Poppins-Regular" value="" required maxlength="300"></textarea>
+                </div>
+
+                <div class="form-group  mb-2">
+                    <label class="form-lable Poppins-Regular">{{'offlineChatQueueDesc'| translate}}</label>
+                    <textarea type="text" name="imgItem_addToChatQueue_offlineChatQueueDesc" id="imgItem_addToChatQueue_offlineChatQueueDesc" [(ngModel)]="addToChatQueue.offlineChatQueueDesc" class="form-control Poppins-Regular" value="" required maxlength="300"></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" id="addToChatQueue" class="btn btn-primary commonbtn Poppins-Regular" [disabled]="AddToChatQueueForm.invalid" (click)="addToChatQueueData()">{{'Save' |
+                    translate}}</button>
+                <button type="button" class="btn btn-primary  commonbtn ml-10px text-white Poppins-Regular" (click)="closeModal()">{{'Cancel' | translate}}</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,267 @@
+<!-- <p>leaderboard-management works!</p> -->
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-6 text-Medium" style="text-align: left;">{{'LeaderBoard'| translate}}</label>
+        <a style="float: right;text-align: right;" class="col-sm-3">
+            <button type="save" (click)="clearboard()" style="padding: 10px;" class="btn btn-danger col-sm-8 Poppins-Regular">{{'ClearLeaderboard' | translate}}</button>
+        </a>
+        <br>
+        <label class="col-sm-12 Poppins-Regular text-small fs-12px" style="word-break: break-all;text-align: left;margin-top:15px">{{'Schedule the time when your leaderboard will be open and calculating points.Please open with each new open time,point will be added to those accumulated during the last open time.If you wish to clear the leaderboard and have attendees start at zeor.You will need to use the clear Leaderboard function'|translate}}</label>
+
+    </div>
+
+</div>
+
+
+<div class="flex-container bg-white" id="roomListItems" style="margin-top: 25px;padding: 20px;">
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="LeaderboardName">{{'LeaderboardName'| translate}}
+        </label>
+
+        <div class="col-sm-9">
+            <input type="text" class="form-control Poppins-Regular" placeholder="{{'LeaderboardName' | translate}}" required #LeaderboardName="ngModel" maxlength="50" [(ngModel)]="inputLeaderBoardModel.leaderboardName" name="LeaderboardName" value="" (click)="enable()">
+            <span *ngIf="LeaderboardName.invalid && LeaderboardName.touched" class="error">{{'LeaderboardNamerequired'| translate}}</span>
+
+        </div>
+        <input type="hidden" [(ngModel)]="inputLeaderBoardModel.leaderboardId" id="LeaderboardId" name="LeaderboardId" value="{{inputLeaderBoardModel.leaderboardId}}" />
+        <div class="col-sm-1">
+            <button type="button" (click)="SaveLeaderboard()" class="btn btn-primary">{{adminLeaderboardRecordFound?'Update':'Save' | translate }}</button>
+        </div>
+    </div>
+    <div *ngIf="adminLeaderboardRecordFound">
+        <!--Start manageSchedule-->
+        <div id="manageSchedule">
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="LeaderboardName">{{'ManageSchedule'| translate}}
+                </label>
+                <div class="col-sm-12">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#addSchedule" style="float: right;">{{'AddSchedule'|translate}}</button>
+                </div>
+            </div>
+            <table id="manageScheduleTable" class="table table-hover table-striped table-bordered" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            <a style="cursor: pointer;"> {{'TimeZone' | translate}}</a>
+                        </th>
+                        <th>
+                            <a style="cursor: pointer;"> {{'StartDateandTime' | translate}}</a>
+                        </th>
+                        <th>
+                            <a style="cursor: pointer;"> {{'EndDateandTime' | translate}}</a>
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of adminLeaderboardScheduleList">
+                        <td style="border:none;">
+                            {{item.timezones.timeZoneName}}
+                        </td>
+                        <td>
+                            {{item.startDate | date:'mediumDate'}} {{item.startTime | date:'mediumTime'}}
+                        </td>
+                        <td>
+                            {{item.endDate | date:'mediumDate'}} {{item.endTime | date:'mediumTime'}}
+                        </td>
+                        <td style="border:none;">
+                            <i class="fa fa-trash" style="cursor: pointer;" (click)="deleteSchedule(item)" tooltip="{{'Delete' | translate}}"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <hr>
+        <!--End manageSchedule-->
+        <!--Start manageBadge-->
+        <div id="manageBadge">
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="Badge">{{'ManageBadge'| translate}}
+                </label>
+                <div class="col-sm-12">
+                    <a style="float: right;text-align: left;margin-top:5px;margin-top:-15px" class="col-sm-3" routerLink="/admin/events/Createbadge/{{inputLeaderBoardModel.leaderboardId}}/{{eventId}}">
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#manageBadge" style="float: right;">{{'AddBadge'|translate}}</button>
+                    </a>
+
+                </div>
+            </div>
+            <table id="manageBadgeTable" class="table table-hover table-striped table-bordered" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            <a style="cursor: pointer;"> {{'Badge' | translate}}</a>
+                        </th>
+                        <th>
+                            <a style="cursor: pointer;"> {{'BadgeTitle' | translate}}</a>
+                        </th>
+
+                        <th>
+                            <a style="cursor: pointer;"> {{'DisplayOrder' | translate}}</a>
+                        </th>
+
+
+                        <th>
+                            <a style="cursor: pointer;"> {{'Attendees/Representative' | translate}}</a>
+                        </th>
+                        <th style="cursor: pointer;">
+                            {{'Status' | translate}}
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of adminLeaderboardBadgesList">
+                        <td style="border:none;">
+                            <img src="{{item.smallImageUrl}}" height="24" width="24" />
+                        </td>
+                        <td style="border:none;">
+                            {{item.badgeTitle}}
+                        </td>
+                        <td style="border:none;">
+                            {{item.displayTitle}}
+                        </td>
+                        <td style="border:none;">
+                            {{item.badgeFor}}
+                        </td>
+                        
+                        <!-- activateDeactivateLeaderBoardBadges -->
+                        <td [ngClass]="item.isActive?'text-success':'text-danger'" style="border: none;vertical-align: middle;" translate> {{item.isActive?'Active' :'Deactive' }}</td>
+                        <td style="border: none;vertical-align: middle;text-align: center;">
+                            <div class="dropdown">
+                                <a href="#" data-bs-toggle="dropdown" class="text-muted"><i class="fa fa-gear"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item Poppins-Regular" id="btnDetails" (click)="updateBadge(item.adminLeaderboardBadgeId)">{{'Edit' | translate}}</a>
+                                    <a *ngIf="!item.isActive" class="dropdown-item Poppins-Regular" (click)="deleteBadge(item.adminLeaderboardBadgeId,1)" id="btnReject" style="cursor:pointer">{{'Active' | translate}}</a>
+                                    <a *ngIf="item.isActive" class="dropdown-item Poppins-Regular" (click)="deleteBadge(item.adminLeaderboardBadgeId,0)" id="btnReject" style="cursor:pointer">{{'Deactive' | translate}}</a>
+                                </div>
+                            </div>
+                        </td>
+                        <!-- <td style="border:none;"> -->
+
+
+                        <!-- <i class="fa fa-pencil-square" tooltip="{{'Edit' | translate}}" (click)="updateBadge(item.adminLeaderboardBadgeId)" style="margin-right: 15px;"></i> -->
+                        <!-- <i class="fa fa-trash" style="cursor: pointer;" (click)="deleteBadge(item.adminLeaderboardBadgeId)" tooltip="{{'Deactivate' | translate}}"></i> -->
+                        <!-- </td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--End manageBadge-->
+    </div>
+</div>
+
+<!-- Schedule Model popup -->
+<div class="modal fade" id="addSchedule" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{'AddSchedule'|translate}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="Post" class="form-group" #AddWhitelistDomainForm="ngForm">
+                    <!-- <div class="text-center pageHeader" translate>
+                    {{'AddSchedule' | translate}}
+                    <i class="fa fa-times" type="button" data-dismiss="modal" style="cursor:pointer;float:right;"></i>
+                </div> -->
+                    <div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label Poppins-Regular" for="TimeZone">{{'TimeZone'| translate}}</label>
+                            <div class="col-sm-10">
+                                <select id="timeZone" required [(ngModel)]="adminLeaderboardSchedules.timeZoneId" #timeZone="ngModel" name="timeZone" class="form-select">
+                                <option value="">{{'SelectTimezone' | translate}}</option>
+                                <option *ngFor="let item of allTimezones" value="{{item.timeZoneId}}">
+                                    {{item.timeZoneName}}
+                                    ({{item.offset}})</option>
+                            </select>
+                                <span *ngIf="timeZone.invalid && timeZone.touched" class="error">{{'TimeZonerequired'| translate}}</span>
+
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label Poppins-Regular" for="StartDate">{{'StartDate' | translate}} </label>
+                            <div class="col-sm-4">
+                                <div class="input-group bootstrap-timepicker timepicker">
+                                    <app-date-picker #StartDate="ngModel" required="" [(ngModel)]="adminLeaderboardSchedules.startDate" name="StartDate" (ngModelChange)="validateDates()"></app-date-picker>
+                                </div>
+                                <span *ngIf="StartDate.invalid && StartDate.touched" class="error">{{'StartDaterequired'| translate}}</span>
+                            </div>
+
+
+                            <label class="col-sm-2 col-form-label Poppins-Regular" for="EndDate">{{'EndDate' | translate}}
+                        </label>
+                            <div class="col-sm-4">
+                                <div class="input-group bootstrap-timepicker timepicker">
+                                    <app-date-picker [(ngModel)]="adminLeaderboardSchedules.endDate" #EndDate="ngModel" required="" [minDate]="endMinDate" name="EndDate" (ngModelChange)="validateDates()">
+                                    </app-date-picker>
+                                </div>
+                                <span *ngIf="EndDate.invalid && EndDate.touched" class="error">{{'EndDaterequired'| translate}}</span>
+                                <span *ngIf="invalidDate" class="error">
+                                {{'startDateGreaterThanEndDate'| translate}}
+                            </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label Poppins-Regular" for="StartTime">{{'StartTime' | translate}} </label>
+                            <div class="col-sm-4">
+                                <div class="input-group bootstrap-timepicker timepicker">
+                                    <app-time-picker #StartTime="ngModel" [(ngModel)]="adminLeaderboardSchedules.startTime" name="StartTime" required="" value="" (ngModelChange)="validateTime()">
+                                    </app-time-picker>
+                                </div>
+                                <span *ngIf="StartTime.invalid && StartTime.touched" class="error">{{'StartTimerequired'| translate}}</span>
+
+                            </div>
+
+
+                            <label class="col-sm-2 col-form-label Poppins-Regular" for="EndTime">{{'EndTime'| translate}}
+                        </label>
+                            <div class="col-sm-4">
+                                <div class="input-group bootstrap-timepicker timepicker">
+                                    <app-time-picker #EndTime="ngModel" type="text" [(ngModel)]="adminLeaderboardSchedules.endTime" required="" value="" name="EndTime" (ngModelChange)="validateTime()">
+                                    </app-time-picker>
+                                </div>
+
+                                <span *ngIf="EndTime.invalid && EndTime.touched" class="error">{{'EndTimerequired'| translate}}</span>
+                                <span *ngIf="invalidTime" class="error">
+                                {{'startTimeGreaterThanEndTime'| translate}}
+                            </span>
+                            </div>
+
+
+
+                        </div>
+
+                        <hr>
+
+                    </div>
+
+
+                    <!-- <div class="" style="text-align: right;">
+                    
+                </div> -->
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="save" (click)="saveSchedule()" [disabled]="AddWhitelistDomainForm.invalid" id="btnadddomianname" class="commonbtn btn btn-primary col-sm-5" data-dismiss="modal">
+                {{'Save'|translate }}
+            </button>
+                <button type="button" #popupCloseBtn class="commonbtn btn  btn-primary  text-white  col-sm-5" style="margin-left: 20px;" data-dismiss="modal">
+                {{'Cancel' | translate}}
+            </button>
+            </div>
+        </div>
+    </div>
+</div>

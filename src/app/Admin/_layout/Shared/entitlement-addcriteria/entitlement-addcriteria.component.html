@@ -1,0 +1,52 @@
+<div>
+    <div class="text-center pageHeader">{{'AddEntitlementCriteria'|translate}}
+        <i class="fa fa-times" type="button" data-dismiss="modal" style="cursor:pointer;float:right;"
+            (click)="closeModal()"></i>
+    </div>
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="Criteria">{{'Criteria'| translate}}</label>
+        <div class="col-sm-10 form-group ">
+            <select class="form-select" id="Criteria" name="Criteria">
+                <option value="">{{'Select' | translate}}</option>
+                <option value="Language">Select Language</option>
+                <option value="CountryCityState">Entitlement with Country, City and State</option>
+            </select>
+        </div>
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="Criteria">{{'Select Language'|
+                translate}}</label>
+            <div class="row col-sm-10">
+                <div class="col-sm-2" style="margin-top: 8px;">
+                    <input type="checkbox" style="margin-right: 0px;" class="form-check-inline" name="English" #English>
+                    <label class="form-check-label  Poppins-Regular" for="English">{{'English'|translate}}
+                    </label>
+                </div>
+                <div class="col-sm-2" style="margin-top: 8px;">
+                    <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="Japanese"
+                        #Japanese>
+                    <label class="form-check-label  Poppins-Regular" for="Japanese">{{'Japanese'|translate}}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="CountryCityState">{{'Country City State' |
+                translate}}</label>
+            <div class="col-sm-10">
+                <textarea class="form-control Poppins-Regular" placeholder="{{'Country,CityandState' | translate}}"
+                    name="CountryCityState"></textarea>
+            </div>
+        </div>
+        <div class="" style="text-align: center;">
+            <button type="button" id="btnSave" class="btn btn-primary col-sm-5">
+                {{'Save'|translate }}
+            </button>
+            <button type="button" class="btn  btn-primary  text-white  col-sm-5" style="margin-left: 20px;"
+                data-dismiss="modal" (click)="closeModal()">
+                {{'Cancel' | translate}}
+            </button>
+        </div>
+
+
+
+    </div>

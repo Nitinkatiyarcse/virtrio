@@ -1,0 +1,2 @@
+::ng-deep .multiselect-dropdown .dropdown-btn {width: -webkit-fill-available !important}
+  ::ng-deep .multiselect-dropdown .dropdown-btn:focus {outline: none !important}

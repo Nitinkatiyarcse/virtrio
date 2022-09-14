@@ -1,0 +1,18 @@
+td{
+    border:none;
+}
+table{
+    font-family: poppins-regular;
+}
+::ng-deep .dataTables_length {
+    font-family: poppins-regular;
+}
+::ng-deep .dataTables_info {
+    font-family: poppins-regular;
+}
+::ng-deep .dataTables_filter {
+    font-family: poppins-regular;
+}
+::ng-deep .dataTables_paginate{
+    font-family: poppins-regular;
+}

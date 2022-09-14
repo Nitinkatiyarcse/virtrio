@@ -1,0 +1,266 @@
+<!-- <div class="language" *ngIf="translate.getLangs().length>1">
+    <button type="button" [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" *ngFor="let item of translate.getLangs()" class="btn btn-link text-white Poppins-Bold LangHeader" [ngClass]="{selected: selectedLan==item}"
+        (click)="changeLanguage(item)">{{item | translate}}</button>
+</div> -->
+<div class="grandParentContaniner container">
+    <div class="parentContainer" style="background-color:{{eventDetails.uiColor}} !important;color:{{eventDetails.sectionHeaderTextColor}} !important">
+        <div >
+            <!-- Header Image (Logo Section) -->
+            <!-- <img *ngIf="loginPageUIDetails.loginPageHeaderGraphics" src="{{loginPageUIDetails.loginPageHeaderGraphics}}" class="ribbon" style="width: 200px;height: auto;-o-object-fit: contain;" /> -->
+
+            <!-- Language Selection -->
+            <div class="language" *ngIf="translate.getLangs().length>1">
+                <button type="button" [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" *ngFor="let item of translate.getLangs()" class="btn btn-link text-white Poppins-Bold LangHeader" [ngClass]="{selected: selectedLan==item}"
+                    (click)="changeLanguage(item)">{{item | translate}}</button>
+            </div>
+            <app-side-menu></app-side-menu>
+            <!-- Image Slider Section -->
+            <!-- <ngb-carousel *ngIf="loginPageUIDetails.includeSplashImage" id="imgSliderSplashImages"
+            [showNavigationArrows]="false" [showNavigationIndicators]="false" [interval]="4000"
+            [ngStyle]="{'width': '100%'}">
+            <ng-template ngbSlide *ngFor="let slideimg of loginPageUIDetails.splashImagesList">
+                <img [src]="slideimg.filePath" style="width: 100%;height: 500px;-o-object-fit: contain !important;">
+            </ng-template>
+        </ngb-carousel> -->
+
+            <!-- Image Slider Section -->
+            <ngb-carousel *ngIf="loginPageUIDetails.includeSplashImage && loginPageUIDetails.splashImagesList[0].fileType=='splashimage'" id="imgSliderSplashImages" [interval]="4000" [ngStyle]="{'width': '100%'}" [showNavigationArrows]="false" [showNavigationIndicators]="false">
+                <ng-template ngbSlide *ngFor="let slideimg of loginPageUIDetails.splashImagesList">
+                    <img [src]="slideimg.filePath" style="width: 100%;height: 500px;-o-object-fit: contain !important;">
+                </ng-template>
+            </ngb-carousel>
+
+            <ngb-carousel *ngIf="loginPageUIDetails.includeSplashImage && loginPageUIDetails.splashImagesList[0].fileType=='splashmovie'" [interval]="400000" id="imgSliderSplashImages" [ngStyle]="{'width': '100%'}" [showNavigationArrows]="true" [showNavigationIndicators]="false">
+                <ng-template ngbSlide *ngFor="let slideimg of loginPageUIDetails.splashImagesList">
+                    <video controls autoplay controlsList="nodownload" [src]="slideimg.filePath" style="width: 100%;height: 500px;-o-object-fit: contain !important;"></video>
+                </ng-template>
+            </ngb-carousel>
+
+
+
+        </div>
+        <div class="container text-left" style="padding-top:30px;background-color: #F4F6F7 !important;">
+
+            <div class="row Poppins-SemiBold text-center  eventRegisterAndDetailsDiv">
+
+                <div class="row Poppins-SemiBold text-center "><span style="padding-top: 48px;" class="col-sm-12 fs-20px lh-21px" [style.color]="eventDetails.uiAccentColor">{{loginPageUIDetails.eventName}}</span>
+                </div>
+                <div class="col-sm-12 mt-0px"><span class="SFUI-Display-Light fs-14px  text-center">{{eventStartDate | date:'d MMM, y'}}
+                    -
+                    {{eventEndDate | date:'d MMM, y'}}</span></div>
+                <!-- <div class="col-sm-12 mt-15px"><span id='timer' class="Poppins-Bold fs-15px  text-center">{{timerData}}</span></div> -->
+                <div *ngIf="showTimer" class="col-sm-12 mt-15px"><span id='timer' class="Poppins-Bold fs-15px  text-center">{{timerData}}</span></div>
+                <div *ngIf="!showTimer" class="col-sm-12 mt-15px"><span id='timer' class="Poppins-Bold fs-15px  text-center">{{'EventIsLiveNow' | translate}}</span></div>
+    
+            </div>
+
+            <div class="row Poppins-SemiBold text-center ">
+                <span class="col-sm-12 fs-20px lh-21px" [style.color]="eventDetails.uiAccentColor"> {{loginPageUIDetails.aboutTheEventText}}</span>
+            </div>
+            <p class="col-sm-12 Poppins-Regular text-left fs-14px mt-20px  lh-21px" style="padding-left: 10%;padding-right: 10%;" [innerHTML]="loginPageUIDetails.eventDesc | safeHtml">
+            </p>
+
+
+            <!-- Welcome Heading Section -->
+            <div class="row" *ngIf="loginPageUIDetails.includeWelcomeText">
+                <div class="col-sm-12 text-center Poppins-SemiBold fs-20px" [style.color]="eventDetails.uiAccentColor">
+                    {{loginPageUIDetails.welcomeHeadingText}}
+                </div>
+                <!-- Welcome Text Section -->
+                <div class="col-sm-12 Poppins-Regular text-left fs-14px mt-20px  lh-21px" style="padding-left: 10%;padding-right: 10%;" [innerHTML]='loginPageUIDetails.welcomeText | safeHtml'>
+
+                </div>
+            </div>
+
+            <!-- Agenda Section -->
+            <div class="row mt-20px" *ngIf="loginPageUIDetails.hasAgendaDocuments">
+                <div class="col-sm-12 text-center">
+                    <a [style.color]="eventDetails.headerTextColor" *ngIf="loginPageUIDetails.hasAgendaDocuments" href="{{loginPageUIDetails.agendaDocumentUrl}}" class="linkBtnOrangeFrontEnd pb-25px">
+                    {{loginPageUIDetails.agendaDocumentHeadingText}}
+                </a>
+                </div>
+            </div>
+
+            <!-- Video Spokes Person -->
+            <div class="row mt-20px" *ngIf="loginPageUIDetails.videoSpokesPerson">
+                <div class="col-sm-12 text-center Poppins-SemiBold fs-20px" [style.color]="eventDetails.uiAccentColor">
+                    {{'VideoSpokesperson' | translate}}
+                </div>
+                <p class="col-sm-12 Poppins-Regular text-left fs-14px mt-20px  lh-21px" style="padding-left: 10%;padding-right: 10%;word-break: break-all;" [innerHTML]="loginPageUIDetails.videoSpokesPerson | safeHtml">
+                </p>
+
+            </div>
+
+            <!-- Login Box Cotrols -->
+            <div class="row mt-20px" style="padding-left: 20%; padding-right: 20%;">
+                <form class="form-group" #loginAttendee="ngForm">
+                    <div class="col-sm-12 Poppins-SemiBold mb-20px w-100 fs-20px text-center" [style.color]="eventDetails.uiAccentColor">
+                        {{(loginPageUIDetails.loginHeadingText!==''?loginPageUIDetails.loginHeadingText:'Login') | translate}}
+                    </div>
+                    <div *ngIf="!isOTPReceived">
+                        <div class="row col-sm-12">
+                            <div class="col-sm-2 mt-5px">
+                                {{'EmailAddress' | translate}}
+                            </div>
+                            <div class="col-sm-10">
+                                <input [style.color]="eventDetails.sectionHeaderTextColor" type="email" autofocus name="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #email="ngModel" class="Poppins-Regular form-control" placeholder="{{'EmailAddress' | translate}}" [(ngModel)]="loginFormControl.email"
+                                    required />
+                            </div>
+                        </div>
+                        <div class="col-sm-12 text-center mt-20px">
+                            <button type="button" [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" [disabled]="loginAttendee.invalid" class="btn btnOrangeFrontEnd" (click)="submitLoginForm()">{{'Login' | translate}}</button><br>
+
+                        </div>
+
+                        <div class="col-sm-12 text-center " style="margin-top: 20px;">
+                            <a [style.color]="eventDetails.headerTextColor" *ngIf="loginPageUIDetails.enableFacebook" (click)="signInWithFB()" class="fb btn btn-primary  Poppins-SemiBold fs-14px" style="margin-right: 15px;cursor: pointer;width:195px">
+                                <i class=" fab fa-facebook fa-fw "></i> Login with Facebook
+                            </a>
+
+                            <a [style.color]="eventDetails.headerTextColor" *ngIf="loginPageUIDetails.enableGoogle" (click)="signInWithGoogle()" class="fb btn btn-danger  Poppins-SemiBold fs-14px" style="margin-right: 15px;cursor: pointer;width:195px">
+                                <i class=" fab fa-google fa-fw "></i> Login with Google
+                            </a>
+
+                            <!-- <a *ngIf="loginPageUIDetails.enableLinkedIn" (click)="signInWithGoogle()" class="fb btns col-sm-2 Poppins-SemiBold fs-14px" style="margin-right: 15px;cursor: pointer;">
+                            <i class=" fab fa-google fa-fw "></i> Login with Google
+                        </a> -->
+                        </div>
+                    </div>
+                    <div *ngIf="isOTPReceived">
+                        <div class="row col-sm-12">
+                            <div class="col-sm-3 mt-5px">
+                                {{'Enterotp' | translate}}
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="password" autofocus name="OTPValue" maxlength="5" #OTPValue="ngModel" class="Poppins-Regular form-control" placeholder="{{'Enterotp' | translate}}" [(ngModel)]="loginFormControl.OTPValue" required />
+                            </div>
+                        </div>
+                        <div class="col-sm-12 text-center mt-20px">
+                            <button type="button" [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" [disabled]="loginAttendee.invalid" class="btn btnOrangeFrontEnd" (click)="verifyLoginOTP()">{{'Submit' | translate}}</button><br>
+
+                        </div>
+                    </div>
+                    <div *ngIf="loginPageUIDetails.includeRegisterBox" class=" col-sm-12 mt-20px text-center row">
+                        <div class="col-sm-5">
+                            <hr>
+                        </div>
+                        <div class="col-sm-2" style="margin-top: 7px;" class="col-sm-2 Poppins-SemiBold fs-12px">OR</div>
+                        <div class="col-sm-5">
+                            <hr>
+                        </div>
+
+                    </div>
+                    <div *ngIf="loginPageUIDetails.includeRegisterBox" class="col-sm-12 mt-20px text-center">
+                        <a [style.color]="eventDetails.headerTextColor" href="{{clientName}}/{{eventName}}/{{registrationSet}}/register" class="linkBtnOrangeFrontEnd">{{loginPageUIDetails.registerHeadingText}} </a>
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+
+            <!-- Footer Graphics Section -->
+            <!-- Image Slider Section -->
+            <ngb-carousel *ngIf="loginPageUIDetails.includeFooterGraphics" id="imgSliderSplashImages" [interval]="4000" [ngStyle]="{'width': '100%'}" [showNavigationArrows]="false" [showNavigationIndicators]="false">
+                <ng-template ngbSlide *ngFor="let slideimg of loginPageUIDetails.footerGraphicsList">
+                    <img [src]="slideimg.filePath" style="width: 100%;height: 500px;-o-object-fit: contain !important;">
+                </ng-template>
+            </ngb-carousel>
+
+            <!-- Custom Footer controls -->
+            <div *ngIf="loginPageUIDetails.customFooterText!='' && loginPageUIDetails.customFooterText!=null">
+                <p class="col-sm-12 Poppins-Regular text-left fs-14px mt-20px  lh-21px" style="padding-left: 10%;padding-right: 10%;word-break: break-all;" [innerHTML]="loginPageUIDetails.customFooterText | safeHtml">
+                </p>
+            </div>
+
+            <!-- Privacy Polict and contact and support -->
+            <div class="row col-sm-12 Poppins-Regular" style="margin-top:20px; margin-bottom:20px;height: 60px;">
+                <div class="col-sm-6 text-right" *ngIf="loginPageUIDetails.customSupportLinkName">
+                    <a [style.color]="eventDetails.headerTextColor" *ngIf="loginPageUIDetails.customSupportLinkUrl" target="_blank" href="{{loginPageUIDetails.customSupportLinkUrl}}">{{loginPageUIDetails.customSupportLinkName}}</a>
+                </div>
+                <div class="col-sm-6" *ngIf="loginPageUIDetails.privacyPolicyName">
+                    <a [style.color]="eventDetails.headerTextColor" *ngIf="loginPageUIDetails.privacyPolicyUrl" target="_blank" href="{{loginPageUIDetails.privacyPolicyUrl}}">{{loginPageUIDetails.privacyPolicyName}}</a>
+                </div>
+            </div>
+            <!-- <div class="row col-sm-12 Poppins-Regular" style="margin-top:-60px">
+                <div class="col-sm-6 text-right">
+                    <a target="_blank" class="btn btn-link" href="http://localhost:4200/new/imsec/Default">NewUI</a>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- <div class="responsive">
+    <CometChatUI></CometChatUI>
+</div> -->
+<ngx-spinner type="ball-clip-rotate-multiple" size="medium" style="z-index: 10000;"></ngx-spinner>
+<script *ngIf="eventDetails.gaEnabled">
+    {
+        {
+            gaScript
+        }
+    }
+</script>
+
+<script *ngIf="eventDetails.thirdPartyAnalyticsEnabled">
+    {
+        {
+            thirdPartyAnalyticsScript
+        }
+    }
+</script>
+
+
+<!-- Future date Popup -->
+<div id="futureDateModal" class="modal fade" role="document" style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alerts</h5>
+                <!-- <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal"
+                    aria-label="Close" (click)="stopVideo()">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->
+            </div>
+            <div class="modal-body">
+
+
+
+                <span style="font-size: larger;">
+                        Event has not been started yet. Please try later
+                </span>
+
+
+                <!-- <div class="modal-content"> -->
+
+                <!-- <p style="text-align: center;">Event has not been started yet. Please try later</p> -->
+                <!-- <div class="modal-body mb-0 p-0">
+                        <div id="welcomeVideoIFrame"
+                            *ngIf="eventDetails.videoType=='youtube' || eventDetails.videoType== 'vimeoUrl'"
+                            class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                            <iframe height="100%" width="100%" class="embed-responsive-item" allowfullscreen controls=""
+                                [src]="welcomeVideoSrc | safe">
+                            </iframe>
+
+
+                        </div>
+                        <div *ngIf="eventDetails.videoType=='uploadFile'">
+                            <video height="100%" width="100%" controls  controlsList="nodownload"  [src]="welcomeVideoSrc | safe"></video>
+
+
+                        </div>-->
+
+                <!-- </div> -->
+            </div>
+            <!-- <div class="modal-footer">
+                    <button class="btn btnOrangeFrontEnd" [style.background]="eventDetails.headerBackgroundColor"
+                        [style.color]="eventDetails.headerTextColor+'!important'" type="button" data-dismiss="modal"
+                        (click)="closeWelcomeVideo(eventDetails.videoUrl)">{{'Close' | translate}}</button>
+                </div> -->
+        </div>
+
+    </div>
+</div>
+<!-- </div> -->

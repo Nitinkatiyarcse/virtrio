@@ -1,0 +1,24 @@
+.box {
+    width: 102%;
+    height: 270px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-self: normal;
+}
+
+.container {
+    width: 1100px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.card:hover {
+    box-shadow: 5px 5px 10px #000;
+}

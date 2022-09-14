@@ -1,0 +1,548 @@
+<div class="bg-white ">
+    <div class="pageHeader " style="border:none;text-align: left;padding:10px;height: 120px;">
+        <div class="col-sm-10" style="float: left;">
+            <label class="col-sm-10 text-Medium Poppins-Regular" style="text-align: left;">{{'EventDetails'| translate}}</label>
+            <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{event.eventName}}</label>
+        </div>
+        <div *ngIf="isSuperOrEventAdmin" class="col-sm-2" style="float: right;margin-top: 30px;">
+            <select class="form-select" (change)='changeEventStatus(event.eventId)' [(ngModel)]="event.eventStatus">
+                <option *ngFor="let item of eventStatus" value='{{item.statusTypeId}}' translate>{{item.status}}
+                </option>
+            </select>
+            <!-- <a class="col-sm-2" tooltip='{{"Settings" | translate}}' style="float: right;text-align: right;"><i
+                    class="fa fa-gear" (click)="openEventSettingsPopup(event.eventId)"></i></a> -->
+        </div>
+
+    </div>
+</div>
+
+
+<div class="form-group bg-white" style="padding: 15px;margin-top:25px">
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventName">{{'ClientName' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular" style="word-break: break-all;">
+            <span>{{event.clientName}}</span>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventName">{{'EventName' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular" style="word-break: break-all;">
+            <span>{{event.eventName}}</span>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventUrl">{{'EventURL' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular" style="word-break: break-all;">
+            <span>{{domainUrl}}{{event.eventUrl}}</span>
+            <a href="{{domainUrl +'' +event.eventUrl}}" target="_blank" class="btn btn-link">{{'Preview' | translate}}</a>
+        </div>
+    </div>
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventDesc">{{'EventDescription' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular">
+            <span [innerHTML]="event.eventDesc | safeHtml"></span>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-6 col-form-label Poppins-SemiBold" for="ProjectDate">{{'LicenseDate' | translate}}</label>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="ProjectStartDate">{{'StartDate' | translate}}
+        </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+
+            <span>{{event.projectStartDate | date: 'mediumDate'}}</span>
+        </div>
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="ProjectEndDate">{{'EndDate' | translate}} </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+
+            <span>{{event.projectEndDate | date: 'mediumDate'}}</span>
+
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-6 col-form-label Poppins-SemiBold" for="EventDate">{{'EventDate' | translate}}</label>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventStartDate">{{'StartDate' | translate}} </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+
+            <span>{{event.eventStartDate==''?'-':(event.eventStartDate | date: 'mediumDate')}}</span>
+        </div>
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventEndDate">{{'EndDate' | translate}} </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+
+            <span>
+                {{event.eventEndDate==''?'-':(event.eventEndDate | date: 'mediumDate')}}
+            </span>
+
+        </div>
+    </div>
+
+
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventStartTime">{{'StartTime' | translate}} </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+            <span>
+                {{event.eventStartTime==''?'-':(event.eventStartTime | date: 'shortTime')}}
+            </span>
+        </div>
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventEndTime">{{'EndTime'| translate}} </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+            <span>
+                {{event.eventEndTime==''?'-':(event.eventEndTime | date: 'shortTime')}}
+            </span>
+        </div>
+    </div>
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-6 col-form-label Poppins-SemiBold" for="Roomsscreenoption">{{'OpenRegistration' | translate}}</label>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="RegistrationStartDate">{{'StartDate' | translate}}
+        </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+
+            <span>
+                {{event.registrationStartDate==''?'-':(event.registrationStartDate | date: 'mediumDate')}}
+            </span>
+        </div>
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="RegistrationStartDate">{{'EndDate' | translate}}
+        </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+
+            <span>
+                {{event.registrationEndDate==''?'-':(event.registrationEndDate | date: 'mediumDate')}}
+            </span>
+        </div>
+
+    </div>
+
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="RegistrationStartTime">{{'StartTime' | translate}}
+        </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+            <span>
+                {{event.registrationStartTime==''?'-':(event.registrationStartTime | date: 'shortTime')}}
+            </span>
+        </div>
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="RegistrationEndTime">{{'EndTime'| translate}}
+        </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+            <span>
+                {{event.registrationEndTime==''?'-':(event.registrationEndTime | date: 'shortTime')}}
+            </span>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-6 col-form-label Poppins-SemiBold" for="Roomsscreenoption">{{'Previewdate' | translate}}</label>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="PreviewStartDate">{{'StartDate' | translate}}
+        </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+
+            <span>
+                {{event.previewStartDate==''?'-':(event.previewStartDate | date: 'mediumDate')}}
+            </span>
+        </div>
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="PreviewEndDate">{{'EndDate' | translate}} </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+
+            <span>
+                {{event.previewEndDate==''?'-':(event.previewEndDate | date: 'mediumDate')}}
+            </span>
+
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="PreviewStartTime">{{'StartTime' | translate}}
+        </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+            <span>
+                {{event.previewStartTime==''?'-':(event.previewStartTime | date: 'shortTime')}}
+            </span>
+        </div>
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="PreviewEndTime">{{'EndTime'| translate}} </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+            <span>
+                {{event.previewEndTime==''?'-':(event.previewEndTime | date: 'shortTime')}}
+            </span>
+        </div>
+    </div>
+
+
+
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-6 col-form-label Poppins-SemiBold" for="Roomsscreenoption">
+            {{'AftereventAccess' | translate}}
+
+        </label>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="AfterEventAccessStartDate">{{'StartDate' | translate}} </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+            <span>
+                {{event.afterEventAccessStartDate==''?'-':(event.afterEventAccessStartDate | date: 'mediumDate')}}
+            </span>
+        </div>
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="AfterEventAccessEndDate">{{'EndDate' | translate}}
+        </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+            <span>
+                {{event.afterEventAccessEndDate==''?'-':(event.afterEventAccessEndDate | date: 'mediumDate')}}
+            </span>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="|AfterEventAccessStartTime">{{'StartTime' | translate}} </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+            <span>
+                {{event.afterEventAccessStartTime==''?'-':(event.afterEventAccessStartTime | date: 'shortTime')}}
+            </span>
+        </div>
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="AfterEventAccessEndTime">{{'EndTime'| translate}}
+        </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+            <span>
+                {{event.afterEventAccessEndTime==''?'-':(event.afterEventAccessEndTime | date: 'shortTime')}}
+            </span>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-6 col-form-label Poppins-SemiBold" for="Roomsscreenoption">{{'Reportaccess' | translate}}</label>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="ReportAccessStartDate">{{'StartDate' | translate}}
+        </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+            <span>
+                {{event.reportAccessStartDate==''?'-':(event.reportAccessStartDate | date: 'mediumDate')}}
+            </span>
+        </div>
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="ReportAccessEndDate">{{'EndDate' | translate}}
+        </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+
+            <span>
+                {{event.reportAccessEndDate==''?'-':(event.reportAccessEndDate | date: 'mediumDate')}}
+
+            </span>
+
+        </div>
+    </div>
+
+
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="|ReportAccessStartTime">{{'StartTime' | translate}}
+        </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+            <span>
+                {{event.reportAccessStartTime==''?'-':(event.reportAccessStartTime | date: 'shortTime')}}
+            </span>
+        </div>
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="ReportAccessEndTime">{{'EndTime'| translate}}
+        </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+            <span>
+                {{event.reportAccessEndTime==''?'-':(event.reportAccessEndTime | date: 'shortTime')}}
+            </span>
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="TimeZone">{{'TimeZone'| translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular">
+            <span>{{event.timeZone}}</span>
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="Language">{{'DefaultLanguage'| translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular">
+
+
+            <span>{{event.language}}</span>
+
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular">{{'EventImage' | translate}}</label>
+        <div class="col-sm-10">
+            <span id="spnImageErrorMessage" class="text-danger"></span>
+
+            <img *ngIf="event.eventLogo!==noImageEventLogoPath && event.eventLogo" src="{{event.eventLogo}}" height="112" width="200">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular">{{'MainPageBannerImage' | translate}}</label>
+        <div class="col-sm-10">
+            <span id="spnImageErrorMessage" class="text-danger"></span>
+            <img *ngIf="event.mainPageBannerImage" src="{{event.mainPageBannerImage}}" height="112" width="200">
+        </div>
+    </div>
+
+    <div class="mb-3 row" *ngIf="event.eventBrochure">
+        <label class="col-sm-2 col-form-label Poppins-Regular">{{'EventBrochure' | translate}}</label>
+        <div class="col-sm-10">
+            <a href="{{event.eventBrochure}}" target="_blank" class="form-link">{{'EventBrochureFile' | translate}}</a>
+        </div>
+    </div>
+
+    <div class="mb-3 row" *ngIf="event.socialMedia">
+        <label class="col-sm-2 col-form-label Poppins-Regular">{{'SocialMedia' | translate}}</label>
+        <div class="col-sm-10">
+            <div class="col-sm-12 row" *ngFor="let item of event.socialMedia">
+                <!-- <div class="col-sm-1 font-weight-bold" > {{item.index}}</div> -->
+                <div class="col-sm-3 font-weight-bold text-uppercase" translate>
+                    {{item.socialMedia=='custom'?item.customSocialMedia:item.socialMedia}}</div>
+                <div class="col-sm-8"><a href='http://{{item.value}}' target="_blank">{{item.value}}</a></div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="NumberofRooms">{{'NumberofRooms' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular" style="word-break: break-all;">
+            <span>{{event.noOfRooms}}</span>
+        </div>
+    </div>
+
+
+    <!-- <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="NumberofBooths">{{'NumberofBooths' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular" style="word-break: break-all;">
+            <span>{{event.noOfBooths}}</span>
+        </div>
+    </div> -->
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="NumberofconcurrentUser">{{'NumberofconcurrentUser' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular" style="word-break: break-all;">
+            <span>{{event.noOfCuncurrentUser}}</span>
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="Buffer">{{'Buffer'| translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular" style="word-break: break-all;">
+            <span>{{event.buffer}}</span>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="NumberofWebcast">{{'NumberofWebcast' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular" style="word-break: break-all;">
+            <span>{{event.noOfWebcast}}</span>
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="WebcastMaxduration">{{'WebcastMaxduration' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular" style="word-break: break-all;">
+            <span>{{event.webcastMaxDuration}}</span>
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="WebcastMaxduration">{{'EventRoomsScreens' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular" style="word-break: break-all;">
+            <span>{{event.eventRoomsScreenType=='Both'?'2D and 3D':event.eventRoomsScreenType |translate}}</span>
+
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="SetupUiColour">{{'SetupUiColour' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular" style="word-break: break-all;">
+            <div [style.background-color]="event.uiColor" style="width:150px;height:25px;"></div>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="UIAccentColor">{{'UIAccentColor' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular" style="word-break: break-all;">
+            <div [style.background-color]="event.uiAccentColor" style="width:150px;height:25px;"></div>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="HeaderBackgroundColor">{{'HeaderBackgroundColor' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular" style="word-break: break-all;">
+            <div [style.background-color]="event.headerBackgroundColor" style="width:150px;height:25px;"></div>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="HeaderTextColor">{{'HeaderTextColor' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular" style="word-break: break-all;">
+            <div [style.background-color]="event.headerTextColor" style="width:150px;height:25px;"></div>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="HeaderTextColor">{{'SectionHeaderTextColor' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular" style="word-break: break-all;">
+            <div [style.background-color]="event.sectionHeaderTextColor" style="width:150px;height:25px;"></div>
+        </div>
+    </div>
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="MetaTags">{{'SeoMetaTags' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular">
+            <span>{{event.metaTags}}</span>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="GAEnabled">{{'GAScript' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular">
+            <span>{{event.gaScript}}</span>
+
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="ThirdPartyAnalyticsEnabled">{{'ThirdPartyAnalyticsScript' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular">
+            <span>{{event.thirdPartyAnalyticsScript}}</span>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="ThirdPartyAnalyticsEnabled">{{'Entitlements' | translate}}</label>
+        <div class="col-sm-10 col-form-label Poppins-Regular">
+            <span *ngFor="let item of event.groupEntitlements">{{item.groupName}} <br></span>
+        </div>
+    </div>
+
+
+
+    <!-- <div class="mb-3 row" *ngIf="event.enableEditRegistrationInfoAllowed">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EnableEditRegistrationInfo">{{'EnableEditRegistrationInfo' | translate}}</label>
+        <button [ngClass]="event.enableEditRegistrationInfo?'badge badge-success':'badge badge-danger'" disabled class="col-sm-1 col-form-label Poppins-Regular " style="border: none;height: 35px;">
+            {{event.enableEditRegistrationInfo?'Yes':'No'}}
+        </button>
+    </div> -->
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="TermsAndConditions">{{'EventTermAndCondition' | translate}} </label>
+        <div class="col-sm-10 col-form-label Poppins-Regular">
+            <span [innerHTML]='event.termsAndConditions  | safeHtml'></span>
+        </div>
+    </div>
+
+    <div>
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="PrivacyPolicy">{{'EventPrivacyPolicy' | translate}}</label>
+            <div class="col-sm-10 col-form-label Poppins-Regular">
+                <span [innerHTML]='event.privacyPolicy  | safeHtml'></span>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="PrivacyPolicy">{{'WelcomeMessage' | translate}}</label>
+            <div class="col-sm-10 col-form-label Poppins-Regular">
+                <span [innerHTML]='event.firstTimeLoginWelcomeMessage  | safeHtml'></span>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-6 col-form-label Poppins-SemiBold" for="Roomsscreenoption">{{'Welcomevideo' | translate}}</label>
+        </div>
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="VideoType">{{'VideoType' | translate}}</label>
+            <div class="col-sm-10 col-form-label Poppins-Regular">
+                <span [innerHTML]='event.videoType  | safeHtml'></span>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="VideoUrl">{{'VideoUrl' | translate}}</label>
+            <div class="col-sm-10 col-form-label Poppins-Regular">
+                <!-- <span [innerHTML]='event.videoUrl  | safeHtml'></span> -->
+                <a href="{{event.videoUrl}}" target="_blank" class="form-link">{{'VideoUrl' | translate}}</a>
+            </div>
+        </div>
+
+        <div class="mb-3 row" id="ThirdPartyAnalyticsScripts">
+            <div class="col-sm-12 text-right">
+                <a *ngIf="isSuperAdmin || !isEventDatesExpired" class="commonbtn btn btn-primary col-sm-2 Poppins-Regular btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12" [routerLink]="['/admin/events/update', event.eventId]">{{'Edit' | translate}}</a>
+                <button *ngIf="isSuperAdmin || !isEventDatesExpired" class="commonbtn btn btn-danger col-sm-2 Poppins-Regular btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12" (click)=DeleteEvent(event.eventId) style="margin-left: 20px;;">{{'Delete' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

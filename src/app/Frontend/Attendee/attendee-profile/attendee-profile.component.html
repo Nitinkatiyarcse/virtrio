@@ -1,0 +1,141 @@
+<h3>
+    Attendee Profile
+</h3>
+<!-- 
+    <form class="form-control needs-validation h-100 mt-2" style="padding: 50px;" enctype="multipart/form-data" #profileForm="ngForm">
+
+        <div class="mb-3 row">
+            <label for="FirstName" class="col-sm-2 col-form-label Poppins-Regular">{{'FirstName' | translate}} </label>
+            <div class="col-sm-10">
+                <input type="text" ng-dirty pattern="[a-zA-Z0-9 ]*" name="FirstName"
+                    class="form-control Poppins-Regular" placeholder="{{'EnterFirstName' | translate}}" required
+                    maxlength="50">
+                <span *ngIf="FirstName.invalid && FirstName.touched" class="error">{{'FirstNameRequired'| translate}}
+            </span>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="LastName" class="col-sm-2 col-form-label Poppins-Regular"> {{'LastName' | translate}} </label>
+            <div class="col-sm-10">
+                <input type="text" pattern="[a-zA-Z0-9  ]*" name="LastName" class="form-control Poppins-Regular"
+                    placeholder="{{'EnterLastName' | translate}}" required maxlength="50">
+                <span *ngIf="LastName.invalid && LastName.touched" class="error">{{'Lastnamerequired'| translate}} </span>
+            </div>
+        </div>
+
+
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="EventUrl">{{'Email Address' |
+                translate}}</label>
+            <div class="col-sm-10 col-form-label Poppins-Regular" style="word-break: break-all;">
+                Abc@yopmail.com
+            </div>
+        </div>
+
+
+        <div class="mb-3 row">
+            <label for="FacebookProfileURL" class="col-sm-2 col-form-label Poppins-Regular">{{'FacebookProfileURL' |
+                translate}}
+            </label>
+            <div class="col-sm-10">
+                <input type="text" name="FacebookProfileURL" class="form-control Poppins-Regular"
+                    placeholder="{{'EnterFacebookProfileURL' | translate}}" maxlength="100">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="LinkedInProfileURL" class="col-sm-2 col-form-label Poppins-Regular">{{'LinkedInProfileURL' |
+                translate}}
+            </label>
+            <div class="col-sm-10">
+                <input type="text" name="LinkedInProfileURL" class="form-control Poppins-Regular"
+                    placeholder="{{'EnterLinkedInProfileURL' | translate}}" maxlength="100">
+            </div>
+        </div>
+
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="EventUrl">{{'EmailVerificationLink' |
+                translate}}</label>
+            <div class="col-sm-10 col-form-label Poppins-Regular" style="word-break: break-all;">
+                Abc@yopmail.com
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+        <label for="Email" class="col-sm-2 col-form-label Poppins-Regular">{{'Email' | translate}} </label>
+        <div class="col-sm-9">
+            <input type="email" name="Email"  maxlength="70" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" class="form-control Poppins-Regular" [disabled]='toggleButton' placeholder="{{'EnterEmail' | translate}}"
+                required>
+             <span *ngIf="Email.invalid && Email.touched" class="error">{{'Emailrequired'| translate}} </span> 
+        </div>
+        <div class="col-sm-1">
+             <i class="fa fa-pencil-square-o fa-2x" (click)="enable()" type="button"></i> 
+            
+
+        </div>
+    </div>
+
+        <div class="mb-3 row">
+            <label for="MobileNo" class="col-sm-2 col-form-label Poppins-Regular"> {{'ContactNumber' | translate}}
+            </label>
+            <div class="col-sm-10">
+                <select name="countryCode" class="form-select float-left col-sm-2 mr-20px" required>
+                    <option value="">{{'SelectCountryCode' | translate}}</option>
+                    <option *ngFor="let item of countryList" value="{{item.phonecode}}">{{item.name+'
+                        (+'+item.phonecode+')'}}</option>
+                </select>
+                <input type="text" pattern="\d*" name="MobileNo" class="form-control Poppins-Regular col-sm-6"
+                    placeholder="{{'EnterContactNumber' | translate}}" required maxlength="10">
+
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="CustomField" class="col-sm-2 col-form-label Poppins-Regular">{{'CustomField' | translate}}
+            </label>
+            <div class="col-sm-10">
+                <input type="text" name="CustomField" class="form-control Poppins-Regular"
+                    placeholder="{{'EnterCustomField' | translate}}" maxlength="100">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="StandardField" class="col-sm-2 col-form-label Poppins-Regular">{{'StandardField' | translate}}
+            </label>
+            <div class="col-sm-10">
+                <input type="text" name="StandardField" class="form-control Poppins-Regular"
+                    placeholder="{{'EnterStandardField' | translate}}" maxlength="100">
+            </div>
+        </div>
+
+
+
+        <div class="mb-3 row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label Poppins-Regular"> {{'ProfilePicture' | translate}}
+            </label>
+            <div class="" style="width: 236px;">
+                <div *ngIf='isProfileImageExists'>
+
+                    <div *ngIf="isProfileImageAvailable">
+                        <img src='{{user.userImage}}' style="width:200px;height:auto" />
+                        <i class="fa fa-times" (click)="deleteImage()" tooltip="{{'Delete' | translate}}"
+                            style="cursor: pointer;vertical-align: top;margin-left:10px"></i>
+                    </div>
+
+                </div>
+
+                <input type="file" *ngIf="!isProfileImageAvailable" #FileUploadControl style="visibility:visible" (change)="onFileChange($event)" /> 
+                <input type="file" style="visibility:visible" (change)="onFileChange($event)" />
+                <span class="fs-10px Poppins-Regular">{{'MaxSizeTwoHunderd' | translate}}</span>
+            </div>
+        </div>
+
+
+
+        <div class="mb-3 row">
+            <div class="col-sm-12 text-right">
+            <button type="submit" (click)="updateUserProfile()" [disabled]="profileForm.invalid" class="commonbtn col-lg-2 col-xl-2 col-md-2 col-sl-12 btn btn-primary Poppins-Regular">{{'Save' | translate}} </button>
+        </div>
+        </div>
+    </form> -->

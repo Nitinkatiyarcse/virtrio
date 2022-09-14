@@ -1,0 +1,74 @@
+<div class="text-center pageHeader">{{'EventSettings'|translate}}
+    <i class="fa fa-times" type="button" data-dismiss="modal" style="cursor:pointer;float:right;" (click)="closeModal()"></i>
+</div>
+<form method="Post" class="form-group" #EventSettingsForm="ngForm">
+    <div class="mb-3 row">
+        <div class="col-sm-10  Poppins-Regular">
+            <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="IncludeShoweventmenu" (change)='includeShoweventmenuCheckChanged()' [checked]="inputEventSettingModel.showAttenteeCountInEventMenu" #IncludeShoweventmenu>
+            <label class="form-check-label  Poppins-Regular" for="IncludeShoweventmenu">{{'ShowAttendeeseventmenu'|translate}}
+            </label>
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <div class="col-sm-10  Poppins-Regular">
+            <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="IncludeShowboothmenu" (change)=' includeShowboothmenuCheckChanged()' [checked]="inputEventSettingModel.showAttenteeCountInAdminMenu" #IncludeShowboothmenu>
+            <label class="form-check-label  Poppins-Regular" for="IncludeShowboothmenu">{{'ShowAttendeesboothmenu'|translate}}
+          </label>
+        </div>
+    </div>
+
+
+
+
+    <div class="mb-3 row">
+        <div class="col-sm-10  Poppins-Regular">
+            <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" data-val="true" [checked]='inputEventSettingModel.allowWebcast' (change)="ifWebcastEnabled($event)" data-val-required="The Webcast field is required." id="WebcastEnabled" name="WebcastEnabled"
+                value="true">
+            <label class="form-check-label Poppins-Regular" for="Webcast">{{'Webcast'|translate}}</label>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="mb-3 row" *ngIf="isWCEnabled">
+        <label class="col-sm-3 col-form-label Poppins-Regular" for="NumberofWebcast">{{'NumberofWebcast' | translate}}</label>
+        <div class="col-sm-9" *ngIf="isWCEnabled">
+            <input type="text" class="form-control Poppins-Regular" placeholder="{{'NumberofWebcast' | translate}}" required #NumberofWebcast="ngModel" [(ngModel)]="inputEventSettingModel.noOfWebcast " name="Webcast" value="" style="margin-top:10px">
+            <span *ngIf="NumberofWebcast.invalid && NumberofWebcast.touched" class="error">{{'NumberofWebcastrequired'| translate}}</span>
+        </div>
+    </div>
+
+    <div class="mb-3 row" *ngIf="isWCEnabled">
+        <label class="col-sm-3 col-form-label Poppins-Regular" for="WebcastMaxduration">{{'WebcastMaxduration' | translate}}</label>
+        <div class="col-sm-9">
+            <input type="number" class="form-control Poppins-Regular" placeholder="{{'WebcastMaxduration' | translate}}" required #WebcastMaxduration="ngModel" [(ngModel)]="inputEventSettingModel.webcastMaxDuration " name="WebcastMaxduration" value="">
+            <span *ngIf="WebcastMaxduration.invalid && WebcastMaxduration.touched" class="error">{{'WebcastMaxdurationrequired'| translate}}</span>
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <div class="col-sm-10  Poppins-Regular">
+            <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" data-val="true" [checked]='inputEventSettingModel.enableEditRegistrationInfoAllowed' (change)="ifEnableEditRegistrationInfoAllowed($event)" id="EnableEditRegistrationInfoAllowed"
+                name="EnableEditRegistrationInfoAllowed" value="true">
+            <label class="form-check-label Poppins-Regular" for="Webcast">{{'EnableEditRegistrationInfoAllowed'|translate}}</label>
+        </div>
+    </div>
+
+    <input type="hidden" [(ngModel)]="inputEventSettingModel.userId" name="userId" #UserId />
+    <input type="hidden" [(ngModel)]="inputEventSettingModel.eventId" name="eventId" #EventId />
+
+
+    <div class="mb-3 row" id="submitchoice" style="margin-top: 10px;">
+        <div class="col-sm-12">
+            <a class="btn btn-primary col-sm-2 Poppins-Regular" (click)=submitForm()>{{'Save' | translate}}</a>
+            <button class="btn btn-primary col-sm-2 Poppins-Regular text-white" (click)="closeModal()" style="margin-left: 20px;;">{{'Cancel' | translate}}</button>
+        </div>
+    </div>
+
+
+</form>

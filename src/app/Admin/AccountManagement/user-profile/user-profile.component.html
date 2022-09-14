@@ -1,0 +1,111 @@
+<div class="form-control text-center  h-100">
+    <label class="text-black Poppins-SemiBold mb-4 mt-4" style="font-size: 20px;font-weight: 600;text-decoration-color:#0C0C0D;">{{'SetUpYourProfile' | translate}}</label>
+
+</div>
+<form class="form-control needs-validation mt-4 p-4 h-100" enctype="multipart/form-data" #profileForm="ngForm">
+
+    <input type="hidden" />
+    <div class="row text-center text-danger" *ngIf='!isProfileUpdated'>
+        <div class="col-12 mb-3">
+            {{'UpdateProfileFirstMessage' | translate}}
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="FirstName" class="col-sm-2 col-form-label Poppins-Regular">{{'FirstName' | translate}} </label>
+        <div class="col-sm-10">
+            <input type="text" ng-dirty pattern="[a-zA-Z0-9 ]*" name="FirstName" #FirstName="ngModel" [(ngModel)]="user.firstName" class="form-control Poppins-Regular" placeholder="{{'EnterFirstName' | translate}}" required maxlength="50">
+            <span *ngIf="FirstName.invalid && FirstName.touched" class="error">{{'FirstNameRequired'| translate}}
+            </span>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="LastName" class="col-sm-2 col-form-label Poppins-Regular"> {{'LastName' | translate}} </label>
+        <div class="col-sm-10">
+            <input type="text" pattern="[a-zA-Z0-9  ]*" name="LastName" #LastName="ngModel" [(ngModel)]="user.lastName" class="form-control Poppins-Regular" placeholder="{{'EnterLastName' | translate}}" required maxlength="50">
+            <span *ngIf="LastName.invalid && LastName.touched" class="error">{{'Lastnamerequired'| translate}} </span>
+        </div>
+    </div>
+
+
+
+    <div class="mb-3 row">
+        <label for="OrgName" class="col-sm-2 col-form-label Poppins-Regular">{{'OrganizationName' | translate}} </label>
+        <div class="col-sm-10">
+            <input type="text" name="OrgName" #OrgName="ngModel" [(ngModel)]="user.orgName" class="form-control Poppins-Regular" placeholder="{{'EnterOrganizationName' | translate}}" required maxlength="100">
+            <span *ngIf="OrgName.invalid && OrgName.touched" class="error">{{'Organizationnamerequired'| translate}}
+            </span>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="OrgWebsite" class="col-sm-2 col-form-label Poppins-Regular">{{'OrganizationWebsite' | translate}}
+        </label>
+        <div class="col-sm-10">
+            <input type="text" name="OrgWebsite" #OrgWebsite="ngModel" [(ngModel)]="user.orgWebsite" class="form-control Poppins-Regular" placeholder="{{'EnterOrganizationWebsite' | translate}}" maxlength="100">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="Email" class="col-sm-2 col-form-label Poppins-Regular">{{'Email' | translate}} </label>
+        <div class="col-sm-9">
+            <input type="email" name="Email" #Email="ngModel" [(ngModel)]="user.email" maxlength="70" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" class="form-control Poppins-Regular" [disabled]='toggleButton' placeholder="{{'EnterEmail' | translate}}"
+                required>
+            <span *ngIf="Email.invalid && Email.touched" class="error">{{'Emailrequired'| translate}} </span>
+        </div>
+        <div class="col-sm-1">
+            <i class="fa fa-pencil-square-o fa-2x" (click)="enable()" type="button"></i>
+            <!-- <i class="fa fa-pencil-square-o fa-2x" (click)="disable()" type="button"></i> -->
+
+        </div>
+    </div>
+
+    <!-- <div class="mb-3 row">
+        <label for="MobileNo" class="col-sm-2 col-form-label Poppins-Regular"> {{'ContactNumber' | translate}} </label>
+        <div class="col-sm-10">
+            <select [(ngModel)]="user.countryCode" name="countryCode" #countryCode="ngModel" class="form-select float-left col-sm-2 mr-20px" required>
+                <option value="">{{'SelectCountryCode' | translate}}</option>
+                <option *ngFor="let item of countryList" value="{{item.phonecode}}">{{item.name+' (+'+item.phonecode+')'}}</option>
+            </select>
+            <input type="text" pattern="\d*" name="MobileNo" #MobileNo="ngModel" [(ngModel)]="user.mobileNo" class="form-control Poppins-Regular col-sm-6" placeholder="{{'EnterContactNumber' | translate}}" required maxlength="10">
+
+        </div>
+    </div> -->
+
+    <div class="mb-3 row">
+        <label for="inputEmail3" class="col-sm-2 col-form-label Poppins-Regular"> {{'ProfilePicture' | translate}}
+        </label>
+        <div class="" style="width: 236px;">
+            <div *ngIf='isProfileImageExists'>
+                <!-- <label class="form-lable text-black Poppins-Regular"
+                    style="font-size: 12px;font-weight: 400;text-decoration-color:#0C0C0D;">{{'ProfilePicture' | translate}}
+                </label> -->
+                <div *ngIf="isProfileImageAvailable">
+                    <img src='{{user.userImage}}' style="width:200px;height:auto" />
+                    <i class="fa fa-times" (click)="deleteImage()" tooltip="{{'Delete' | translate}}" style="cursor: pointer;vertical-align: top;margin-left:10px"></i>
+                </div>
+
+            </div>
+            <!-- <a (click)="FileUploadControl.click()" *ngIf="!isProfileImageAvailable">
+                <div class="text-center form-control" style="height:144px;width:144px;background-color:white; border-radius:4px;margin-top: 10px;">
+                    <label class="form-lable text-black Poppins-Regular" style="font-size: 12px;font-weight: 400;text-decoration-color:#0C0C0D;margin-top:40px;">{{'ClickToUploadFile' | translate}}
+                    </label>
+                </div>
+                <input type="file" style="display: none;" />
+            </a> -->
+
+            <input type="file" *ngIf="!isProfileImageAvailable" #FileUploadControl style="visibility:visible" (change)="onFileChange($event)" />
+            <!-- <span class="fs-10px Poppins-Regular">{{'MaxSizeTwoHunderd' | translate}}</span> -->
+        </div>
+    </div>
+
+
+
+    <div class="mb-3 row">
+        <div class="col-sm-12 text-right">
+            <button type="submit" (click)="updateUserProfile()" [disabled]="profileForm.invalid" class="commonbtn col-lg-2 col-xl-2 col-md-2 col-sl-12 btn btn-primary Poppins-Regular">{{'Save' | translate}} </button>
+            <!-- <input type="file" #FileUploadControl style="visibility:hidden" (change)="onFileChange($event)" /> -->
+
+        </div>
+    </div>
+</form>

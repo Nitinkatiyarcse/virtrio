@@ -1,0 +1,12 @@
+<div id="app" class="app" >
+  <app-main-header ></app-main-header>
+  <app-main-sidebar  class="bg-white"  *ngIf="!isEventSelected" ></app-main-sidebar>
+  <app-event-sidebar class="bg-white" *ngIf="isEventSelected"></app-event-sidebar>
+  <div id="content" class="app-content">
+    <router-outlet></router-outlet>
+    <!-- BEGIN btn-scroll-top -->
+    <a data-click="scroll-top" class="btn-scroll-top fade" (click)='scrollToTop()'><i class="fa fa-arrow-up"></i></a>
+    <!-- END btn-scroll-top -->
+  </div>
+  <ngx-spinner></ngx-spinner>
+</div>

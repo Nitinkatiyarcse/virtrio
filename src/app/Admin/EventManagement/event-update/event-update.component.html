@@ -1,0 +1,951 @@
+<!-- <div class="form-control text-center">
+    <label class="text-black Poppins-SemiBold pageHeader d-flex align-items-center"
+        style="font-size: 20px;font-weight: 600;text-decoration-color:#0C0C0D; height: 100%;">Create New Event</label>
+
+</div> -->
+
+<div class="bg-white">
+    <div class=" pageHeader" style="border:none;text-align: left;padding:10px">
+        <label class="col-sm-12 text-Medium">{{'UpdateEventdetails'| translate}}</label>
+        <label class="col-sm-12 Poppins-Regular text-small" style="word-break: break-all;">{{eventName}}</label>
+    </div>
+</div>
+
+<form method="Post" class="form-group" #AddEventForm="ngForm" class="bg-white" style="padding:15px">
+    <div class="Poppins-Regular text-danger text-center">
+        <ul class="list-style-none">
+            <li *ngFor="let error of inputEventModel.errors">
+                <p> {{error}} </p>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="clients">{{'ClientName' | translate}}</label>
+        <div class="col-sm-10">
+            <select id="clients" disabled="disabled" required #clients="ngModel" name="clients" class="form-select" [(ngModel)]="inputEventModel.clientId" (change)='getSlugUrl($event)'>
+                <option value="">{{'SelectClient' | translate}}</option>
+                <option *ngFor="let item of allClients" value="{{item.clientId}}">{{item.firstName}} {{item.lastName}}
+                </option>
+            </select>
+
+
+
+
+            <span *ngIf="clients.invalid && clients.touched" class="error">{{'ClientNamerequired'| translate}}</span>
+
+        </div>
+    </div>
+
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventName">{{'EventName' | translate}}</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control Poppins-Regular" placeholder="{{'EventName' | translate}}" required #EventName="ngModel" [(ngModel)]="inputEventModel.eventName" name="EventName" value="" maxlength="120" (blur)="getEventUrl($event);">
+            <span *ngIf="EventName.invalid && EventName.touched" class="error">{{'EventNamerequired'| translate}}</span>
+        </div>
+    </div>
+
+
+    <div class="mb-3 row display-none">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="UrlSlug">{{'EventURL' | translate}}</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control Poppins-Regular" pattern="^[A-Za-z0-9]+$" placeholder="{{'EventURL' | translate}}" required #UrlSlug="ngModel" [(ngModel)]="inputEventModel.urlSlug" name="UrlSlug" value="" maxlength="15">
+            <span class="Poppins-Regular fs-12px ml-5px">url look like :-
+                {{domainUrl+"/"+clientUrlSlug+"/"+(inputEventModel.urlSlug?inputEventModel.urlSlug:'')}}
+            </span><br>
+            <span *ngIf="UrlSlug.invalid && UrlSlug.touched" class="error">{{'UrlSlugrequired'| translate}}</span>
+        </div>
+    </div>
+
+
+
+    <!-- <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventUrl">{{'EventURL' | translate}}</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control Poppins-Regular" placeholder="{{'EventURL' | translate}}" required (blur)="checkValidEventUrl($event.target.value);" #EventUrl="ngModel" maxlength="150" [(ngModel)]="inputEventModel.eventUrl" name="EventUrl" value="">
+            <span *ngIf="EventUrl.invalid && EventUrl.touched" class="error">{{'EventUrlrequired'| translate}}</span>
+        </div>
+    </div> -->
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventDesc">{{'EventDescription' |
+            translate}}</label>
+        <div class="col-sm-10">
+            <!-- <input class="form-control Poppins-Regular" placeholder="{{'EventDescription' | translate}}" maxlength="2500" #EventDesc="ngModel" [(ngModel)]="inputEventModel.eventDesc" name="EventDesc"> -->
+            <div class="NgxEditor__Wrapper">
+                <ckeditor [config]="config" [(data)]="inputEventModel.eventDesc"></ckeditor>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-6 col-form-label Poppins-SemiBold" for="ProjectDate">{{'LicenseDate' | translate}}</label>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="ProjectStartDate">{{'StartDate' | translate}}
+        </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+
+            <div *ngIf="isSuperAdmin" class="input-group bootstrap-timepicker timepicker">
+                <app-date-picker #ProjectStartDate="ngModel" required="" [minDate]="projectStartMinDate" [maxDate]="" [(ngModel)]="inputEventModel.projectStartDate" name="projectStartDate" (ngModelChange)="validateProjectDates()"></app-date-picker>
+                <span *ngIf="ProjectStartDate.invalid && ProjectStartDate.touched" class="error">{{'StartDaterequired'|
+                    translate}}</span>
+
+            </div>
+
+
+            <span *ngIf="!isSuperAdmin">{{inputEventModel.projectStartDate | date: 'mediumDate'}}</span>
+        </div>
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="ProjectEndDate">{{'EndDate' | translate}} </label>
+        <div class="col-sm-4 col-form-label Poppins-Regular">
+
+            <div *ngIf="isSuperAdmin" class="input-group bootstrap-timepicker timepicker">
+                <app-date-picker #ProjectEndDate="ngModel" required="" [(ngModel)]="inputEventModel.projectEndDate" [minDate]="projectEndMinDate" [maxDate]="" name="projectEndDate" (ngModelChange)="validateProjectDates()"></app-date-picker>
+
+                <span *ngIf="ProjectEndDate.invalid && ProjectEndDate.touched" class="error">{{'EndDaterequired'|
+                    translate}}</span>
+                <span *ngIf="InvalidProjectDate" class="error">
+                    {{'startDateGreaterThanEndDate'| translate}}
+                </span>
+
+            </div>
+
+            <span *ngIf="!isSuperAdmin">{{inputEventModel.projectEndDate | date: 'mediumDate'}}</span>
+
+
+
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-6 col-form-label Poppins-SemiBold" for="Roomsscreenoption">{{'EventDate' |
+            translate}}</label>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventStartDate">{{'StartDate' | translate}} </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-date-picker #EventStartDate="ngModel" required="" [maxDate]="projectEndMaxDate" [minDate]="projectEndMinDate" [(ngModel)]="inputEventModel.eventStartDate" name="EventStartDate" (ngModelChange)="validateEventDates()"></app-date-picker>
+            </div>
+            <span *ngIf="EventStartDate.invalid && EventStartDate.touched" class="error">{{'StartDaterequired'|
+                translate}}</span>
+        </div>
+
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventEndDate">{{'EndDate' | translate}} </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-date-picker [(ngModel)]="inputEventModel.eventEndDate" #EventEndDate="ngModel" required="" [minDate]="eventEndMinDate" [maxDate]="projectEndMaxDate" name="EventEndDate" (ngModelChange)="validateEventDates()"> </app-date-picker>
+            </div>
+            <span *ngIf="EventEndDate.invalid && EventEndDate.touched" class="error">{{'EndDaterequired'|
+                translate}}</span>
+            <span *ngIf="InvalidDate" class="error">
+                {{'startDateGreaterThanEndDate'| translate}}
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventStartTime">{{'StartTime' | translate}} </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-time-picker #EventStartTime="ngModel" [(ngModel)]="inputEventModel.eventStartTime" name="EventStartTime" required="" value="" name="EventStartTime" (ngModelChange)="validateEventTime()">
+                </app-time-picker>
+            </div>
+            <span *ngIf="EventStartTime.invalid && EventStartTime.touched" class="error">{{'StartTimerequired'|
+                translate}}</span>
+
+        </div>
+
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventEndTime">{{'EndTime'| translate}} </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-time-picker #EventEndTime="ngModel" type="text" [(ngModel)]="inputEventModel.eventEndTime" required="" value="" name="EventEndTime" (ngModelChange)="validateEventTime()">
+                </app-time-picker>
+            </div>
+
+            <span *ngIf="EventEndTime.invalid && EventEndTime.touched" class="error">{{'EndTimerequired'|
+                translate}}</span>
+            <span *ngIf="InvalidTime" class="error">
+                {{'startTimeGreaterThanEndTime'| translate}}
+            </span>
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-6 col-form-label Poppins-SemiBold" for="Roomsscreenoption">{{'OpenRegistration' |
+            translate}}</label>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="RegistrationStartDate">{{'StartDate' | translate}}
+        </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-date-picker [maxDate]="projectEndMaxDate" [minDate]="projectEndMinDate" #RegStartDate="ngModel" required="" [(ngModel)]="inputEventModel.registrationStartDate" name="RegStartDate" (ngModelChange)="validateRegistrationDates()"></app-date-picker>
+            </div>
+            <span *ngIf="RegStartDate.invalid && RegStartDate.touched" class="error">{{'StartDaterequired'|
+                translate}}</span>
+        </div>
+
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="RegistrationEndDate">{{'EndDate' | translate}}
+        </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-date-picker [maxDate]="projectEndMaxDate" [(ngModel)]="inputEventModel.registrationEndDate" #RegEndDate="ngModel" required="" name="RegEndDate" (ngModelChange)="validateRegistrationDates()">
+                </app-date-picker>
+            </div>
+            <span *ngIf="RegEndDate.invalid && RegEndDate.touched" class="error">{{'EndDaterequired'| translate}}</span>
+            <span *ngIf="InvalidOpenRegistrationDate" class="error">
+                {{'startDateGreaterThanEndDate'| translate}}
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="RegistrationStartTime">{{'StartTime' | translate}}
+        </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-time-picker #RegStartTime="ngModel" [(ngModel)]="inputEventModel.registrationStartTime" name="RegStartTime" required="" value="" name="|RegStartTime" (ngModelChange)="validateRegistrationTime()">
+                </app-time-picker>
+            </div>
+            <span *ngIf="RegStartTime.invalid && RegStartTime.touched" class="error">{{'StartTimerequired'|
+                translate}}</span>
+
+        </div>
+
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="RegistrationEndTime">{{'EndTime'| translate}}
+        </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-time-picker #RegEndTime="ngModel" type="text" [(ngModel)]="inputEventModel.registrationEndTime" required="" value="" name="RegEndTime" (ngModelChange)="validateRegistrationTime()">
+                </app-time-picker>
+            </div>
+
+            <span *ngIf="RegEndTime.invalid && RegEndTime.touched" class="error">{{'EndTimerequired'| translate}}</span>
+            <span *ngIf="InvalidOpenRegistrationTime" class="error">
+                {{'startTimeGreaterThanEndTime'| translate}}
+            </span>
+        </div>
+    </div>
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-6 col-form-label Poppins-SemiBold" for="Roomsscreenoption">{{'Previewdate' |
+            translate}}</label>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="PreviewStartDate">{{'StartDate' | translate}}
+        </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-date-picker [maxDate]="projectEndMaxDate" [minDate]="projectEndMinDate" #PreviewStartDate="ngModel" required="" [(ngModel)]="inputEventModel.previewStartDate" name="PreviewStartDate" (ngModelChange)="validatePreviewDates()"></app-date-picker>
+            </div>
+            <span *ngIf="PreviewStartDate.invalid && PreviewStartDate.touched" class="error">{{'StartDaterequired'|
+                translate}}</span>
+        </div>
+
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="PreviewEndDate">{{'EndDate' | translate}} </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-date-picker [maxDate]="projectEndMaxDate" [minDate]="eventPreviewMinEndDate" [(ngModel)]="inputEventModel.previewEndDate" #PreviewEndDate="ngModel" required="" name="PreviewEndDate" (ngModelChange)="validatePreviewDates()"> </app-date-picker>
+            </div>
+            <span *ngIf="PreviewEndDate.invalid && PreviewEndDate.touched" class="error">{{'EndDaterequired'|
+                translate}}</span>
+            <span *ngIf="InvalidPreviewDate" class="error">
+                {{'startDateGreaterThanEndDate'| translate}}
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="PreviewStartTime">{{'StartTime' | translate}}
+        </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-time-picker #PreviewStartTime="ngModel" [(ngModel)]="inputEventModel.previewStartTime" name="PreviewStartTime" required="" value="" name="PreviewStartTime" (ngModelChange)="validatePreviewTime()">
+                </app-time-picker>
+            </div>
+            <span *ngIf="PreviewStartTime.invalid && PreviewStartTime.touched" class="error">{{'StartTimerequired'|
+                translate}}</span>
+
+        </div>
+
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="PreviewEndTime">{{'EndTime'| translate}} </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-time-picker #PreviewEndTime="ngModel" type="text" [(ngModel)]="inputEventModel.previewEndTime" required="" value="" name="PreviewEndTime" (ngModelChange)="validatePreviewTime()">
+                </app-time-picker>
+            </div>
+
+            <span *ngIf="PreviewEndTime.invalid && PreviewEndTime.touched" class="error">{{'EndTimerequired'|
+                translate}}</span>
+            <span *ngIf="InvalidPreviewTime" class="error">
+                {{'startTimeGreaterThanEndTime'| translate}}
+            </span>
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-6 col-form-label Poppins-SemiBold" for="Roomsscreenoption">{{'AftereventAccess' |
+            translate}}</label>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="AftereventStartDate">{{'StartDate' | translate}}
+        </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-date-picker [maxDate]="" [minDate]="afterEventAccessMinDate" #AftereventStartDate="ngModel" required="" [(ngModel)]="inputEventModel.afterEventAccessStartDate" name="AftereventStartDate" (ngModelChange)="validateAftereventDates()"></app-date-picker>
+            </div>
+            <span *ngIf="AftereventStartDate.invalid && AftereventStartDate.touched" class="error">{{'StartDaterequired'| translate}}</span>
+        </div>
+
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="AfterEventAccessEndDate">{{'EndDate' | translate}}
+        </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-date-picker [minDate]="afterEventAccessMinEndDate" [maxDate]="" [(ngModel)]="inputEventModel.afterEventAccessEndDate" #AftereventEndDate="ngModel" required="" name="AftereventEndDate" (ngModelChange)="validateAftereventDates()"> </app-date-picker>
+            </div>
+            <span *ngIf="AftereventEndDate.invalid && AftereventEndDate.touched" class="error">{{'EndDaterequired'|
+                translate}}</span>
+            <span *ngIf="InvalidAfterEventAccessDate" class="error">
+                {{'startDateGreaterThanEndDate'| translate}}
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="AfterEventAccessStartTime">{{'StartTime' |
+            translate}} </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-time-picker #AftereventStartTime="ngModel" [(ngModel)]="inputEventModel.afterEventAccessStartTime" name="AftereventStartTime" required="" value="" name="AftereventStartTime" (ngModelChange)="validateAftereventTime()">
+                </app-time-picker>
+            </div>
+            <span *ngIf="AftereventStartTime.invalid && AftereventStartTime.touched" class="error">{{'StartTimerequired'| translate}}</span>
+
+        </div>
+
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="AfterEventEndTime">{{'EndTime'| translate}} </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-time-picker #AfterEventEndTime="ngModel" type="text" [(ngModel)]="inputEventModel.afterEventAccessEndTime" required="" value="" name="AfterEventEndTime" (ngModelChange)="validateAftereventTime()">
+                </app-time-picker>
+            </div>
+
+            <span *ngIf="AfterEventEndTime.invalid && AfterEventEndTime.touched" class="error">{{'EndTimerequired'|
+                translate}}</span>
+            <span *ngIf="InvaildAfterEventAccessTime" class="error">
+                {{'startTimeGreaterThanEndTime'| translate}}
+            </span>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-6 col-form-label Poppins-SemiBold" for="Roomsscreenoption">{{'Reportaccess' |
+            translate}}</label>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="RepaccessStartDate">{{'StartDate' | translate}}
+        </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-date-picker [maxDate]="" [minDate]="reportAccessStartMinDate" #RepaccessStartDate="ngModel" required="" [(ngModel)]="inputEventModel.reportAccessStartDate" name="RepaccessStartDate" (ngModelChange)="validateRepaccessDates()"></app-date-picker>
+            </div>
+            <span *ngIf="RepaccessStartDate.invalid && RepaccessStartDate.touched" class="error">{{'StartDaterequired'|
+                translate}}</span>
+        </div>
+
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="RepaccessEndDate">{{'EndDate' | translate}} </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-date-picker [minDate]="reportAccessMinEndDate" [maxDate]="" [(ngModel)]="inputEventModel.reportAccessEndDate" #RepaccessEndDate="ngModel" required="" name="RepaccessEndDate" (ngModelChange)="validateRepaccessDates()"> </app-date-picker>
+            </div>
+            <span *ngIf="RepaccessEndDate.invalid && RepaccessEndDate.touched" class="error">{{'EndDaterequired'|
+                translate}}</span>
+            <span *ngIf="InvalidReportAccessDate" class="error">
+                {{'startDateGreaterThanEndDate'| translate}}
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="RepaccessStartTime">{{'StartTime' | translate}}
+        </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-time-picker #RepaccessStartTime="ngModel" [(ngModel)]="inputEventModel.reportAccessStartTime" name="RepaccessStartTime" required="" value="" name="|RepaccessStartTime" (ngModelChange)="validateRepaccessTime()">
+                </app-time-picker>
+            </div>
+            <span *ngIf="RepaccessStartTime.invalid && RepaccessStartTime.touched" class="error">{{'StartTimerequired'|
+                translate}}</span>
+
+        </div>
+
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="RepaccessEndTime">{{'EndTime'| translate}} </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-time-picker #RepaccessEndTime="ngModel" type="text" [(ngModel)]="inputEventModel.reportAccessEndTime" required="" value="" name="RepaccessEndTime" (ngModelChange)="validateRepaccessTime()">
+                </app-time-picker>
+            </div>
+
+            <span *ngIf="RepaccessEndTime.invalid && RepaccessEndTime.touched" class="error">{{'EndTimerequired'|
+                translate}}</span>
+            <span *ngIf="InvaildReportAccessTime" class="error">
+                {{'startTimeGreaterThanEndTime'| translate}}
+            </span>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="TimeZone">{{'TimeZone'| translate}}</label>
+        <div class="col-sm-10">
+            <select id="timeZone" required [(ngModel)]="inputEventModel.timeZoneId" #timeZone="ngModel" name="timeZone" class="form-select">
+                <option value="">{{'SelectTimezone' | translate}}</option>
+                <option *ngFor="let item of allTimezones" value="{{item.timeZoneId}}">{{item.timeZoneName}}
+                    ({{item.offset}})</option>
+            </select>
+            <span *ngIf="timeZone.invalid && timeZone.touched" class="error">{{'TimeZonerequired'| translate}}</span>
+
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="Language">{{'Language'| translate}}</label>
+        <div class="col-sm-10">
+            <input type="hidden" value='cefd899c-b035-4cc2-9008-7a169639aa0b' name="LanguageId" #LanguageId="ngModel" [(ngModel)]="inputEventModel.LanguageId" />
+            <ng-multiselect-dropdown name="Language" #Language [placeholder]="'SelectLanguage'| translate" [required]='requiredField' [settings]="dropdownSettings" style="background-color: #fff;" (onSelect)="onItemSelect($event)" [data]="languageDropdownList" [(ngModel)]="selectedLanguages"
+                (onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)" [ngClass]='setClass()'>
+            </ng-multiselect-dropdown>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular">{{'EventImage' | translate}}<br><span
+                class="Poppins-Regular" style="font-size: 10px;">{{'imagetypeshouldbepng,jpgorjpeg' |translate}}</span>
+            <span class="fs-10px Poppins-Regular">{{'MaxSizeTwoHunderd' | translate}}</span></label>
+        <div class="col-sm-10">
+            <span id="spnImageErrorMessage" class="text-danger"></span>
+            <input *ngIf="!inputEventModel.eventLogo" id="fileupload" type="file" (change)="onFileChange($event)" name="EventImage">
+            <img src="{{inputEventModel.eventLogo}}" id="UploadedEventImage" *ngIf="inputEventModel.eventLogo" height="112" width="200">
+            <i *ngIf="inputEventModel.eventLogo" class="fa fa-times" (click)="deleteEventLogo()" tooltip="{{'Delete' | translate}}" style="cursor: pointer;margin-left: 10px;vertical-align: top;"></i>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular">{{'MainPageBannerImage' | translate}}<br><span
+                class="Poppins-Regular" style="font-size: 10px;">{{'imagetypeshouldbepng,jpgorjpeg'
+                |translate}}</span><span class="fs-10px Poppins-Regular">{{'MaxSizeSevenhundred' |
+                translate}}</span></label>
+        <div class="col-sm-10">
+            <input *ngIf="!inputEventModel.mainPageBannerImage" id="fileupload" type="file" (change)="onMainPageBannerImageFileChange($event)" name="MainPageBannerImage">
+            <img src="{{inputEventModel.mainPageBannerImage}}" id="UploadedMainPageBannerImage" *ngIf="inputEventModel.mainPageBannerImage" height="112" width="200">
+            <i *ngIf="inputEventModel.mainPageBannerImage" class="fa fa-times" (click)="deleteMainPageBannerImage()" tooltip="{{'Delete' | translate}}" style="cursor: pointer;margin-left: 10px;vertical-align: top;"></i>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular">{{'EventBrochure' | translate}}<br>
+            <span class="Poppins-Regular" style="font-size: 10px;">{{'filetypeshouldbePDF'|translate}}</span></label>
+        <div class="col-sm-10">
+            <input id="fileuploadeventBrochure" type="file" (change)="oneventBrochureFileChange($event)" name="eventBrochure">
+            <a *ngIf="inputEventModel.eventBrochure" href="{{inputEventModel.eventBrochure}}" class="form-link" target="_blank">{{'EventBrochureFile' | translate}}</a>
+            <i *ngIf="inputEventModel.eventBrochure" class="fa fa-times" (click)="deleteEventBrochureFile()" tooltip="{{'Delete' | translate}}" style="cursor: pointer;margin-left: 10px;vertical-align: top;"></i>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular">{{'SocialMedia' | translate}}</label>
+        <div class="col-sm-10">
+            <a class="form-link" (click)='addSocialMediaAccount()'> {{'ADD' | translate}}</a>
+            <div *ngIf="inputEventModel.socialMedia">
+                <div *ngFor="let item of inputEventModel.socialMedia" style="margin-top: 15px;;">
+                    <select id="{{item.index}}" name="{{item.index}}" [(ngModel)]="item.socialMedia" class="form-select col-sm-3" style="float: left;" (change)='checkSocialMediaIsCustomSelected(item)'>
+                        <option value='facebook'>{{'Facebook'|translate}}</option>
+                        <option value='Instagram'>{{'Instagram'|translate}}</option>
+                        <option value='linkedIn'>{{'Linked In'|translate}}</option>
+                        <option value='twitter'>{{'Twitter'|translate}}</option>
+                        <option value='Website'>{{'Website'|translate}}</option>
+                        <option value='Youtube'>{{'Youtube'|translate}}</option>
+                        <option value='custom'>{{'Custom'|translate}}</option>
+
+                    </select>
+                    <input type="text" *ngIf="item.isCustom" name="{{item.index}}_isCustom" [(ngModel)]="item.customSocialMedia" class="form-control Poppins-Regular  col-sm-3" style="float: left;margin-left: 20px;" placeholder="{{'SocialMediaName' | translate}}" required
+                        #CustomSocialMediaName name="CustomSocialMediaName" value="{{item.customSocialMedia}}">
+
+
+                    <input type="text" pattern="https?://.+" name="{{item.index}}_value" [(ngModel)]="item.value" class="form-control Poppins-Regular  col-sm-3" style="float: left;margin-left: 20px;" placeholder="{{'SocialMediaURL' | translate}}" required #SocialMediaURL
+                        name="SocialMediaURL" value="{{item.value}}">
+                    <a class="col-sm-2" style="vertical-align: -webkit-baseline-middle;" (click)="deleteSocialMediaItem(item)"><i class="fa fa-trash"></i></a>
+                    <span *ngIf="SocialMediaURL.invalid && SocialMediaURL.touched" class="error">{{'SocialURL'| translate}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventNumberofRooms">{{'NumberofRooms' |
+            translate}}</label>
+        <div class="col-sm-10">
+            <div>
+                <input type="text" class="form-control Poppins-Regular" placeholder="{{'NumberofRooms' | translate}}" maxlength="6" required #NumberofRooms="ngModel" [(ngModel)]="inputEventModel.noOfRooms" name="NumberofRooms" value="0" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+                <span *ngIf="NumberofRooms.invalid && NumberofRooms.touched " class="error">{{'NumberofRoomsrequired'|
+                    translate}}</span>
+            </div>
+            <!-- <label *ngIf="!isSuperAdmin" class=" Poppins-Regular" style="word-break: break-all;">{{inputEventModel.noOfRooms}}</label> -->
+
+        </div>
+    </div>
+
+    <!-- <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventNumberofBooths">{{'NumberofBooths' | translate}}</label>
+        <div class="col-sm-10">
+            <input type="number" class="form-control Poppins-Regular" placeholder="{{'NumberofBooths' | translate}}" maxlength="5" required #NumberofBooths="ngModel" [(ngModel)]="inputEventModel.noOfBooths" name="NumberofBooths" (change)="CompareRoomAndBoothValues()"
+                value="0">
+            <span *ngIf="NumberofBooths.invalid && NumberofBooths.touched" class="error">{{'NumberofBoothsrequired'| translate}}</span>
+        </div>
+    </div> -->
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventconcurrentUser">{{'NumberofconcurrentUser' |
+            translate}}</label>
+        <div class="col-sm-10">
+            <div *ngIf="isSuperAdmin">
+                <input type="text" class="form-control Poppins-Regular" placeholder="{{'NumberofconcurrentUser' | translate}}" required #EventconcurrentUser="ngModel" maxlength="6" [(ngModel)]="inputEventModel.noOfCuncurrentUser" name="EventconcurrentUser" value="" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+                <span *ngIf="EventconcurrentUser.invalid && EventconcurrentUser.touched" class="error">{{'NumberofconcurrentUserrequired'| translate}}</span>
+            </div>
+            <label *ngIf="!isSuperAdmin" class=" Poppins-Regular" style="word-break: break-all;">{{inputEventModel.noOfCuncurrentUser}}</label>
+
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EventBuffer">{{'Buffer'|translate}}</label>
+        <div class="col-sm-10">
+            <div *ngIf="isSuperAdmin">
+                <input type="text" class="form-control Poppins-Regular" placeholder="{{'Buffer'| translate}}" required maxlength="6" #Buffer="ngModel" [(ngModel)]="inputEventModel.buffer" name="Buffer" value="" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+                <span *ngIf="Buffer.invalid && Buffer.touched" class="error">{{'Bufferrequired'| translate}}</span>
+            </div>
+
+            <label *ngIf="!isSuperAdmin" class=" Poppins-Regular" style="word-break: break-all;">{{inputEventModel.buffer}}</label>
+
+        </div>
+    </div>
+
+    <!-- <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="Webcast">{{'Webcast'|translate}}</label>
+        <div class="col-sm-10">
+            <input type="checkbox" style="vertical-align:bottom" data-val="true" (change)="ifWebcastEnabled($event)"
+                data-val-required="The Webcast field is required." id="WebcastEnabled" name="WebcastEnabled"
+                value="true">
+        </div>
+    </div> -->
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="WCEnabled">{{'Webcast'|translate}}</label>
+        <div class="col-sm-10">
+            <div *ngIf="isSuperAdmin">
+                <input type="checkbox" style="vertical-align:bottom" data-val="true" [checked]="inputEventModel.allowWebcast" data-val-required="The Webcast field is required." (change)="ifWebcastEnabled($event)" id="WCEnabled" name="WCEnabled" value="true">
+            </div>
+            <div *ngIf="!isSuperAdmin">
+                <input type="checkbox" disabled="disabled" style="vertical-align:bottom" data-val="true" [checked]="inputEventModel.allowWebcast" data-val-required="The Webcast field is required." id="WCEnabled" name="WCEnabled" value="true">
+            </div>
+
+        </div>
+    </div>
+
+    <div class="mb-3 row" *ngIf="isWCEnabled">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="NumberofWebcast">{{'NumberofWebcast' |
+            translate}}</label>
+        <div class="col-sm-10" *ngIf="isWCEnabled">
+            <div *ngIf="isSuperAdmin">
+                <input type="text" class="form-control Poppins-Regular" placeholder="{{'NumberofWebcast' | translate}}" required #NumberofWebcast="ngModel" [(ngModel)]="inputEventModel.noOfWebcast " name="Webcast" value="" style="margin-top:10px" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+                <span *ngIf="NumberofWebcast.invalid && NumberofWebcast.touched" class="error">{{'NumberofWebcastrequired'| translate}}</span>
+            </div>
+
+            <label *ngIf="!isSuperAdmin" class=" Poppins-Regular" style="word-break: break-all;">{{inputEventModel.noOfWebcast}}</label>
+
+        </div>
+    </div>
+
+    <div class="mb-3 row" *ngIf="isWCEnabled">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="WebcastMaxduration">{{'WebcastMaxduration' |
+            translate}}</label>
+        <div class="col-sm-10">
+            <div *ngIf="isSuperAdmin">
+                <input type="text" class="form-control Poppins-Regular" placeholder="{{'WebcastMaxduration' | translate}}" required #WebcastMaxduration="ngModel" [(ngModel)]="inputEventModel.webcastMaxDuration " name="WebcastMaxduration" value="" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+                <span *ngIf="WebcastMaxduration.invalid && WebcastMaxduration.touched" class="error">{{'WebcastMaxdurationrequired'| translate}}</span>
+            </div>
+
+            <label *ngIf="!isSuperAdmin" class=" Poppins-Regular" style="word-break: break-all;">{{inputEventModel.webcastMaxDuration}}</label>
+
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-6 col-form-label Poppins-Regular form-check-label" for="IncludeShoweventmenu">{{'ShowAttendeeseventmenu'|translate}}
+        </label>
+        <div class="col-sm-2 Poppins-Regular">
+            <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" style="padding: 0px;margin-top: 12px;" name="IncludeShoweventmenu" (change)='includeShoweventmenuCheckChanged()' [checked]="inputEventModel.showAttenteeCountInEventMenu" #IncludeShoweventmenu>
+
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-6 col-form-label Poppins-Regular form-check-label" for="IncludeShowboothmenu">{{'ShowAttendeesboothmenu'|translate}}
+        </label>
+        <div class="col-sm-2 Poppins-Regular">
+            <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" style="padding: 0px;margin-top: 12px;" name="IncludeShowboothmenu" (change)=' includeShowboothmenuCheckChanged()' [checked]="inputEventModel.showAttenteeCountInAdminMenu" #IncludeShowboothmenu>
+
+        </div>
+    </div>
+
+
+
+    <!-- <div class="mb-3 row">
+        <label class="col-sm-6 col-form-label Poppins-Regular form-check-label" for="Webcast">{{'EnableEditRegistrationInfoAllowed'|translate}}</label>
+        <div class="col-sm-2  Poppins-Regular">
+            <input type="checkbox" style="margin-left: 0px;" style="padding: 0px;margin-top: 12px;" class="form-check-inline" data-val="true" [checked]='inputEventModel.enableEditRegistrationInfoAllowed' (change)="ifEnableEditRegistrationInfoAllowed($event)" id="EnableEditRegistrationInfoAllowed"
+                name="EnableEditRegistrationInfoAllowed" value="true">
+
+        </div>
+    </div> -->
+
+
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="Roomsscreenoption">{{'EventRoomsScreens' |
+            translate}}</label>
+        <div *ngIf="isSuperAdmin" class="row col-sm-6">
+
+
+            <div class="col-sm-3 Poppins-Regular">
+                <div class="form-check form-check-inline">
+                    <input type="radio" value="" id="EventRoomOption2DRadio" style="margin-top: 12px;padding: 0px;" class="form-check-input" name="RoomShow" #2D (change)="getRoomShowOption($event,'2D')" [checked]="inputEventModel.eventRoomsScreenType === '2D'">
+                    <label class="form-check-label col-sm-2 Poppins-Regular" style="margin-left: 0px;margin-top: 10px" for="2D">{{'2D'|translate}}</label>
+                </div>
+
+            </div>
+
+            <div class="col-sm-3 Poppins-Regular">
+                <div class="form-check form-check-inline">
+                    <input type="radio" value="" id="EventRoomOption3DRadio" style="margin-top: 12px;padding: 0px;" class="form-check-input" name="RoomShow" #3D (change)="getRoomShowOption($event,'3D')" [checked]="inputEventModel.eventRoomsScreenType === '3D'">
+                    <label class="form-check-label col-sm-2 Poppins-Regular" style="margin-left: 0px;margin-top: 10px" for="3D">{{'3D'|translate}}
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-sm-3  Poppins-Regular">
+                <div class="form-check form-check-inline">
+                    <input type="radio" value="" id="EventRoomOptionBothRadio" style="margin-top: 12px" class="form-check-input" name="RoomShow" #Both (change)="getRoomShowOption($event,'Both')" [checked]="inputEventModel.eventRoomsScreenType === 'Both'">
+                    <label class="form-check-label col-sm-2 Poppins-Regular" style="margin-left: 0px;margin-top: 10px" for="Both">{{'Both'|translate}}</label>
+                </div>
+            </div>
+        </div>
+        <!-- <label *ngIf="!isSuperAdmin" class="col-sm-2  Poppins-Regular" style="word-break: break-all;">{{inputEventModel.eventRoomsScreenType?both:'yes'}}</label> -->
+        <label *ngIf="!isSuperAdmin" class="col-sm-2  Poppins-Regular" style="word-break: break-all;">{{inputEventModel.eventRoomsScreenType}}</label>
+
+    </div>
+
+
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2  Poppins-Regular" for="SetupUiColour">{{'SetupUiColour'| translate}}</label>
+        <div class="col-sm-6 ">
+            <input [(colorPicker)]="inputEventModel.uiColor" [style.background]="inputEventModel.uiColor" readonly />
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2  Poppins-Regular" for="UIAccentColor">{{'UIAccentColor'| translate}}</label>
+        <div class="col-sm-6 ">
+            <input [(colorPicker)]="inputEventModel.uiAccentColor" [style.background]="inputEventModel.uiAccentColor" readonly />
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2  Poppins-Regular" for="HeaderBackgroundColor">{{'HeaderBackgroundColor'|
+            translate}}</label>
+        <div class="col-sm-6 ">
+            <input [(colorPicker)]="inputEventModel.headerBackgroundColor" [style.background]="inputEventModel.headerBackgroundColor" readonly />
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2  Poppins-Regular" for="HeaderTextColor">{{'HeaderTextColor'| translate}}</label>
+        <div class="col-sm-6 ">
+            <input [(colorPicker)]="inputEventModel.headerTextColor" [style.background]="inputEventModel.headerTextColor" readonly />
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2  Poppins-Regular" for="SectionHeaderTextColor">{{'SectionHeaderTextColor'|
+            translate}}</label>
+        <div class="col-sm-6 ">
+            <input [(colorPicker)]="inputEventModel.sectionHeaderTextColor" [style.background]="inputEventModel.sectionHeaderTextColor" readonly />
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="MetaTags">{{'SeoMetaTags' | translate}}</label>
+        <div class="col-sm-10">
+            <textarea style="height:150px;" class="form-control Poppins-Regular" placeholder="{{'SeoMetaTags' | translate}}" #MetaTags="ngModel" [(ngModel)]="inputEventModel.metaTags" name="MetaTags"></textarea>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="GAEnabled">{{'GAScript' | translate}}</label>
+        <div class="col-sm-10">
+            <input type="checkbox" style="vertical-align:bottom" data-val="true" (change)="ifGAEnabled($event)" [checked]="inputEventModel.gaEnabled" data-val-required="The GAEnabled field is required." id="GAEnabled" name="GAEnabled" value="true">
+            <textarea *ngIf="isGAEnabled" class="form-control Poppins-Regular" style="margin-top:10px" placeholder="{{'GAScript' | translate}}" #GAScript="ngModel" [(ngModel)]="inputEventModel.gaScript" name="GAScript"></textarea>
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="ThirdPartyAnalyticsEnabled">{{'ThirdPartyAnalyticsScript' | translate}}</label>
+        <div class="col-sm-10">
+            <input type="checkbox" style="vertical-align:bottom" data-val="true" (change)="ifThirdPartyAnalyticsEnabled($event)" data-val-required="The ThirdPartyAnalyticsEnabled field is required." [checked]="inputEventModel.thirdPartyAnalyticsEnabled" id="ThirdPartyAnalyticsEnabled"
+                name="ThirdPartyAnalyticsEnabled" value="true">
+            <textarea *ngIf="isThirdPartyAnalyticsEnabled" class="form-control Poppins-Regular" style="margin-top:10px" placeholder="{{'ThirdPartyAnalyticsScript' | translate}}" #ThirdPartyAnalyticsScript="ngModel" [(ngModel)]="inputEventModel.thirdPartyAnalyticsScript"
+                name="ThirdPartyAnalyticsScript"></textarea>
+
+        </div>
+    </div>
+
+    <!-- <div class="mb-3 row" *ngIf="inputEventModel.enableEditRegistrationInfoAllowed">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="EnableEditRegistrationInfo">{{'EnableEditRegistrationInfo' | translate}}</label>
+        <div class="col-sm-10">
+            <input type="checkbox" style="vertical-align:bottom" (change)="EnableEditRegistrationInfo($event)" [checked]='inputEventModel.enableEditRegistrationInfo' data-val="true" id="EnableEditRegistrationInfo" name="EnableEditRegistrationInfo" value="true">
+
+
+        </div>
+    </div> 
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="Entltilement">{{'Entitlement'| translate}}</label>
+        <div class="col-sm-10">
+            <input type="hidden" value='' name="EntitlementId" #EntitlementId="ngModel" [(ngModel)]="inputEventModel.entitlementId" />
+            <ng-multiselect-dropdown name="Entltilement" #Entitlement [placeholder]="'SelectEntitlement'| translate" [required]='entitlementRequiredField' [settings]="EntitlementDropdownSettings" [disabled] style="background-color: #fff;" (onSelect)="onEntitlementSelect($event)"
+                [data]="entitlementDropdownList" [(ngModel)]="selectedEntitlementsArr" (onDeSelect)="onEntitlementDeSelect($event)" (onSelectAll)="onEntitlementSelectAll($event)" (onDeSelectAll)="onEntitlementDeSelectAll($event)" [ngClass]='setEntitlementClass()'>
+            </ng-multiselect-dropdown>
+        </div>
+    </div>-->
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="TermsAndConditions">{{'EventTermAndCondition' |
+            translate}} </label>
+        <div class="col-sm-10">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" value="" id="EventTermAndConditionLinkRadio" (change)="showHideTAndCControls($event,'AddLink')" name="IsLinkTermsAndConditions" [checked]="inputEventModel.isLinkTermsAndConditions">
+                <label class="form-check-label" for="EventTermAndConditionLinkRadio">{{'AddLink' | translate}}</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" value="" id="EventTermAndConditionManuallyRadio" (change)="showHideTAndCControls($event,'AddManually')" name="IsLinkTermsAndConditions" [checked]="!inputEventModel.isLinkTermsAndConditions">
+                <label class="form-check-label" for="EventTermAndConditionManuallyRadio">{{'AddManually' |
+                    translate}}</label>
+            </div>
+            <input *ngIf="isTermsAndConditionsAddLinkSelected" type="text" class="mt-2 form-control Poppins-Regular" pattern="https?://.+" placeholder="{{'SocialMediaURL' | translate}}" required="" #EventTermAndCondition="ngModel" name="EventTermAndCondition" [(ngModel)]="inputEventModel.termsAndConditions">
+            <div *ngIf="!isTermsAndConditionsAddLinkSelected">
+                <div class="NgxEditor__Wrapper">
+                    <ckeditor [config]="config" [(data)]="inputEventModel.termsAndConditions"></ckeditor>
+                    <span *ngIf="!inputEventModel.termsAndConditions" class="text-danger">
+                        {{'TermsAndConditionRequired' | translate}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="PrivacyPolicy">{{'EventPrivacyPolicy' |
+            translate}}</label>
+        <div class="col-sm-10">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" value="" id="EventPrivacyPolicyLinkRadio" (change)="showHideEventPrivacyPolicyControls($event,'AddLink')" name="IsLinkEventPrivacyPolicy" [checked]="inputEventModel.isLinkPrivacyPolicy">
+                <label class="form-check-label" for="EventPrivacyPolicyLinkRadio">{{'AddLink' | translate}}</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" value="" id="EventPrivacyPolicyManuallyRadio" [checked]="!inputEventModel.isLinkPrivacyPolicy" (change)="showHideEventPrivacyPolicyControls($event,'AddManually')" name="IsLinkEventPrivacyPolicy">
+                <label class="form-check-label" for="EventPrivacyPolicyManuallyRadio">{{'AddManually' |
+                    translate}}</label>
+            </div>
+            <input *ngIf="isPrivacyPolicyAddLinkSelected" pattern="https?://.+" placeholder="{{'SocialMediaURL' | translate}}" type="text" class="mt-2 form-control Poppins-Regular" required="" name="PrivacyPolicyInput" #PrivacyPolicyInput="ngModel" [(ngModel)]="inputEventModel.privacyPolicy">
+            <div *ngIf="!isPrivacyPolicyAddLinkSelected">
+                <div class="NgxEditor__Wrapper">
+                    <ckeditor [config]="config" [(data)]="inputEventModel.privacyPolicy"></ckeditor>
+                    <span *ngIf="!inputEventModel.privacyPolicy" class="text-danger">
+                        {{'PrivacyPolicyRequired' | translate}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="MetaTags">{{'WelcomeMessage' | translate}}</label>
+        <div class="col-sm-10">
+            <textarea style="height:150px;" required class="form-control Poppins-Regular" placeholder="{{'FirstTimeLoginWelcomeMessage' | translate}}" #FirstTimeLoginWelcomeMessage="ngModel" [(ngModel)]="inputEventModel.firstTimeLoginWelcomeMessage" name="FirstTimeLoginWelcomeMessage"></textarea>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-6 col-form-label Poppins-SemiBold" for="Roomsscreenoption">{{'Welcomevideo' |
+            translate}}</label>
+    </div>
+
+    <!-- <div *ngFor="let item of vidItem.playList; let playListIndex=index"> -->
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular">{{'VideoType' | translate}}</label>
+        <!-- <div class="col-sm-11">
+            </div> videoType-->
+        <div class="col-sm-10">
+            <select class="form-select" name="selectedVideoType" id="selectedVideoType" [(ngModel)]="inputEventModel.videoType" (change)="SelectedVideoTypes($event)">
+                <option value="">{{'Select' | translate}}</option>
+                <option value="youtube">{{'YoutubeUrl'
+                    | translate}}</option>
+                <option value="uploadFile">{{'UploadFile' | translate}}</option>
+                <!-- <option value="embedVideo">
+                    {{'EmbedVideo' | translate}}</option> -->
+                <option value="vimeoUrl">{{'VimeoUrl' |
+                    translate}}</option>
+                <!-- <option value="selectedWebcastFromContentLibrary" >
+                        {{'SelectedWebcastFromContentLibrary' | translate}}</option> -->
+
+            </select>
+
+        </div>
+    </div>
+    <div class="mb-3 row" *ngIf="inputEventModel.videoType==='youtube'">
+
+        <label class="col-sm-2 col-form-label Poppins-Regular">{{'InputYoutubeUrl' |
+            translate}}</label>
+
+        <div class="col-sm-10">
+            <input type="text" name="videoSrc" id="videoSrc" [(ngModel)]="inputEventModel.videoUrl" class="form-control" />
+
+        </div>
+    </div>
+
+    <div class="mb-3 row" *ngIf="inputEventModel.videoType==='uploadFile'">
+
+        <label class="col-sm-2 col-form-label Poppins-Regular">{{'UploadVideo' |
+            translate}}<br><span class="Poppins-Regular" style="font-size: 12px;">VideoSizeOneGB</span></label>
+
+        <div class="col-sm-10">
+            <input type="file" #VideoFileUploadControl (change)="onVideoFileChange($event)" />
+            <a *ngIf="inputEventModel.videoUrl!=''" href="{{inputEventModel.videoUrl}}" target="_blank" class="btn btn-link">File</a>
+        </div>
+        <div class="progress" *ngIf="progress">
+            <div class="progress-bar" [style.width]="progress + '%'">{{progress}}%</div>
+        </div>
+        <!-- </div> -->
+    </div>
+
+
+    <!-- <div class="mb-3 row" *ngIf="inputEventModel.videoType==='embedVideo'">
+
+        <label class="col-sm-2 col-form-label Poppins-Regular">{{'InputVideoSource' |
+            translate}}</label>
+
+        <div class="col-sm-10">
+            <textarea class="form-control" id="embedVideo" [(ngModel)]="inputEventModel.videoUrl">{{inputEventModel.videoUrl}</textarea>
+        </div>
+    </div> -->
+
+    <div class="mb-3 row" *ngIf="inputEventModel.videoType==='vimeoUrl'">
+
+        <label class="col-sm-2 col-form-label Poppins-Regular">{{'InputVimeoUrl' |
+            translate}}</label>
+
+        <div class="col-sm-10">
+            <input type="text" name="videoSrc" id="videoSrc" [(ngModel)]="inputEventModel.videoUrl" class="form-control" />
+
+        </div>
+    </div>
+
+    <!-- </div> -->
+
+
+    <div class="mb-3 row" id="ThirdPartyAnalyticsScripts">
+        <input type="hidden" [value]="inputEventModel.eventId" name="EventId" #EventId="ngModel" [(ngModel)]="inputEventModel.eventId" />
+        <div class="col-sm-12 text-muted Poppins-Regular text-right">
+            <button [disabled]="AddEventForm.invalid" (click)="saveEvent()" type="update" class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 Poppins-Regular">Save</button>
+            <a (click)="askForExitMessage()" class="btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 ml-20px commonbtn btn btn-primary text-white Poppins-Regular">Cancel</a>
+        </div>
+    </div>
+</form>

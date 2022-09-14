@@ -1,0 +1,28 @@
+<div class="modal-header" [style.background]="checklistItem.eventDetails.headerBackgroundColor+'!important'" [style.color]="checklistItem.eventDetails.headerTextColor">
+    <h5 class="modal-title">{{checkListItemAddOrUpdate}}</h5>
+    <button type="button" [style.color]="eventDetails.headerTextColor" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+</div>
+<form class="form-group" #checklistItemForm="ngForm">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <textarea [style.color]="checklistItem.eventDetails.sectionHeaderTextColor" class="Poppins-Regular" style="width: 100%;" [(ngModel)]="checklistItem.checklistItem" name="ChecklistItem" id="ChecklistItem" #ChecklistItem="ngModel" required class="Poppins-Regular"
+                            maxlength="300" rows="5">{{checklistItem.ChecklistItem}}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button [style.background]="checklistItem.eventDetails.headerBackgroundColor" [style.color]="checklistItem.eventDetails.headerTextColor" class="btn btnOrangeFrontEnd" type="submit" data-dismiss="modal" (click)="saveChecklistItem()" [disabled]="checklistItemForm.invalid">{{'Save' | translate}} </button>
+
+        <button [style.background]="checklistItem.eventDetails.headerBackgroundColor" [style.color]="checklistItem.eventDetails.headerTextColor" type="button" class="btn btnOrangeFrontEnd" style="margin-left: 20px;" data-dismiss="modal" (click)="closeModal()">
+            {{'Close' | translate}}
+        </button>
+
+    </div>
+</form>

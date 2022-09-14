@@ -1,0 +1,11 @@
+<div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'"
+    [style.color]="eventDetails.headerTextColor">
+    {{title}}
+    <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal"
+        aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <img  [src]="documentUrl | safe" style="width: 100%;height: auto;" />
+</div>

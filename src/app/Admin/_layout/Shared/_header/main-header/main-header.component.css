@@ -1,0 +1,6 @@
+.iconstyle{
+    float: right;
+    text-align: right;
+    flex: auto;
+    display: inherit;
+}

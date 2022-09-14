@@ -1,0 +1,72 @@
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+
+    <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{'SurveyResponses'| translate}}</label>
+    <div class=" text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{eventName}}</label>
+
+    </div>
+</div>
+<div class="flex-container bg-white" id="surveyListItems" style="margin-top: 25px;padding: 20px;">
+
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    <a style="cursor: pointer;"> {{'ProfileImage' | translate}}</a>
+                </th>
+                <th>
+                    <a style="cursor: pointer;"> {{'Name' | translate}}</a>
+                </th>
+
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let item of surveyResponses'>
+                <td style="border: none;">
+                    <img _ngcontent-ng-cli-universal-c164="" alt="" class="mw-100 mh-100 rounded-circle" style="height: 50px; width: 50px;" src="{{item.attendee.profileImage}}">
+                </td>
+                <td style="border: none;vertical-align: middle;">
+                    {{item.attendee.firstName}} {{item.attendee.lastName}}
+                </td>
+                <td style="border: none;vertical-align: middle;">
+                    <div class="dropdown">
+                        <a href="#" data-bs-toggle="dropdown" class="text-muted"><i class="fa fa-gear"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item Poppins-Regular" id="btnDetails" (click)='openModalOfResponse(item.surveysQuestions)' data-toggle="modal" data-target="#detailsModal">{{'Details'| translate}}</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal Response Details -->
+<div class="modal fade" id="detailsModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+
+            <div *ngFor="let item of modalQuestions; let i=index">
+                <div class="form-group  mb-2">
+                    <label class="form-lable col-sm-2 Poppins-Regular">{{'Question'| translate}} {{i+1}}: </label>
+                    <label class="form-lable col-sm-9 Poppins-Regular">{{item.question}}</label>
+
+                    <label class="form-lable col-sm-2 Poppins-Bold">{{'Answer'| translate}}:</label>
+                    <label class="form-lable col-sm-9 Poppins-Bold">{{item.answer}}</label>
+                </div>
+            </div>
+
+            <div class="" style="text-align: center;">
+
+                <button type="button" class="btn  btn-primary  text-white" style="margin-left: 20px;" data-dismiss="modal">
+                    {{'Cancel' | translate}}
+                </button>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>

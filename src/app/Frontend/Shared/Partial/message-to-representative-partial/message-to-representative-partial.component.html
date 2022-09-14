@@ -1,0 +1,101 @@
+<form class="form-group" #messageToREpresentativeForm="ngForm">
+    <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'"
+        [style.color]="eventDetails.headerTextColor">
+        <h5 class="modal-title">{{'SendMessageToRepresentative'|translate}}</h5>
+        <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal"
+            aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body" [style.color]="eventDetails.sectionHeaderTextColor">
+        <div class="col-sm-12"
+            *ngIf="messageToREpresentativeModel.isMessage && !messageToREpresentativeModel.isMeetingRequest">
+            <div class="mb-3 row" *ngIf="!isLoggedIn">
+                <label class="col-sm-12 col-form-label Poppins-Regular fs-10px"
+                    [style.color]="eventDetails.uiAccentColor" style="padding-bottom: 0px !important;"
+                    for="FirstName">{{'FirstName'| translate}}
+                </label>
+                <input [style.color]="eventDetails.sectionHeaderTextColor" type="text"
+                    class="col-sm-10 form-control Poppins-Regular" placeholder="{{'FirstName' | translate}}" required
+                    #From="ngModel" maxlength="50" [(ngModel)]="messageToREpresentativeModel.firstName" name="FirstName"
+                    value="" />
+
+                <label class="col-sm-12 col-form-label Poppins-Regular fs-10px"
+                    [style.color]="eventDetails.uiAccentColor" style="padding-bottom: 0px !important;"
+                    for="LastName">{{'LastName'| translate}}
+                </label>
+                <input [style.color]="eventDetails.sectionHeaderTextColor" type="text"
+                    class="col-sm-10 form-control Poppins-Regular" placeholder="{{'LastName' | translate}}" required
+                    #From="ngModel" maxlength="50" [(ngModel)]="messageToREpresentativeModel.lastName" name="LastName"
+                    value="" />
+
+
+
+                <label class="col-sm-12 col-form-label Poppins-Regular fs-10px"
+                    [style.color]="eventDetails.uiAccentColor" style="padding-bottom: 0px !important;"
+                    for="From">{{'EmailAddress'| translate}}
+                </label>
+                <input [style.color]="eventDetails.sectionHeaderTextColor" type="email"
+                    class="col-sm-10 form-control Poppins-Regular"
+                    pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" placeholder="{{'EmailAddress' | translate}}"
+                    required #From="ngModel" maxlength="50" [(ngModel)]="messageToREpresentativeModel.messageFrom"
+                    name="From" value="" />
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-12 col-form-label Poppins-Regular fs-10px"
+                    [style.color]="eventDetails.uiAccentColor" style="padding-bottom: 0px !important;"
+                    for="PersonalMessage">{{'Message'| translate}}
+                </label>
+                <textarea [style.color]="eventDetails.sectionHeaderTextColor" name="PersonalMessage"
+                    id="PersonalMessage" [(ngModel)]="messageToREpresentativeModel.message"
+                    class="form-control Poppins-Regular" value="" required maxlength="2000"></textarea>
+            </div>
+        </div>
+
+        <div class="col-sm-12"
+            *ngIf="messageToREpresentativeModel.isMeetingRequest && !messageToREpresentativeModel.isMessage">
+            <div class="mb-3 row">
+                <label class="col-sm-12 col-form-label Poppins-Regular fs-10px"
+                    [style.color]="eventDetails.uiAccentColor" style="padding-bottom: 0px !important;"
+                    for="From">{{'PrefferedDate'| translate}}
+                </label>
+                <app-date-picker [style.color]="eventDetails.sectionHeaderTextColor" [minDate]="preferredMinDate"
+                    [maxDate]="preferredMaxDate" [(ngModel)]="messageToREpresentativeModel.prefferedDate"
+                    #PrefferedDate="ngModel" required="" name="PrefferedDate"> </app-date-picker>
+
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-12 col-form-label Poppins-Regular fs-10px"
+                    [style.color]="eventDetails.uiAccentColor" style="padding-bottom: 0px !important;"
+                    for="From">{{'PrefferedTime'| translate}}
+                </label>
+                <app-time-picker [style.color]="eventDetails.sectionHeaderTextColor" #PrefferedTime="ngModel"
+                    [(ngModel)]="messageToREpresentativeModel.prefferedTime" name="PrefferedTime" required="" value="">
+                </app-time-picker>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-12 col-form-label Poppins-Regular fs-10px"
+                    [style.color]="eventDetails.uiAccentColor" style="padding-bottom: 0px !important;"
+                    for="PersonalMessage">{{'Message'| translate}}
+                </label>
+                <textarea [style.color]="eventDetails.sectionHeaderTextColor" name="PersonalMessage"
+                    id="PersonalMessage" [(ngModel)]="messageToREpresentativeModel.message"
+                    class="form-control Poppins-Regular" value="" required maxlength="2000"></textarea>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" id="inviteEmailBtn" [style.background]="eventDetails.headerBackgroundColor"
+            [style.color]="eventDetails.headerTextColor" class="btn  btnOrangeFrontEnd"
+            [disabled]="messageToREpresentativeForm.invalid" data-dismiss="modal" (click)="sendMessageToREp()">{{'Send'
+            |
+            translate}}</button>
+        <button type="button" [style.background]="eventDetails.headerBackgroundColor"
+            [style.color]="eventDetails.headerTextColor" class="btn  btnOrangeFrontEnd" data-dismiss="modal"
+            (click)="closeModal()">
+            {{'Close' | translate}}
+        </button>
+    </div>
+</form>

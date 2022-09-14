@@ -1,0 +1,42 @@
+<!-- <p>all-attendee-partial works!</p> -->
+<!-- <div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px"> -->
+<div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'" [style.color]="eventDetails.headerTextColor">
+    <h5 class="modal-title">{{'All Representatives'|translate}}</h5>
+    <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+</div>
+<div class="modal-body">
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+        <thead>
+            <tr>
+                <!-- <th style="border: none;">
+                                        
+                                    </th> -->
+                <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                    {{'ProfilePicture' | translate}}
+                </th>
+                <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                    {{'Name' | translate}}
+                </th>
+                <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                    {{'Email' | translate}}
+                </th>
+                <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let item of boothRepresentativesTblData'>
+                <td style="border: none;vertical-align: middle;" [style.color]="eventDetails.sectionHeaderTextColor"><img [src]="item.eventRepresentatives.profileImage?item.eventRepresentatives.profileImage:'https://vemsimageblobstorage.blob.core.windows.net/profileimage/NoImage.png'" style="height: 50px; width: 50px;border-radius: 50px;" /></td>
+                <td style="border: none;vertical-align: middle;" [style.color]="eventDetails.sectionHeaderTextColor">{{item.eventRepresentatives.firstName}} {{item.eventRepresentatives.lastName}}</td>
+                <td style="border: none;vertical-align: middle;" [style.color]="eventDetails.sectionHeaderTextColor"> {{item.eventRepresentatives.emailAddress}}</td>
+                <td style="border: none;vertical-align: middle;text-align: center;">
+                    <i tooltip="{{'SendMessage' | translate}}" style="color: orange;cursor: pointer;" class="fa fa-commenting col-sm-2" (click)="messageToRepresentative(item,'Message')"></i>
+                    <i tooltip="{{'RequestaMeeting' | translate}}" class="fa fa-calendar  col-sm-2" aria-hidden="true" style="color: orange;cursor: pointer;" (click)="messageToRepresentative(item,'Meeting')"></i>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

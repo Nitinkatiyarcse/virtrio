@@ -1,0 +1,78 @@
+<div class="modal-dialog modal-lg" role="document" style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">{{'UserDetails'|translate}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <div class="form-group row" *ngIf="isSuperAdmin">
+                <label class="col-sm-4 col-form-label Poppins-Regular" for="Role">{{'Role' | translate}}</label>
+                <div class="col-sm-8 col-form-label Poppins-Regular">
+                    <span>{{user.userRoleName | translate}}</span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label Poppins-Regular">{{'Name' | translate}}</label>
+                <div class="col-sm-8 col-form-label Poppins-Regular">
+                    <span>{{user.name}} {{user.lastName}}</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label Poppins-Regular">{{'Email' | translate}}</label>
+                <div class="col-sm-8 col-form-label Poppins-Regular">
+                    <span>{{user.email}}</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label Poppins-Regular">{{'Active' | translate}}</label>
+                <div class="col-sm-8 col-form-label Poppins-Regular">
+                    <input class="form-check-input" style="margin-left:0px" type="checkbox" value="" disabled [checked]='user.isActive'>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label Poppins-Regular">{{'Verified' | translate}}</label>
+                <div class="col-sm-8 col-form-label Poppins-Regular">
+                    <input class="form-check-input" style="margin-left:0px" type="checkbox" value="" disabled [checked]='user.emailVerified'>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label Poppins-Regular" asp-for="@Model.CreatedDate">{{'CreatedAt' | translate}}</label>
+                <div class="col-sm-8 col-form-label Poppins-Regular">
+                    <span>{{user.createdDate | customDate}}</span>
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="isNotSuperAdmin">
+                <label class="col-sm-4 col-form-label Poppins-Regular">{{'Events' | translate}}</label>
+                <div class="col-sm-12 col-form-label Poppins-Regular">
+                    <table class="table table-hover table-striped table-bordered" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>{{'Events' | translate }}</th>
+                                <th>{{'Role' | translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of user.eventData">
+                                <td style="word-break: break-all;">
+                                    {{item.eventName}}
+                                </td>
+                                <td style="word-break: break-all;">
+                                    {{item.roleName | translate}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary  commonbtn ml-10px text-white Poppins-Regular" (click)="closeModal()">{{'Cancel' | translate}}</button>
+        </div>
+    </div>
+</div>

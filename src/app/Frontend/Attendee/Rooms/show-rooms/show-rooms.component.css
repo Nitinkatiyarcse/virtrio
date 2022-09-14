@@ -1,0 +1,233 @@
+audio::-webkit-media-controls-play-button,
+audio::-webkit-media-controls-panel {
+    /* background-color: #a0276e;
+    color: #a0276e; */
+    background-color: #161515;
+    color: #ffffff;
+}
+
+
+/* The side navigation menu */
+
+.overlay {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.sidenav {
+    height: 100vh;
+    /* 100% Full-height */
+    width: 0;
+    /* 0 width - change this with JavaScript */
+    position: absolute;
+    /* Stay in place */
+    z-index: 1000;
+    /* Stay on top */
+    top: -20px;
+    /* Stay at the left */
+    left: -20px;
+    /* Stays at the right */
+    /* right: 0; */
+    background-color: #000000;
+    color: #ffffff;
+    /* Black*/
+    overflow-x: hidden;
+    /* Disable horizontal scroll */
+    padding-top: 20px;
+    /* Place content 60px from the top */
+    transition: 0.5s;
+    /* 0.5 second transition effect to slide in the sidenav */
+    padding-left: 5px;
+    padding-right: 5px;
+    opacity: 0.8;
+}
+
+
+/* The navigation menu links */
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+
+/* When you mouse over the navigation links, change their color */
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+
+/* Position and style the close button (top right corner) */
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    font-size: 15px;
+    margin-left: 0px;
+}
+
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+
+#main {
+    transition: margin-left .5s;
+    padding: 20px;
+}
+
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+    .sidenav a {
+        font-size: 18px;
+    }
+}
+
+.isSmallerDevice {
+    display: none !important;
+}
+
+@media screen and (max-width:720px) {
+    .isSmallerDevice {
+        display: block !important;
+    }
+}
+
+.accordion-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: .875rem;
+    color: #ffffff;
+    text-align: left;
+    background-color: transparent;
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: 0;
+    overflow-anchor: none;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out, border-radius .15s ease;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #ffffff;
+    background-color: #262728;
+    /* opacity: 0.3; */
+}
+
+.sideMenuButton {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: .875rem;
+    color: #ffffff;
+    text-align: left;
+    background-color: transparent;
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: 0;
+    overflow-anchor: none;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out, border-radius .15s ease;
+}
+
+.navigationMenuHeaderItem {
+    color: #4E74BC;
+    margin-left: 10px;
+    margin-top: 12px;
+}
+
+.menuIcon {
+    margin-right: 15px;
+    margin-top: 0px;
+    height: 24px;
+    width: 24px;
+}
+
+.topMenuSlider {
+    float: right;
+    background-color: #000000;
+    border-radius: 0px 0px 5px 5px;
+    width: 100px;
+    text-align: center;
+    height: 29px;
+    padding-top: 2px;
+    color: #ffffff;
+}
+
+body {
+    background: #222;
+}
+
+::ng-deep #cometchat__widget{
+    height: auto !important;
+}
+
+::ng-deep #playlist {
+    /* display:table; */
+    overflow: auto;
+    background-color: #222;
+    border: 1px solid #ffffff;
+    list-style: none;
+    padding: 10px;
+}
+
+::ng-deep .playListItem{
+    cursor:pointer;
+    padding:8px;
+    color: #ffffff;
+    
+    border-bottom: 1px solid #000;
+
+    text-decoration: none;
+    float: left;
+    width: 100%;
+    padding: 10px;
+    color: #ffffff;
+    border-bottom: 1px solid black;
+}
+
+::ng-deep #playlist .playListItem:hover{
+    /* color:blue;   */
+    text-decoration: underline;                      
+}
+
+::ng-deep #playlist li{
+    cursor:pointer;
+    padding:8px;
+    color: #ffffff;
+    
+    border-bottom: 1px solid #000;
+}
+
+::ng-deep #playlist li:hover{
+    /* color:blue;   */
+    text-decoration: underline;                      
+}
+::ng-deep .videoarea {
+    /* float:left;
+    width:640px;
+    height:480px;
+    margin:10px;    
+    border:1px solid silver; */
+}
+
+video {
+    object-fit: fill;
+  }

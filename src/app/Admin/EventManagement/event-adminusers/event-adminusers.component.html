@@ -1,0 +1,194 @@
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'AdminUsers'| translate}}</label>
+        <div class="dropdown" style="float: right;text-align: right;margin-top:25px;">
+            <a data-bs-toggle="dropdown" class="col-sm-2">
+                <i class="fa fa-user-plus text-primary" type="button"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item Poppins-Regular" tooltip="{{'AddEventAdmin' | translate}}" data-toggle="modal" data-target="#addEventAdmin" (click)='resetFields()'>{{'AddManually'|translate}}</a>
+                <a class="dropdown-item Poppins-Regular" data-toggle="modal" data-target="#eventAdminsLoadFile" id="btnSendMessage">{{'UploadFile'|translate}}</a>
+
+            </div>
+        </div>
+        <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+    </div>
+</div>
+
+
+<div class="flex-container bg-white" id="adminUserItems" style="margin-top: 25px;padding: 20px;">
+
+    <!-- <div *ngIf='noRecordFound' class="text-danger text-center">
+        {{ 'NoRecordFound' | translate}}
+    </div> -->
+    <div *ngIf='inputEventAdminViewModel?.length>0'>
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>
+                        {{'Name' | translate}}
+                    </th>
+                    <th>
+                        {{'Email' | translate}}
+                    </th>
+                    <th>
+                        {{'Role' | translate}}
+                    </th>
+                    <th>
+                        {{'Status' | translate}}
+                    </th>
+                    <th>
+
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let item of inputEventAdminViewModel'>
+                    <td style="border: none;">{{item.firstName}} {{item.lastName}}</td>
+                    <td style="border: none;"> {{item.email}}</td>
+                    <td style="border: none;"> {{item.roleName | translate}}</td>
+                    <td style="border: none;vertical-align: middle;" [ngClass]="item.isActive?'text-success':'text-danger'" translate> {{item.isActive?'Verified' :'NotVerified' }}</td>
+                    <td style="border: none;">
+                        <div class="dropdown">
+                            <a href="#" data-bs-toggle="dropdown" class="text-muted"><i class="fa fa-gear"></i></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item Poppins-Regular" (click)="deleteEventAdmin(item.userId)" id="btnDeleteEventAdmin">{{'Delete'|translate}}</a>
+
+                                <a *ngIf="!item.isActive" class="dropdown-item Poppins-Regular" (click)="sendMessage(item.userId)" id="btnSendMessage">{{'ResendInviteEmail'|translate}}</a>
+
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- Modal Add Admin User -->
+    <div class="modal fade" id="addEventAdmin" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{'AddEventAdmin'|translate}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="Post" class="form-group" #AddEventAdminForm="ngForm">
+
+                        <!-- <div class="text-center pageHeader">
+                        <i class="fa fa-times" type="button" data-dismiss="modal" style="cursor:pointer;float:right;"></i>
+                    </div> -->
+
+
+
+                        <div class="form-group">
+                            <label class="form-lable Poppins-Regular">{{'UserRoles'| translate}}</label>
+
+                            <select *ngIf="userRoles?.length>0" class="form-select Poppins-Regular" [(ngModel)]="inputModel.roleId" required data-val="true" name="UserRoleId" (change)="checkForBoothAdmin($event)">
+                                <option value="">{{'SelectRole'| translate}} </option>
+                                <option *ngFor="let item of userRoles" value="{{item.roleId}}">
+                                    {{item.roleName| translate}}
+                                </option>
+                            </select>
+
+
+                        </div>
+
+
+                        <div class="form-group  mb-2">
+                            <label class="form-lable Poppins-Regular">{{'FirstName'| translate}}</label>
+                            <input type="text" name="FirstName" #FirstName="ngModel" [(ngModel)]="inputModel.firstName" class="form-control Poppins-Regular" value="" required maxlength="30" />
+                            <!-- <span *ngIf="FirstName.invalid && FirstName.touched" class="error">{{'FirstNameRequired'| translate}}</span> -->
+                        </div>
+
+                        <div class="form-group  mb-2">
+                            <label class="form-lable Poppins-Regular">{{'LastName'| translate}}</label>
+                            <input type="text" name="LastName" #LastName="ngModel" [(ngModel)]="inputModel.lastName" class="form-control Poppins-Regular" value="" required maxlength="30" />
+                            <!-- <span *ngIf="LastName.invalid && LastName.touched" class="error">{{'LastNameRequired'| translate}}</span> -->
+                        </div>
+
+
+                        <div class="form-group  mb-2">
+                            <label class="form-lable Poppins-Regular">{{'Email'| translate}}</label>
+                            <input email name="email" #Email="ngModel" [(ngModel)]="inputModel.emailAddress" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" class="form-control Poppins-Regular" type="email" required maxlength="70" />
+                            <!-- <span *ngIf="Email.invalid && Email.touched" class="error">{{'InvalidEmail'| translate}}</span> -->
+                        </div>
+
+
+                        <div class="form-group  mb-2" *ngIf="isBoothAdmin" required>
+                            <label class="form-lable Poppins-Regular">{{'SelectRoom'| translate}}</label>
+                            <!-- <select class="form-select Poppins-Regular">
+                            <option value="">{{'PleaseSelect' | translate}}</option>
+                            <option *ngFor="let item of allRooms" value="{{item.roomId}}">{{item.name}}</option>
+                        </select> -->
+
+                            <ng-multiselect-dropdown name="Rooms" #Language [placeholder]="'PleaseSelect'| translate" [required]='requiredField' [settings]="dropdownSettings" style="background-color: #fff;" [data]="allRooms" [(ngModel)]="selectedRooms" [ngClass]='setClass()'>
+                            </ng-multiselect-dropdown>
+
+                        </div>
+
+
+
+
+                        <div class="" style="text-align: right;">
+
+                        </div>
+
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnaddeventadmin" [disabled]="AddEventAdminForm.invalid" class="commonbtn btn btn-primary col-sm-5" (click)="addEventAdmin()">
+                        {{'Save'|translate }}
+                    </button>
+                    <button type="button" class="commonbtn btn  btn-primary  text-white  col-sm-5" style="margin-left: 20px;" data-dismiss="modal">
+                        {{'Cancel' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Model For Load FIle of Email Address -->
+    <div class="modal fade" id="eventAdminsLoadFile" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{'UploadCSVFile'|translate}}</h5>
+                    <a href="{{eventAdminUploadSampleFilePath}}" target="_blank">
+                        <i class="fa fa-info-circle" style="margin-left:20px;cursor:pointer;" tooltip="{{'ClickToDownloadSampleFile' | translate}}"></i></a>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="Post" class="form-group" #eventAdminsLoadFileForm="ngForm">
+                        <div class="form-group row">
+                            <div class="col-sm-12" style="margin-left: 30px;padding-top:15px !important">
+
+                                <input type="file" class="form-control-file" #eventAdminsLoadFileControl name="eventAdminsLoadFileControl" id="eventAdminsLoadFileControl" (change)="changeUplaodEventAdminFile($event.target.files)">
+
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="eventAdminsLoadFileUploadBtn" (click)="uplaodEventAdmins()" class="commonbtn btn btn-primary col-sm-5" (click)="addEventAdmin()">
+                        {{'Save'|translate }}
+                    </button>
+                    <button #eventAdminsLoadFileCloseBtn type="button" class="commonbtn btn  btn-primary  text-white  col-sm-5" style="margin-left: 20px;" data-dismiss="modal">
+                        {{'Cancel' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>

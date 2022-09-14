@@ -1,0 +1,65 @@
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'BroadcastMessage'| translate}}</label>
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2" routerLink="../../broadcast/{{eventId}}">
+            <i class="fa fa-plus text-primary" type="button" tooltip="{{'Add' | translate}}" style=" -webkit-transform: scaleX(-1);  transform: scaleX(-1);"></i>
+        </a>
+        <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+    </div>
+</div>
+
+
+<div class="flex-container bg-white" id="representativeItems" style="margin-top: 25px;padding: 20px;">
+
+    <div *ngIf='noRecordFound' class="text-danger text-center">
+        {{ 'NoRecordFound' | translate}}
+    </div>
+    <div *ngIf='!noRecordFound'>
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+            <thead>
+                <tr>
+                    <th style="border: none;">
+                        {{'Title' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'RegistrationSet' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'SendNow/SendLater' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'Status' | translate}}
+                    </th>
+
+                    <th style="border: none;">
+
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let item of messageData'>
+                    <td style="border: none;vertical-align: middle;">{{item.broadcastMessageTitle}}</td>
+                    <td style="border: none;vertical-align: middle;"> {{item.eventRegistrationSets.name}}</td>
+                    <td style="border: none;vertical-align: middle;"> {{item.sendNow?'Send Now':'Send Later'}}</td>
+                    <td style="border: none;vertical-align: middle;">
+                        {{!item.stopSendingMessage && item.sendLater?'Running':'Stopped'}}
+                    </td>
+                    <td style="border: none;vertical-align: middle;text-align: center;">
+                        <div class="dropdown">
+                            <a href="#" data-bs-toggle="dropdown" class="text-muted"><i class="fa fa-gear"></i></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item Poppins-Regular" (click)="getMessageDetails(item)" id="btnDetails">{{'Details'|translate}}</a>
+                                <a *ngIf="item.sendNow" class="dropdown-item Poppins-Regular" (click)="duplicateMessage(item)" id="btnResend" style="cursor:pointer">{{'Duplicate' | translate}}</a>
+                                <!-- <a *ngIf="item.stopSendingMessage && item.sendLater" class="dropdown-item Poppins-Regular" (click)="startMessage(item)" id="btnStart" style="cursor:pointer">{{'Start' | translate}}</a>
+                                <a *ngIf="!item.stopSendingMessage  && item.sendLater" class="dropdown-item Poppins-Regular" (click)="stopMessage(item)" id="btnStop" style="cursor:pointer">{{'Stop' | translate}}</a> -->
+                                <a *ngIf="item.isActive && item.sendLater" class="dropdown-item Poppins-Regular" (click)="deleteMessage(item)" id="btnDelete" style="cursor:pointer">{{'Delete' | translate}}</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

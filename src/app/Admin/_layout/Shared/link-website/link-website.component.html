@@ -1,0 +1,61 @@
+<div class="modal-dialog modal-lg" role="document" style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-content">
+        <form class="form-group" #LinkToWebsiteForm="ngForm">
+            <div class="modal-header">
+                <h5 class="modal-title">{{'AddExternalUrl'|translate}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- <div class="form-group  mb-2" style="float: right;">
+                <i class="fa fa-plus" tooltip="{{'Add' | translate}}" (click)='AddNewExternalUrl()'></i>
+            </div> -->
+                <div *ngIf="linkWebsite.length>0">
+                    <div *ngFor="let item of linkWebsite; let i=index">
+                        <div class="form-group row">
+                            <div class="col-sm-1">
+                                <label class="form-lable Poppins-Regular "
+                                    style="margin-top:5px;margin-right:10px">{{'Name'| translate}}</label>
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" name="item_name_{{i}}" id="item_name_{{i}}" [(ngModel)]="item.name"
+                                    class="form-control Poppins-Regular" value="" required maxlength="30" />
+                            </div>
+                            <div class="col-sm-1">
+                                <label class="form-lable  Poppins-Regular"
+                                    style="margin-top:5px;margin-right:10px">{{'Link'| translate}}</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" pattern="https?://.+" placeholder="{{'SocialMediaURL' | translate}}"
+                                    name="item_link_{{i}}" id="item_link_{{i}}" [(ngModel)]="item.location"
+                                    class="form-control  Poppins-Regular" value="" required maxlength="120" />
+                            </div>
+
+                            <!-- <div class="col-sm-1">
+                            <i class="fa fa-trash" (click)="deleteElement(i)"></i>
+                        </div> -->
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2">{{'Type' | translate}}</div>
+                            <div class="col-sm-10">
+                                <input type="radio" style="margin-left: 0px;" class="form-radio-inline mr-20px" name="type" id="iFrame" [(ngModel)]="item.type" value="iFrame">
+                                <label class="form-radio-label  Poppins-Regular" for="English">{{'InIFrame' | translate}}</label>
+
+                                <input type="radio" style="margin-left:20px;" class="form-radio-inline mr-20px" name="type" id="anotherWindow" [(ngModel)]="item.type" value="anotherWindow">
+                                <label class="form-radio-label  Poppins-Regular" for="English">{{'AnotherWindow' | translate}}</label>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary commonbtn Poppins-Regular"
+                    [disabled]="LinkToWebsiteForm.invalid" (click)="AddExternalUrl()">{{'Save' | translate}}</button>
+                <button type="button" class="btn btn-primary  commonbtn ml-10px text-white Poppins-Regular"
+                    (click)="closeModal()">{{'Cancel' | translate}}</button>
+            </div>
+        </form>
+    </div>
+</div>

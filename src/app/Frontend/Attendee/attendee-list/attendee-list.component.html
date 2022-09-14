@@ -1,0 +1,152 @@
+<div class="row bg-white h-100 ml-20px mr-20px">
+    <div class="row" style="padding:20px 20px 0px 20px">
+        <div class="col-sm-4 mt-10px">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <a style="cursor:pointer" id="btnSearch">
+                            <i class="fa fa-search"></i>
+                        </a>
+                    </div>
+                </div>
+                <input type="text" style="border-left: none;" class="form-control Poppins-Regular" placeholder="{{'SearchByEventNameClientName'| translate}}" name="SearchByNameEmail" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" name="txtSearch" (change)='getSearchedList()'>
+            </div>
+        </div>
+        <div class="col-sm-4 mt-10px">
+            <select class="form-select" id="ddlSorting" name="ddlSorting" name="SortString" (change)='getSearchedList()'>
+                <option value="">{{'Sortby'| translate}}</option>
+                <option value="Name_Asc">{{'NameAsc'| translate}}</option>
+                <option value="Name_Desc">{{'NameDesc'| translate}}</option>
+                <option value="ClientName_Asc">{{'ClientName_Asc'| translate}}</option>
+                <option value="ClientName_Desc">{{'ClientName_Desc'| translate}}</option>
+                <option value="Created_Asc">{{'CreatedDateAsc'| translate}}</option>
+                <option value="Created_Desc">{{'CreatedDateDesc'| translate}}</option>
+                <option value="EventStartDate_Asc">{{'EventStartDate_Asc'| translate}}</option>
+                <option value="EventStartDate_Desc">{{'EventStartDate_Desc'| translate}}</option>
+                <option value="EventEndDate_Asc">{{'EventEndDate_Asc'| translate}}</option>
+                <option value="EventEndDate_Desc">{{'EventEndDate_Desc'| translate}}</option>
+            </select>
+        </div>
+        <div class="col-sm-4 mt-10px">
+            <select class="form-select" id="ddlFiterBy" name="FilterString" (change)='getSearchedList()'>
+                <option value="">{{'Filter'| translate}}</option>
+            </select>
+        </div>
+        <div class="bottom-0 inline-block row ">
+            <div class="text-text-lightBlack  text-center dispay-flex  col-sm-12 mt-30px" style="margin-bottom: -8px;">
+                <label class="Poppins-Regular fs-16px ml-20px">24 Sep</label>
+                <label class="Poppins-Regular fs-16px ml-20px selected">26 Sep</label>
+                <label class="Poppins-Regular fs-16px ml-20px">27 Sep</label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-30px ml-20px mr-20px mb-30px">
+    <div class="col-sm-12 float-left mt-10px ">
+        <div class="col-sm-3 float-left">
+            <div class="card">
+                <div class="col-sm-12 text-center mt-20px">
+                    <img class="card-img-top rounded-circle" src="../../../../assets/Images/agenda1.png" alt="Card image cap" style="height: 100px;width: 100px;">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 float-left mt-10px">
+            <div class="card">
+                <div class="col-sm-12 text-center mt-20px">
+                    <img class="card-img-top rounded-circle" src="../../../../assets/Images/agenda1.png" alt="Card image cap" style="height: 100px;width: 100px;">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 float-left mt-10px">
+            <div class="card">
+                <div class="col-sm-12 text-center mt-20px">
+                    <img class="card-img-top rounded-circle" src="../../../../assets/Images/agenda1.png" alt="Card image cap" style="height: 100px;width: 100px;">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4 float-left">
+            <div class="card">
+                <img class="card-img-top" src="../../../../assets/Images/agenda1.png" alt="Card image cap" style="height: 200px;width: auto;">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 float-left mt-10px">
+            <div class="card">
+                <img class="card-img-top" src="../../../../assets/Images/agenda2.jpeg" alt="Card image cap" style="height: 200px;width: auto;">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 float-left mt-10px">
+            <div class="card">
+                <div class="col-sm-12 text-center mt-20px">
+                    <img class="card-img-top rounded-circle" src="../../../../assets/Images/agenda1.png" alt="Card image cap" style="height: 100px;width: 100px;">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4 float-left">
+            <div class="card">
+                <div class="col-sm-12 text-center mt-20px">
+                    <img class="card-img-top rounded-circle" src="../../../../assets/Images/agenda1.png" alt="Card image cap" style="height: 100px;width: 100px;">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 float-left mt-10px">
+            <div class="card">
+                <img class="card-img-top" src="../../../../assets/Images/agenda2.jpeg" alt="Card image cap" style="height: 200px;width: auto;">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 float-left mt-10px">
+            <div class="card">
+                <div class="col-sm-12 text-center mt-20px">
+                    <img class="card-img-top rounded-circle" src="../../../../assets/Images/agenda1.png" alt="Card image cap" style="height: 100px;width: 100px;">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

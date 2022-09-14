@@ -1,0 +1,72 @@
+<div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'" [style.color]="eventDetails.headerTextColor">
+    <h5 class="modal-title">{{boothDetails.rooms.name}}</h5>
+    <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+</div>
+<div class="modal-body" [style.color]="eventDetails.sectionHeaderTextColor">
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="row">
+                <div class="col-sm-2">
+                    <img [src]="boothDetails.rooms.boothLogo?boothDetails.rooms.boothLogo:'https://vemsimageblobstorage.blob.core.windows.net/profileimage/NoImage.png'" height="81" width="81" /><br>
+                </div>
+                <div class="col-sm-10">
+                    <div class="Poppins-SemiBold" [style.color]="eventDetails.uiAccentColor">
+                        {{boothDetails.rooms.name}}
+                    </div>
+                    <div class="Poppins-Regular">
+                        {{boothDetails.rooms.roomDesc}}
+                    </div>
+                </div>
+                <div class="col-sm-12 text-center mt-20px" *ngIf="boothDetails.rooms.events.eventBrochure">
+                    <!-- <a style="cursor: pointer;" *ngIf="isLoggedIn"
+                            class="linkBtnOrange col-sm-3">{{'RequestaMeeting' | translate}}</a> -->
+                    <a [style.color]="eventDetails.sectionHeaderTextColor" href="{{boothDetails.rooms.events.eventBrochure}}" target="_blank" style="cursor: pointer;" class="linkBtnOrangeFrontEnd col-sm-3">{{'DownloadBroucher' |
+                            translate}}</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div *ngIf="((!isLoggedIn && manageRegistrationPage.viewotherattendeesboothrepresentativesbeforeregistration) ||((isLoggedIn && manageRegistrationPage.viewotherattendeesboothrepresentativesafterregistration)))">
+
+                <div class="text-center Poppins-SemiBold mb-10px" [style.color]="eventDetails.uiAccentColor">
+                    {{'BoothRepresentatives' | translate}}
+                </div>
+                <table cellspacing="0" class="table table-bordered" cellspacing="0">
+                    <tbody>
+                        <tr *ngFor="let items of repDetalis">
+                            <td style="border: none;vertical-align: middle;width:25%">
+                                <img style="border-radius: 24px;" [src]="items.profileImage?items.profileImage:'https://vemsimageblobstorage.blob.core.windows.net/profileimage/NoImage.png'" height="24" width="24" /><br>
+                            </td>
+                            <td style="border: none;vertical-align: middle;width:50%">
+                                {{items.firstName}} {{items.lastName}}
+                            </td>
+                            <td style="border: none;vertical-align: middle;width:25%">
+                                <i *ngIf="manageRegistrationPage.leavemessageforboothreps" tooltip="{{'SendMessage' | translate}}" [style.color]="eventDetails.headerTextColor" class="fa fa-commenting col-sm-2" role="button" (click)="messageToRepresentative(items,'Message')"></i>
+                                <i *ngIf="isLoggedIn && manageRegistrationPage.requestforameetingsetupwithboothrepresentativesinterviewsscreeningetc" tooltip="{{'RequestaMeeting' | translate}}" class="fa fa-calendar  col-sm-2" role="button" aria-hidden="true" [style.color]="eventDetails.headerTextColor"
+                                    (click)="messageToRepresentative(items,'Meeting')"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div style="height: 5px;padding: 0px !important;margin-bottom: 10px;background: #f6f7fa;"></div>
+        <div class="text-center Poppins-SemiBold mb-10px col-sm-12" [style.color]="eventDetails.uiAccentColor">
+            {{'BoothSponsors' | translate}}
+        </div>
+        <div class="col-sm-2" *ngFor="let sponItem of boothDetails.eventSponsors">
+            <img style="border-radius: 81px;" [src]="sponItem.profileImage?sponItem.profileImage:'https://vemsimageblobstorage.blob.core.windows.net/profileimage/NoImage.png'" height="81" width="81" /><br> {{sponItem.firstName}} {{sponItem.lastName}}
+        </div>
+
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" class="btn  btnOrangeFrontEnd" style="margin-left: 20px;" data-dismiss="modal" (click)="closeModal()">
+            {{'Close' | translate}}
+        </button>
+
+</div>

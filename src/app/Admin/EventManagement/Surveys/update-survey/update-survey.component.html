@@ -1,0 +1,279 @@
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'NewSurvey'| translate}}</label>
+
+        <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+    </div>
+</div>
+
+<form class="form-group needs-validation mt-4 p-4 h-100 bg-white p-15px" #SurveysForm="ngForm">
+
+    <div class="mb-3 row">
+        <label for="SurveyLevel" class="col-sm-3 col-form-label Poppins-Regular">{{'SurveyLevel'|translate}}</label>
+        <div class="col-sm-9">
+            <select class="form-select Poppins-Regular" required #SurveyLevel="ngModel" [(ngModel)]="inputCreateSurveyModel.surveys.surveyLevel" name="surveyLevel">
+                <option value="">{{'PleaseSelect' | translate}}</option>
+                <option *ngIf="isBoothAdmin" value="EventLevel">{{'EventLevel' | translate}}</option>
+                <option value="BoothLevel">{{'BoothLevel' | translate}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="surveytitle" class="col-sm-3 col-form-label Poppins-Regular">{{'SurveyTitle'|translate}}</label>
+        <div class="col-sm-9">
+            <textarea class="form-control Poppins-Regular" placeholder="{{'SurveyTitle'|translate}}" required #surveytitle="ngModel" [(ngModel)]="inputCreateSurveyModel.surveys.title" name="surveytitle"></textarea>
+        </div>
+    </div>
+
+    <div class="mb-3 row mt-30px">
+        <label for="surveyques" class="col-sm-3 col-form-label Poppins-Regular">{{'Whendoyouwanttoshowsurvey'|translate}}</label>
+        <div class="col-sm-9">
+            <div class="form-check" *ngFor="let item of surveysEvents; let surveysEventsIndex=index;">
+                <input [checked]="inputCreateSurveyModel.surveys.surveyShowEventId==item.surveyShowEventId" type="radio" value="{{item.surveyShowEventId}}" id="{{item.surveyShowEventId}}" (change)="selectSurveyShowEvent($event,item.surveyShowEventId)" class="form-check-input"
+                    name="surveyShowEventId">
+                <label class="form-check-label Poppins-Regular" for="{{item.surveyShowEventId}}">{{item.surveysShowEventTitle|translate}}</label>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="mb-3 row  mt-30px">
+        <label for="surveyques" class="col-sm-3 col-form-label Poppins-Regular">{{'Istheserveymandatory'|translate}}</label>
+        <div class="col-sm-9" style="display: inline-block;">
+            <div style="float: left;">
+                <div class="form-check">
+                    <input type="radio" value="true" id="no" class="form-check-input" name="IsRequired" [checked]="inputCreateSurveyModel.surveys.isRequired==false" (click)="isSurveyRequired(false)">
+                    <label class="form-check-label Poppins-Regular" for="no">{{'No'|translate}}</label>
+                </div>
+            </div>
+            <div style="margin-left: 50px; float: left;">
+                <div class="form-check ">
+                    <input type="radio" value="false" id="yes" class="form-check-input" name="IsRequired" (click)="isSurveyRequired(true)" [checked]="inputCreateSurveyModel.surveys.isRequired==true">
+                    <label class="form-check-label Poppins-Regular" for="yes">{{'Yes'|translate}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="mb-3 row  mt-30px">
+        <label for="surveyques" class="col-sm-3 col-form-label Poppins-Regular">{{'TotalQuestions'|translate}}</label>
+        <div class="col-sm-9" style="display: inline-block;">
+            <label for="surveyques" class="col-sm-3 col-form-label Poppins-Regular">{{inputCreateSurveyModel.questions.length}}</label>
+        </div>
+    </div>
+
+
+    <!-- <div *ngFor="let question of inputCreateSurveyModel.questions; let i=index;">
+        <div class="mb-3 row mt-30px mb-30px">
+            <label for="surveyquestion" style="float: left;"
+                class="col-sm-3 col-form-label Poppins-SemiBold">{{'Question '|translate}} {{i+1}}</label>
+            <div class="col-sm-9" style="float: left;">
+                <a style="float: left;" tooltip="{{'Delete' | translate}}" (click)="deleteQuestion(i)"><i
+                        class="fa fa-trash"></i></a>
+            </div>
+        </div>
+        <div class="mb-3 row mt-30px">
+            <label for="surveyquestion" class="col-sm-3 col-form-label Poppins-Regular">{{'Question'|translate}}</label>
+            <div class="col-sm-9">
+                <textarea class="form-control Poppins-Regular" rows="4" cols="5" #value="ngModel" required
+                   [(ngModel)]="question.question"  id="question_{{i}}" name="question_{{i}}">{{question.question}}</textarea>
+                   <input type="hidden" [(ngModel)]="question.questionId" name="QuestionId" #QuestionId />
+            </div>
+        </div>
+
+        <div class="mb-3 row mt-30px">
+            <label for="surveyquestion"
+                class="col-sm-3 col-form-label Poppins-Regular">{{'Question  Type'|translate}}</label>
+            <div class="col-sm-9">
+                <div *ngFor="let questionType of surveyQuestionTypes; let qustionTypeIndex=index;"
+                    style="float: left;margin-right: 50px;">
+                    <div class="form-check form-check-inline">
+                        <input type="radio" value="{{questionType.surveyQuestionTypeId}}" [checked]="questionType.surveyQuestionTypeId==question.questionType"
+                            (click)="selectQuestionType(i,questionType.surveyQuestionType,questionType.surveyQuestionTypeId)"
+                            id="{{questionType.surveyQuestionTypeId}}" style="margin-top: 12px;padding: 0px;" 
+                            class="form-check-input" name="questionType_{{i}}">
+                        <label class="form-check-label  Poppins-Regular" style="margin-left: 0px;margin-top: 10px"
+                            >{{questionType.surveyQuestionType|translate}}</label>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="mb-3 row mt-30px" *ngIf="question.isChoice">
+            <label for="surveyquestion" class="col-sm-3 col-form-label Poppins-Regular">{{'Choices'|translate}}</label>
+            <div class="col-sm-9 row">
+                <div class="row mb-10px" *ngFor="let questionChoice of question.choices; let questionChoiceIndex=index;">
+                    <div class="col-sm-10">
+                        <div>
+                            <input type="text" required id="questionChoice_{{questionChoiceIndex}}" [(ngModel)]="questionChoice.choice" name="questionChoice_{{questionChoiceIndex}}" class="form-control" placeholder="Choice {{questionChoiceIndex+1}}"  maxlength="80"  />
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <a style="float: left;" tooltip="{{'Delete' | translate}}"
+                            (click)="deleteChoice(i,questionChoiceIndex)"><i class="fa fa-trash"></i></a>
+                    </div>
+                  
+                </div>
+                <label for="addChoice" class="col-sm-6 col-form-label text-danger Poppins-SemiBold"
+                (click)="addChoice(i)">{{'AddChoice'|translate}}</label>
+            </div>
+           
+        </div>
+
+<hr>
+
+    </div> -->
+
+    <div class="mb-3 row">
+
+
+        <label for="addquestion" class="col-sm-6 col-form-label text-danger Poppins-SemiBold" data-toggle="modal" data-target="#addUpdateQuestion" (click)="addQuestion()">{{'AddQuestion'|translate}}</label>
+    </div>
+
+    <div class="mb-3 row">
+        <div class="col-sm-12">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th style="border: none;">
+                            {{'Question' | translate}}
+                        </th>
+                        <th style="border: none;">
+                            {{'QuestionType' | translate}}
+                        </th>
+                        <th style="border: none;">
+                            {{'Choices' | translate}}
+                        </th>
+                        <th style="border: none;">
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let question of inputCreateSurveyModel.questions; let i=index;">
+                        <td style="border: none;">
+                            {{question.question}}
+                        </td>
+                        <td style="border: none;">
+                            <div *ngFor="let questionType of surveyQuestionTypes; let qustionTypeIndex=index;">
+                                <label *ngIf="questionType.surveyQuestionTypeId==question.questionType" class="form-check-label  Poppins-Regular">{{questionType.surveyQuestionType|translate}}</label>
+                            </div>
+                        </td>
+                        <td style="border: none;">
+                            <div class="mb-3 row mt-30px" *ngIf="question.isChoice">
+                                <div class="row mb-10px" *ngFor="let questionChoice of question.choices; let questionChoiceIndex=index;">
+                                    <label class="Poppins-Regular">
+                                        {{questionChoice.choice}}
+                                    </label>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="border: none;">
+                            <div class="dropdown">
+                                <a href="#" data-bs-toggle="dropdown" class="text-muted"><i class="fa fa-gear"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item Poppins-Regular" id="btnDelete" style="cursor: pointer;" (click)="deleteQuestion(i)"><i class="fa fa-trash mr-10px"
+                                            tooltip="{{'Delete'|translate}}"></i>{{'Delete'|translate}}</a>
+                                    <a class="dropdown-item Poppins-Regular" style="cursor: pointer;" id="btnUpdate" data-toggle="modal" data-target="#addUpdateQuestion" (click)="updateQuestion(i,question)"><i class="fa fa-pencil-square  mr-10px"
+                                            tooltip="{{'Update'|translate}}"></i>{{'Update'|translate}}</a>
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <div class="mb-3 row">
+        <input type="hidden" [(ngModel)]="inputCreateSurveyModel.surveys.createdBy" name="CreatedBy" #CreatedBy />
+        <input type="hidden" [(ngModel)]="inputCreateSurveyModel.surveys.modifiedBy" name="ModifiedBy" #ModifiedBy />
+        <input type="hidden" [(ngModel)]="inputCreateSurveyModel.surveys.surveyId" name="SurveyId" #SurveyId />
+        <input type="hidden" [(ngModel)]="inputCreateSurveyModel.surveys.eventId" name="EventId" #EventId />
+        <div class="col-sm-12 text-right">
+            <button type="save" (click)="saveSurvey()" [disabled]="SurveysForm.invalid" class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 Poppins-Regular">{{'Save' |
+                translate}}</button>
+
+            <a data-dismiss="modal" [routerLink]="['/admin/events/Surveylist',eventId]" routerLinkActive="router-link-active" class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 ml-20px text-white">{{'Cancel'
+                | translate}}</a>
+
+        </div>
+
+    </div>
+
+</form>
+
+
+<!-- Modal Add/Update Survey -->
+<div class="modal fade" id="addUpdateQuestion" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{'UpdateQuestion'|translate}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="Post" class="form-group" #AddWhitelistDomainForm="ngForm">
+                    <div class="mb-3 row mt-30px">
+                        <label for="surveyquestion" class="col-sm-3 col-form-label Poppins-Regular">{{'Question'|translate}}</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control Poppins-Regular" rows="4" cols="5" #value="ngModel" required [(ngModel)]="question.question" id="question" name="question">{{question.question}}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row mt-30px">
+                        <label for="surveyquestion" class="col-sm-3 col-form-label Poppins-Regular">{{'QuestionType'|translate}}</label>
+                        <div class="col-sm-9">
+                            <div *ngFor="let questionType of surveyQuestionTypes; let qustionTypeIndex=index;" style="float: left;margin-right: 50px;">
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" [checked]="question.questionType==questionType.surveyQuestionTypeId" (click)="selectQuestionType(questionType.surveyQuestionType,questionType.surveyQuestionTypeId)" id="{{questionType.surveyQuestionTypeId}}" style="margin-top: 12px;padding: 0px;"
+                                        class="form-check-input" name="questionType_{{i}}">
+                                    <label class="form-check-label  Poppins-Regular" style="margin-left: 0px;margin-top: 10px">{{questionType.surveyQuestionType|translate}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 row mt-30px" *ngIf="question.isChoice">
+                        <label for="surveyquestion" class="col-sm-3 col-form-label Poppins-Regular">{{'Choices'|translate}}</label>
+                        <div class="col-sm-9 row">
+                            <div class="row mb-10px" *ngFor="let questionChoice of question.choices| slice:0:6; let questionChoiceIndex=index;">
+                                <div class="col-sm-10">
+                                    <div>
+                                        <input type="text" required id="questionChoice_{{questionChoiceIndex}}" [(ngModel)]="questionChoice.choice" name="questionChoice_{{questionChoiceIndex}}" class="form-control" placeholder="Choice {{questionChoiceIndex+1}}" maxlength="80" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div *ngIf="questionChoiceIndex!==0" class="col-sm-1" style="padding-top: 10px;">
+                                        <a style="float: left;" tooltip="{{'Delete' | translate}}" (click)="deleteChoice(questionChoiceIndex)"><i class="fa fa-trash"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <label [ngStyle]="{
+                                'display': addedChoice <5 ? 'block' : 'none'
+                              }" for="addChoice" class="col-sm-6 col-form-label text-danger Poppins-SemiBold" (click)="addChoice()">{{'AddChoice'|translate}}</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="save" (click)="saveQuestion()" [disabled]="AddWhitelistDomainForm.invalid" id="btnadddomianname" class="btn btn-primary commonbtn Poppins-Regular" data-dismiss="modal">
+                    {{'Save'|translate }}
+                </button>
+                <button type="button" #popupCloseBtn class=" btn  btn-primary  text-white commonbtn" style="margin-left: 20px;" data-dismiss="modal" (click)='closeModal()'>
+                    {{'Cancel' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

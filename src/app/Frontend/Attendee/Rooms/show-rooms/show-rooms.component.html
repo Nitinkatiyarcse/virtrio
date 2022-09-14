@@ -1,0 +1,1471 @@
+<div *ngIf="roomDesignDetails.selectedRoomTemplates" class="dvBoundry" style="height: 100vh;">
+    <img [attr.src]="roomDesignDetails.selectedRoomTemplates.roomTemplateUrl"
+        style="position: absolute;height: auto;width: 100%;" />
+    <!-- Image section -->
+    <!-- start -->
+    <div *ngIf="boothImageArr?.length>0">
+        <div style="position: absolute;" *ngFor="let imgItem of boothImageArr;let i=index">
+            <!-- Bind Click to action event -->
+            <!-- if click action is  selected -->
+            <!-- Start -->
+            <div *ngIf="imgItem.selectedAction!==''">
+                <!-- Add To Chat Queue Section -->
+                <div *ngIf="imgItem.selectedAction=='addToChatQueue'">
+                    <a (click)="openAddToChatQueuePopup(imgItem.clickAction[0].addToChatQueue)">
+                        <ngb-carousel [showNavigationArrows]="false" tooltip="{{imgItem.shortDescription}}"
+                            *ngIf="imgItem.isSlider" id="imgSlider_{{i}}" [interval]="imgItem.transitionTime" cdkDrag
+                            [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition"
+                            [showNavigationIndicators]="false" [ngStyle]="{'width': imgItem.bannerImageWidth+'px'}">
+                            <ng-template ngbSlide *ngFor="let slideimg of imgItem.imageUrl">
+                                <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                    (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                    [attr.width]="imgItem.bannerImageWidth+'px'">
+                            </ng-template>
+                        </ngb-carousel>
+                        <img tooltip="{{imgItem.shortDescription}}" *ngIf="!imgItem.isSlider"
+                            (click)="logAttendeeClicks($event,'image',imgItem.bannerImageSrc)"
+                            [src]="imgItem.bannerImageSrc" id="bannerImage_{{i}}" name="bannerImage_{{i}}"
+                            [attr.height]="imgItem.bannerImageHeight+'px'" [attr.width]="imgItem.bannerImageWidth+'px'"
+                            cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition" />
+                    </a>
+                </div>
+
+                <!-- Link to content -->
+                <!-- <div *ngIf="imgItem.selectedAction=='linkContent'">
+                    <a data-toggle="modal" data-target="#linkContentModal"
+                        (click)="fillDataForLinkToContent(imgItem.clickAction[0].linkContent)">
+                        <ngb-carousel [showNavigationArrows]="false" tooltip="{{imgItem.shortDescription}}" *ngIf="imgItem.isSlider"
+                            id="imgSlider_{{i}}" [interval]="imgItem.transitionTime" cdkDrag [cdkDragDisabled]="true"
+                            [cdkDragFreeDragPosition]="imgItem.dragPosition" [showNavigationIndicators]="false"
+                            [ngStyle]="{'width': imgItem.bannerImageWidth+'px'}">
+                            <ng-template ngbSlide *ngFor="let slideimg of imgItem.imageUrl">
+                                <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                    (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                    [attr.width]="imgItem.bannerImageWidth+'px'">
+                            </ng-template>
+                        </ngb-carousel>
+                        <img tooltip="{{imgItem.shortDescription}}" *ngIf="!imgItem.isSlider"
+                            (click)="logAttendeeClicks($event,'image',imgItem.bannerImageSrc)"
+                            [src]="imgItem.bannerImageSrc" id="bannerImage_{{i}}" name="bannerImage_{{i}}"
+                            [attr.height]="imgItem.bannerImageHeight+'px'" [attr.width]="imgItem.bannerImageWidth+'px'"
+                            cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition" />
+                    </a>
+                </div> -->
+                <div *ngIf="imgItem.selectedAction=='linkContent'">
+                    <a data-toggle="modal" data-target="#linkContentModal"
+                        (click)="fillDataForLinkToContent(imgItem.clickAction[0].linkContent)">
+                        <ngb-carousel tooltip="{{imgItem.shortDescription}}" *ngIf="imgItem.isSlider"
+                            id="imgSlider_{{i}}" [interval]="imgItem.transitionTime" cdkDrag [cdkDragDisabled]="true"
+                            [cdkDragFreeDragPosition]="imgItem.dragPosition" [showNavigationIndicators]="false"
+                            [showNavigationArrows]="false" [ngStyle]="{'width': imgItem.bannerImageWidth+'px'}">
+                            <ng-template ngbSlide *ngFor="let slideimg of imgItem.imageUrl">
+                                <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                    (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                    [attr.width]="imgItem.bannerImageWidth+'px'">
+                            </ng-template>
+                        </ngb-carousel>
+                        <img tooltip="{{imgItem.shortDescription}}" *ngIf="!imgItem.isSlider"
+                            (click)="logAttendeeClicks($event,'image',imgItem.bannerImageSrc)"
+                            [src]="imgItem.bannerImageSrc" id="bannerImage_{{i}}" name="bannerImage_{{i}}"
+                            [attr.height]="imgItem.bannerImageHeight+'px'" [attr.width]="imgItem.bannerImageWidth+'px'"
+                            cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition" />
+                    </a>
+                </div>
+
+                <!-- Link To Location -->
+                <div *ngIf="imgItem.selectedAction=='linkLocation'">
+                    <a [attr.href]="eventLocationUrl+imgItem.clickAction[0].linkLocation[0].location+'/'+eventId">
+                        <ngb-carousel [showNavigationArrows]="false" tooltip="{{imgItem.shortDescription}}"
+                            *ngIf="imgItem.isSlider" [showNavigationIndicators]="false" id="imgSlider_{{i}}"
+                            [interval]="imgItem.transitionTime" cdkDrag [cdkDragDisabled]="true"
+                            [cdkDragFreeDragPosition]="imgItem.dragPosition"
+                            [ngStyle]="{'width': imgItem.bannerImageWidth+'px'}">
+                            <ng-template ngbSlide *ngFor="let slideimg of imgItem.imageUrl">
+                                <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                    (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                    [attr.width]="imgItem.bannerImageWidth+'px'">
+                            </ng-template>
+                        </ngb-carousel>
+                        <img tooltip="{{imgItem.shortDescription}}" *ngIf="!imgItem.isSlider"
+                            (click)="logAttendeeClicks($event,'image',imgItem.bannerImageSrc)"
+                            [src]="imgItem.bannerImageSrc" id="bannerImage_{{i}}" name="bannerImage_{{i}}"
+                            [attr.height]="imgItem.bannerImageHeight+'px'" [attr.width]="imgItem.bannerImageWidth+'px'"
+                            cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition" />
+                    </a>
+                </div>
+
+
+                <!-- Link To Leaderboard -->
+                <div *ngIf="imgItem.selectedAction=='linktoLeaderboard'">
+                    <a data-toggle="modal" data-target="#leaderboardModal">
+                        <ngb-carousel [showNavigationArrows]="false" tooltip="{{imgItem.shortDescription}}"
+                            *ngIf="imgItem.isSlider" id="imgSlider_{{i}}" [interval]="imgItem.transitionTime" cdkDrag
+                            [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition"
+                            [showNavigationIndicators]="false" [ngStyle]="{'width': imgItem.bannerImageWidth+'px'}">
+                            <ng-template ngbSlide *ngFor="let slideimg of imgItem.imageUrl">
+                                <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                    (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                    [attr.width]="imgItem.bannerImageWidth+'px'">
+                            </ng-template>
+                        </ngb-carousel>
+                        <img tooltip="{{imgItem.shortDescription}}" *ngIf="!imgItem.isSlider"
+                            (click)="logAttendeeClicks($event,'image',imgItem.bannerImageSrc)"
+                            [src]="imgItem.bannerImageSrc" id="bannerImage_{{i}}" name="bannerImage_{{i}}"
+                            [attr.height]="imgItem.bannerImageHeight+'px'" [attr.width]="imgItem.bannerImageWidth+'px'"
+                            cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition" />
+                    </a>
+                </div>
+
+
+
+
+                <!-- Link To Quiz -->
+                <div *ngIf="imgItem.selectedAction=='linkQuiz'">
+                    <a data-toggle="modal" (click)="openLinkToQuizModal(imgItem.clickAction[0].linkToQuiz)">
+                        <ngb-carousel [showNavigationArrows]="false" tooltip="{{imgItem.shortDescription}}"
+                            *ngIf="imgItem.isSlider" id="imgSlider_{{i}}" [interval]="imgItem.transitionTime" cdkDrag
+                            [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition"
+                            [showNavigationIndicators]="false" [ngStyle]="{'width': imgItem.bannerImageWidth+'px'}">
+                            <ng-template ngbSlide *ngFor="let slideimg of imgItem.imageUrl">
+                                <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                    (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                    [attr.width]="imgItem.bannerImageWidth+'px'">
+                            </ng-template>
+                        </ngb-carousel>
+                        <img tooltip="{{imgItem.shortDescription}}" *ngIf="!imgItem.isSlider"
+                            (click)="logAttendeeClicks($event,'image',imgItem.bannerImageSrc)"
+                            [src]="imgItem.bannerImageSrc" id="bannerImage_{{i}}" name="bannerImage_{{i}}"
+                            [attr.height]="imgItem.bannerImageHeight+'px'" [attr.width]="imgItem.bannerImageWidth+'px'"
+                            cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition" />
+                    </a>
+                </div>
+
+                <!-- Link To Surveys -->
+                <div *ngIf="imgItem.selectedAction=='linkSurvey'">
+                    <a data-toggle="modal" (click)="openLinkToSurveyModal(imgItem.clickAction[0].linkToSurvey)">
+                        <ngb-carousel [showNavigationArrows]="false" tooltip="{{imgItem.shortDescription}}"
+                            *ngIf="imgItem.isSlider" id="imgSlider_{{i}}" [interval]="imgItem.transitionTime" cdkDrag
+                            [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition"
+                            [showNavigationIndicators]="false" [ngStyle]="{'width': imgItem.bannerImageWidth+'px'}">
+                            <ng-template ngbSlide *ngFor="let slideimg of imgItem.imageUrl">
+                                <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                    (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                    [attr.width]="imgItem.bannerImageWidth+'px'">
+                            </ng-template>
+                        </ngb-carousel>
+                        <img tooltip="{{imgItem.shortDescription}}" *ngIf="!imgItem.isSlider"
+                            (click)="logAttendeeClicks($event,'image',imgItem.bannerImageSrc)"
+                            [src]="imgItem.bannerImageSrc" id="bannerImage_{{i}}" name="bannerImage_{{i}}"
+                            [attr.height]="imgItem.bannerImageHeight+'px'" [attr.width]="imgItem.bannerImageWidth+'px'"
+                            cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition" />
+                    </a>
+                </div>
+
+                <!-- Link To Poll -->
+                <div *ngIf="imgItem.selectedAction=='linkPoll'">
+                    <a data-toggle="modal" (click)="openLinkToPollModal(imgItem.clickAction[0].linkToPoll)">
+                        <ngb-carousel [showNavigationArrows]="false" tooltip="{{imgItem.shortDescription}}"
+                            *ngIf="imgItem.isSlider" id="imgSlider_{{i}}" [interval]="imgItem.transitionTime" cdkDrag
+                            [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition"
+                            [showNavigationIndicators]="false" [ngStyle]="{'width': imgItem.bannerImageWidth+'px'}">
+                            <ng-template ngbSlide *ngFor="let slideimg of imgItem.imageUrl">
+                                <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                    (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                    [attr.width]="imgItem.bannerImageWidth+'px'">
+                            </ng-template>
+                        </ngb-carousel>
+                        <img tooltip="{{imgItem.shortDescription}}" *ngIf="!imgItem.isSlider"
+                            (click)="logAttendeeClicks($event,'image',imgItem.bannerImageSrc)"
+                            [src]="imgItem.bannerImageSrc" id="bannerImage_{{i}}" name="bannerImage_{{i}}"
+                            [attr.height]="imgItem.bannerImageHeight+'px'" [attr.width]="imgItem.bannerImageWidth+'px'"
+                            cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition" />
+                    </a>
+                </div>
+
+                <!-- Add To Chat Screen -->
+                <div *ngIf="imgItem.selectedAction=='linkToChatScreen'">
+                    <a (click)="openLinkToChatScreenPopup()">
+                        <ngb-carousel [showNavigationArrows]="false" tooltip="{{imgItem.shortDescription}}"
+                            *ngIf="imgItem.isSlider" id="imgSlider_{{i}}" [interval]="imgItem.transitionTime" cdkDrag
+                            [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition"
+                            [showNavigationIndicators]="false" [ngStyle]="{'width': imgItem.bannerImageWidth+'px'}">
+                            <ng-template ngbSlide *ngFor="let slideimg of imgItem.imageUrl">
+                                <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                    (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                    [attr.width]="imgItem.bannerImageWidth+'px'">
+                            </ng-template>
+                        </ngb-carousel>
+                        <img tooltip="{{imgItem.shortDescription}}" *ngIf="!imgItem.isSlider"
+                            (click)="logAttendeeClicks($event,'image',imgItem.bannerImageSrc)"
+                            [src]="imgItem.bannerImageSrc" id="bannerImage_{{i}}" name="bannerImage_{{i}}"
+                            [attr.height]="imgItem.bannerImageHeight+'px'" [attr.width]="imgItem.bannerImageWidth+'px'"
+                            cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition" />
+                    </a>
+                </div>
+
+                <!-- Add To social media -->
+                <div *ngIf="imgItem.selectedAction=='linkToSocialMedia'">
+                    <a tooltip="{{imgItem.clickAction[0].linktoSocialMedia[0].name}}"
+                        href="{{imgItem.clickAction[0].linktoSocialMedia[0].url}}" target="_blank">
+                        <ngb-carousel [showNavigationArrows]="false" tooltip="{{imgItem.shortDescription}}"
+                            *ngIf="imgItem.isSlider" id="imgSlider_{{i}}" [interval]="imgItem.transitionTime" cdkDrag
+                            [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition"
+                            [showNavigationIndicators]="false" [ngStyle]="{'width': imgItem.bannerImageWidth+'px'}">
+                            <ng-template ngbSlide *ngFor="let slideimg of imgItem.imageUrl">
+                                <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                    (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                    [attr.width]="imgItem.bannerImageWidth+'px'">
+                            </ng-template>
+                        </ngb-carousel>
+                        <img tooltip="{{imgItem.shortDescription}}" *ngIf="!imgItem.isSlider"
+                            (click)="logAttendeeClicks($event,'image',imgItem.bannerImageSrc)"
+                            [src]="imgItem.bannerImageSrc" id="bannerImage_{{i}}" name="bannerImage_{{i}}"
+                            [attr.height]="imgItem.bannerImageHeight+'px'" [attr.width]="imgItem.bannerImageWidth+'px'"
+                            cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition" />
+                    </a>
+                </div>
+
+
+
+                <!-- Link To Webinar -->
+                <div *ngIf="imgItem.selectedAction=='linkWebinar'">
+                    <div *ngIf="!imgItem.showWebinar">
+                        <a data-toggle="modal"
+                            (click)="openLinktoWebinarModal(imgItem,imgItem.clickAction[0].linktoWebinar)">
+                            <ngb-carousel [showNavigationArrows]="false" tooltip="{{imgItem.shortDescription}}"
+                                *ngIf="imgItem.isSlider" id="imgSlider_{{i}}" [interval]="imgItem.transitionTime"
+                                cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition"
+                                [showNavigationIndicators]="false" [ngStyle]="{'width': imgItem.bannerImageWidth+'px'}">
+                                <ng-template ngbSlide *ngFor="let slideimg of imgItem.imageUrl">
+                                    <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                        (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                        [attr.width]="imgItem.bannerImageWidth+'px'">
+                                </ng-template>
+                            </ngb-carousel>
+                            <img tooltip="{{imgItem.shortDescription}}" *ngIf="!imgItem.isSlider"
+                                (click)="logAttendeeClicks($event,'image',imgItem.bannerImageSrc)"
+                                [src]="imgItem.bannerImageSrc" id="bannerImage_{{i}}" name="bannerImage_{{i}}"
+                                [attr.height]="imgItem.bannerImageHeight+'px'"
+                                [attr.width]="imgItem.bannerImageWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="imgItem.dragPosition" />
+                        </a>
+                    </div>
+                    <div *ngIf="imgItem.showWebinar" [cdkDragFreeDragPosition]="imgItem.dragPosition">
+                        <iframe [attr.height]="imgItem.bannerImageHeight+'px'" fullscreen="" controls=""
+                            [attr.width]="imgItem.bannerImageWidth+'px'" [src]="imgItem.webinarUrl | safe" cdkDrag
+                            [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition"></iframe>
+                    </div>
+
+                </div>
+
+
+                <!-- Add To link To One To One Chat -->
+                <div *ngIf="imgItem.selectedAction=='linkToOneToOneChat'">
+                    <a (click)="openLinkToOneToOneChatPopup()">
+                        <ngb-carousel [showNavigationArrows]="false" tooltip="{{imgItem.shortDescription}}"
+                            *ngIf="imgItem.isSlider" id="imgSlider_{{i}}" [interval]="imgItem.transitionTime" cdkDrag
+                            [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition"
+                            [showNavigationIndicators]="false" [ngStyle]="{'width': imgItem.bannerImageWidth+'px'}">
+                            <ng-template ngbSlide *ngFor="let slideimg of imgItem.imageUrl">
+                                <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                    (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                    [attr.width]="imgItem.bannerImageWidth+'px'">
+                            </ng-template>
+                        </ngb-carousel>
+                        <img tooltip="{{imgItem.shortDescription}}" *ngIf="!imgItem.isSlider"
+                            (click)="logAttendeeClicks($event,'image',imgItem.bannerImageSrc)"
+                            [src]="imgItem.bannerImageSrc" id="bannerImage_{{i}}" name="bannerImage_{{i}}"
+                            [attr.height]="imgItem.bannerImageHeight+'px'" [attr.width]="imgItem.bannerImageWidth+'px'"
+                            cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition" />
+                    </a>
+                </div>
+
+                <!-- Add To Website -->
+                <div *ngIf="imgItem.selectedAction=='linkWebsite'">
+                    <a data-toggle="modal" data-target="#openWebisteInIframe"
+                        tooltip="{{imgItem.clickAction[0].linkWebsite[0].name}}"
+                        *ngIf="imgItem.clickAction[0].linkWebsite[0].type=='iFrame'"
+                        (click)="openIframeForWebsite(imgItem.clickAction[0].linkWebsite[0].name,imgItem.clickAction[0].linkWebsite[0].location,imgItem.clickAction[0].linkWebsite[0].type)">
+                        <ngb-carousel [showNavigationArrows]="false" tooltip="{{imgItem.shortDescription}}"
+                            *ngIf="imgItem.isSlider" id="imgSlider_{{i}}" [interval]="imgItem.transitionTime" cdkDrag
+                            [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition"
+                            [showNavigationIndicators]="false" [ngStyle]="{'width': imgItem.bannerImageWidth+'px'}">
+                            <ng-template ngbSlide *ngFor="let slideimg of imgItem.imageUrl">
+                                <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                    (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                    [attr.width]="imgItem.bannerImageWidth+'px'">
+                            </ng-template>
+                        </ngb-carousel>
+                        <img tooltip="{{imgItem.shortDescription}}" *ngIf="!imgItem.isSlider"
+                            (click)="logAttendeeClicks($event,'image',imgItem.bannerImageSrc)"
+                            [src]="imgItem.bannerImageSrc" id="bannerImage_{{i}}" name="bannerImage_{{i}}"
+                            [attr.height]="imgItem.bannerImageHeight+'px'" [attr.width]="imgItem.bannerImageWidth+'px'"
+                            cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition" />
+                    </a>
+
+                    <a *ngIf="imgItem.clickAction[0].linkWebsite[0].type=='anotherWindow'"
+                        tooltip="{{imgItem.clickAction[0].linkWebsite[0].name}}"
+                        (click)="logAttendeeClicks($event, 'Weblinks', imgItem.clickAction[0].linkWebsite[0].name + '^^^^' + imgItem.clickAction[0].linkWebsite[0].location+'^^^^'+imgItem.clickAction[0].linkWebsite[0].type)"
+                        href="{{imgItem.clickAction[0].linkWebsite[0].location}}" target="_blank">
+                        <ngb-carousel [showNavigationArrows]="false" tooltip="{{imgItem.shortDescription}}"
+                            *ngIf="imgItem.isSlider" id="imgSlider_{{i}}" [interval]="imgItem.transitionTime" cdkDrag
+                            [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition"
+                            [showNavigationIndicators]="false" [ngStyle]="{'width': imgItem.bannerImageWidth+'px'}">
+                            <ng-template ngbSlide *ngFor="let slideimg of imgItem.imageUrl">
+                                <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                    (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                    [attr.width]="imgItem.bannerImageWidth+'px'">
+                            </ng-template>
+                        </ngb-carousel>
+                        <img tooltip="{{imgItem.shortDescription}}" *ngIf="!imgItem.isSlider"
+                            (click)="logAttendeeClicks($event,'image',imgItem.bannerImageSrc)"
+                            [src]="imgItem.bannerImageSrc" id="bannerImage_{{i}}" name="bannerImage_{{i}}"
+                            [attr.height]="imgItem.bannerImageHeight+'px'" [attr.width]="imgItem.bannerImageWidth+'px'"
+                            cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition" />
+                    </a>
+                </div>
+
+
+            </div>
+            <!-- End -->
+            <!-- if click action is not selected -->
+            <!-- Start -->
+            <div *ngIf="imgItem.selectedAction==='' ">
+                <ngb-carousel [showNavigationArrows]="false" tooltip="{{imgItem.shortDescription}}"
+                    *ngIf="imgItem.isSlider" id="imgSlider_{{i}}" [interval]="imgItem.transitionTime" cdkDrag
+                    [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="imgItem.dragPosition"
+                    [showNavigationIndicators]="false" [ngStyle]="{'width': imgItem.bannerImageWidth+'px'}">
+                    <ng-template ngbSlide *ngFor="let slideimg of imgItem.imageUrl">
+
+
+                        <!-- Add To Chat Queue Section -->
+                        <a role="button" *ngIf="slideimg.selectedAction=='addToChatQueue'"
+                            (click)="openAddToChatQueuePopup(slideimg.clickAction[0].addToChatQueue)">
+                            <img role="button" [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                [attr.width]="imgItem.bannerImageWidth+'px'">
+                        </a>
+
+                        <!-- Link to content -->
+                        <a data-toggle="modal" *ngIf="slideimg.selectedAction=='linkContent'"
+                            data-target="#linkContentModal"
+                            (click)="fillDataForLinkToContent(slideimg.clickAction[0].linkContent)">
+                            <img role="button" [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                [attr.width]="imgItem.bannerImageWidth+'px'">
+                        </a>
+
+                        <!-- Link To Location -->
+                        <a role="button" *ngIf="slideimg.selectedAction=='linkLocation'"
+                            [attr.href]="eventLocationUrl+slideimg.clickAction[0].linkLocation[0].location+'/'+eventId">
+                            <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                [attr.width]="imgItem.bannerImageWidth+'px'">
+                        </a>
+
+
+                        <!-- Link To Leaderboard -->
+                        <a data-toggle="modal" data-target="#leaderboardModal"
+                            *ngIf="slideimg.selectedAction=='linktoLeaderboard'">
+                            <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                [attr.width]="imgItem.bannerImageWidth+'px'">
+                        </a>
+
+                        <!-- Link To Quiz -->
+                        <a *ngIf="slideimg.selectedAction=='linkQuiz'" data-toggle="modal"
+                            (click)="openLinkToQuizModal(slideimg.clickAction[0].linkToQuiz)">
+                            <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                [attr.width]="imgItem.bannerImageWidth+'px'">
+                        </a>
+
+                        <!-- Link To Surveys -->
+                        <a *ngIf="slideimg.selectedAction=='linkSurvey'" data-toggle="modal"
+                            (click)="openLinkToSurveyModal(slideimg.clickAction[0].linkToSurvey)">
+                            <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                [attr.width]="imgItem.bannerImageWidth+'px'">
+                        </a>
+
+                        <!-- Link To Poll -->
+                        <a *ngIf="slideimg.selectedAction=='linkPoll'" data-toggle="modal"
+                            (click)="openLinkToPollModal(slideimg.clickAction[0].linkToPoll)">
+                            <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                [attr.width]="imgItem.bannerImageWidth+'px'">
+                        </a>
+
+                        <!-- Add To Chat Screen -->
+                        <a *ngIf="slideimg.selectedAction=='linkToChatScreen'" (click)="openLinkToChatScreenPopup()">
+                            <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                [attr.width]="imgItem.bannerImageWidth+'px'">
+                        </a>
+
+                        <!-- Add To social media -->
+                        <a *ngIf="slideimg.selectedAction=='linkToSocialMedia'"
+                            tooltip="{{slideimg.clickAction[0].linktoSocialMedia[0].name}}"
+                            href="{{slideimg.clickAction[0].linktoSocialMedia[0].url}}" target="_blank">
+                            <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                [attr.width]="imgItem.bannerImageWidth+'px'">
+                        </a>
+
+                        <!-- Link To Webinar -->
+                        <a data-toggle="modal" *ngIf="slideimg.selectedAction=='linkWebinar' && !slideimg.showWebinar"
+                            (click)="openLinktoWebinarModal(slideimg,slideimg.clickAction[0].linktoWebinar)">
+                            <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                [attr.width]="imgItem.bannerImageWidth+'px'">
+                        </a>
+
+                        <!-- Add To link To One To One Chat -->
+                        <a *ngIf="slideimg.selectedAction=='linkToOneToOneChat'"
+                            (click)="openLinkToOneToOneChatPopup()">
+                            <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                [attr.width]="imgItem.bannerImageWidth+'px'">
+                        </a>
+
+
+                        <!-- Add To Website -->
+                        <a *ngIf="slideimg.selectedAction=='linkWebsite' && slideimg.clickAction[0].linkWebsite[0].type=='iFrame'"
+                            data-toggle="modal" data-target="#openWebisteInIframe"
+                            tooltip="{{slideimg.clickAction[0].linkWebsite[0].name}}"
+                            (click)="openIframeForWebsite(slideimg.clickAction[0].linkWebsite[0].name,slideimg.clickAction[0].linkWebsite[0].location,slideimg.clickAction[0].linkWebsite[0].type)">
+                            <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                [attr.width]="imgItem.bannerImageWidth+'px'">
+                        </a>
+                        <a *ngIf="slideimg.selectedAction=='linkWebsite' && slideimg.clickAction[0].linkWebsite[0].type=='anotherWindow'"
+                            tooltip="{{slideimg.clickAction[0].linkWebsite[0].name}}"
+                            href="{{slideimg.clickAction[0].linkWebsite[0].location}}" target="_blank"
+                            (click)="logAttendeeClicks($event, 'Weblinks', slideimg.clickAction[0].linkWebsite[0].name + '^^^^' + slideimg.clickAction[0].linkWebsite[0].location+'^^^^'+slideimg.clickAction[0].linkWebsite[0].type)">
+                            <img [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                                (click)="logAttendeeClicks($event,'banner',slideimg)"
+                                [attr.width]="imgItem.bannerImageWidth+'px'">
+                        </a>
+
+
+                        <img role="button" [src]="slideimg.path" [attr.height]="imgItem.bannerImageHeight+'px'"
+                            (click)="logAttendeeClicks($event,'banner',slideimg)"
+                            [attr.width]="imgItem.bannerImageWidth+'px'">
+
+                    </ng-template>
+                </ngb-carousel>
+                <img tooltip="{{imgItem.shortDescription}}" *ngIf="!imgItem.isSlider" [src]="imgItem.bannerImageSrc"
+                    id="bannerImage_{{i}}" name="bannerImage_{{i}}" [attr.height]="imgItem.bannerImageHeight+'rem'"
+                    [attr.width]="imgItem.bannerImageWidth+'rem'" cdkDrag [cdkDragDisabled]="true"
+                    (click)="logAttendeeClicks($event,'image',imgItem.bannerImageSrc)"
+                    [cdkDragFreeDragPosition]="imgItem.dragPosition" />
+            </div>
+            <!-- End -->
+        </div>
+    </div>
+    <!-- End -->
+
+
+    <!-- Video Section -->
+    <!-- Start -->
+    <div>
+
+        <div style="position: absolute;" *ngFor="let vidItem of videosArr;let i=index">
+            <div *ngIf="vidItem.isVideoPlaylist">
+
+                <!-- <video class="videoarea" *ngIf="vidItem.playOnEntry" autoplay controls controlsList="nodownload" tooltip="{{vidItem.videoDescription}}" id="vidItem_{{i}}" [attr.height]="vidItem.videoHeight+'px'" (click)="logAttendeeClicks($event,'video','play^^^^'+$event.target.src)"
+                    [attr.width]="vidItem.videoWidth+'px'" cdkDrag [cdkDragDisabled]="true" (ended)="videoEnded(vidItem.playList,i)" [cdkDragFreeDragPosition]="vidItem.dragPosition">
+                </video> -->
+                <video class="videoarea" *ngIf="vidItem.playOnEntry" autoplay controls controlsList="nodownload"
+                    tooltip="{{vidItem.videoDescription}}" id="vidItem_{{i}}" [attr.height]="vidItem.videoHeight+'px'"
+                    (click)="logAttendeeClicks($event,'video','play^^^^'+$event.target.src)"
+                    [attr.width]="vidItem.videoWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                    (ended)="videoEnded(vidItem.playList,i)" [cdkDragFreeDragPosition]="vidItem.dragPosition">
+                    <source *ngFor="let item of vidItem.playList" [src]="item.src | safe" type="video/mp4" />
+                </video>
+
+                <video *ngIf="!vidItem.playOnEntry" controls controlsList="nodownload"
+                    tooltip="{{vidItem.videoDescription}}" id="vidItem_{{i}}" [attr.height]="vidItem.videoHeight+'px'"
+                    (click)="logAttendeeClicks($event,'video','play^^^^'+$event.target.src)"
+                    [attr.width]="vidItem.videoWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                    (ended)="videoEnded(vidItem.playList,i)" [cdkDragFreeDragPosition]="vidItem.dragPosition">
+                    <source *ngFor="let item of vidItem.playList" [src]="item.src | safe" type="video/mp4" />
+                </video>
+                <div id="playlist"
+                    [ngStyle]="{'height':(vidItem.videoHeight-10)+'px','width':'250px','margin-top':'-'+(vidItem.videoHeight+'px'),'margin-left':vidItem.videoWidth+'px'}"
+                    cdkDrag [cdkDragDisabled]="true" (ended)="videoEnded(vidItem.playList,i)"
+                    [cdkDragFreeDragPosition]="vidItem.dragPosition">
+                    <h3 style="width: 100%; text-align: center;color:#ffffff">Playlist</h3>
+                    <a *ngFor="let item of vidItem.playList;let j=index" class="playListItem"
+                        (click)="playVideolistSlected(vidItem.playList,i,j)">{{item.title}}</a>
+                </div>
+
+
+
+            </div>
+            <div *ngIf="!vidItem.isVideoPlaylist">
+                <div *ngIf="vidItem.playList[0].type=='youtube' || vidItem.playList[0].type== 'vimeoUrl'"
+                    tooltip="{{vidItem.videoDescription}}"
+                    (click)="logAttendeeClicks($event,'video','play^^^^'+vidItem.playList[0].src)">
+                    <iframe *ngIf="vidItem.playOnEntry" allow='autoplay' [attr.height]="vidItem.videoHeight+'px'"
+                        fullscreen="" controls="" [attr.width]="vidItem.videoWidth+'px'"
+                        [src]="vidItem.playList[0].src+'?autoplay='+(vidItem.playOnEntry?1:0) | safe"
+                        allow="{{(vidItem.playOnEntry?'autoplay':null)}}" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="vidItem.dragPosition">
+                    </iframe>
+
+                    <iframe *ngIf="!vidItem.playOnEntry" [attr.height]="vidItem.videoHeight+'px'" fullscreen=""
+                        controls="" [attr.width]="vidItem.videoWidth+'px'"
+                        [src]="vidItem.playList[0].src+'?autoplay='+(vidItem.playOnEntry?1:0) | safe"
+                        allow="{{(vidItem.playOnEntry?'autoplay':null)}}" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="vidItem.dragPosition">
+                    </iframe>
+                </div>
+                <div *ngIf="vidItem.playList[0].type=='uploadFile'" tooltip="{{vidItem.videoDescription}}">
+
+                    <video *ngIf="!vidItem.playOnEntry" controls controlsList="nodownload"
+                        [attr.height]="vidItem.videoHeight+'px'" [attr.width]="vidItem.videoWidth+'px'"
+                        (click)="logAttendeeClicks($event,'video','play^^^^'+vidItem.playList[0].src)"
+                        [src]="vidItem.playList[0].src | safe" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="vidItem.dragPosition"></video>
+
+                    <video *ngIf="vidItem.playOnEntry" autoplay controls controlsList="nodownload"
+                        [attr.height]="vidItem.videoHeight+'px'" [attr.width]="vidItem.videoWidth+'px'"
+                        (click)="logAttendeeClicks($event,'video',vidItem.playList[0].src)"
+                        [src]="vidItem.playList[0].src | safe" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="vidItem.dragPosition"></video>
+
+                    <!-- <video *ngIf="!vidItem.playOnEntry" controls controlsList="nodownload" [attr.height]="vidItem.videoHeight+'px'" [attr.width]="vidItem.videoWidth+'px'" (click)="logAttendeeClicks($event,'video','play^^^^'+vidItem.playList[0].src)" [src]="vidItem.playList[0].src | safe"
+                        cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="vidItem.dragPosition"></video>
+
+                    <video *ngIf="vidItem.playOnEntry" autoplay controls controlsList="nodownload" [attr.height]="vidItem.videoHeight+'px'" [attr.width]="vidItem.videoWidth+'px'" (click)="logAttendeeClicks($event,'video',vidItem.playList[0].src)" [src]="vidItem.playList[0].src | safe"
+                        cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="vidItem.dragPosition"></video> -->
+
+                </div>
+                <div tooltip="{{vidItem.videoDescription}}" *ngIf="vidItem.playList[0].type==='embedVideo'"
+                    (click)="logAttendeeClicks($event,'video','play^^^^'+vidItem.playList[0].src)"
+                    [innerHTML]="vidItem.playList[0].src | safeHtml" cdkDrag [cdkDragDisabled]="true"
+                    [cdkDragFreeDragPosition]="vidItem.dragPosition">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End -->
+
+    <!-- Text Section -->
+    <!-- Start -->
+
+    <div *ngFor="let textItem of textArr;let i=index" style="position: absolute;">
+        <!-- Bind Click to action event -->
+        <!-- if click action is  selected -->
+        <!-- Start -->
+        <div *ngIf="textItem.selectedAction!==''">
+
+            <!-- Add To Chat Queue Section -->
+            <div *ngIf="textItem.selectedAction=='addToChatQueue'">
+                <a (click)="openAddToChatQueuePopup(textItem.clickAction[0].addToChatQueue)">
+                    <div class="boothDesignInput" id="text_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="textItem.dragPosition" style="white-space:pre-wrap;">
+                        <p [ngStyle]="textStyle(i)" tooltip="{{textItem.description}}" style="clear: both; float: left;"
+                            [innerHTML]="textItem.text | safeHtml">
+                        </p>
+                    </div>
+                </a>
+            </div>
+
+
+            <!-- Link to content -->
+            <div *ngIf="textItem.selectedAction=='linkContent'">
+                <a data-toggle="modal" data-target="#linkContentModal"
+                    (click)="fillDataForLinkToContent(textItem.clickAction[0].linkContent)">
+                    <div class="boothDesignInput" id="text_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="textItem.dragPosition" style="white-space:pre-wrap;">
+                        <p [ngStyle]="textStyle(i)" tooltip="{{textItem.description}}" style="clear: both; float: left;"
+                            [innerHTML]="textItem.text | safeHtml">
+                        </p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Link To Location -->
+            <div *ngIf="textItem.selectedAction=='linkLocation'">
+                <a [attr.href]="eventLocationUrl+textItem.clickAction[0].linkLocation[0].location+'/'+eventId">
+                    <div class="boothDesignInput" id="text_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="textItem.dragPosition" style="white-space:pre-wrap;">
+                        <p [ngStyle]="textStyle(i)" tooltip="{{textItem.description}}" style="clear: both; float: left;"
+                            [innerHTML]="textItem.text | safeHtml">
+                        </p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Link To Leaderboard -->
+            <div *ngIf="textItem.selectedAction=='linktoLeaderboard'">
+                <a data-toggle="modal" data-target="#leaderboardModal">
+                    <div class="boothDesignInput" id="text_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="textItem.dragPosition" style="white-space:pre-wrap;">
+                        <p [ngStyle]="textStyle(i)" tooltip="{{textItem.description}}" style="clear: both; float: left;"
+                            [innerHTML]="textItem.text | safeHtml">
+                        </p>
+                    </div>
+                </a>
+            </div>
+
+
+            <!-- Link To Quiz -->
+            <div *ngIf="textItem.selectedAction=='linkQuiz'">
+                <a data-toggle="modal" (click)="openLinkToQuizModal(textItem.clickAction[0].linkToQuiz)">
+                    <div class="boothDesignInput" id="text_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="textItem.dragPosition" style="white-space:pre-wrap;">
+                        <p [ngStyle]="textStyle(i)" tooltip="{{textItem.description}}" style="clear: both; float: left;"
+                            [innerHTML]="textItem.text | safeHtml">
+                        </p>
+                    </div>
+                </a>
+
+            </div>
+
+            <!-- Link To Poll -->
+            <div *ngIf="textItem.selectedAction=='linkPoll'">
+                <a data-toggle="modal" (click)="openLinkToPollModal(textItem.clickAction[0].linkToPoll)">
+                    <div class="boothDesignInput" id="text_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="textItem.dragPosition" style="white-space:pre-wrap;">
+                        <p [ngStyle]="textStyle(i)" tooltip="{{textItem.description}}" style="clear: both; float: left;"
+                            [innerHTML]="textItem.text | safeHtml">
+                        </p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Link To Surveys -->
+            <div *ngIf="textItem.selectedAction=='linkSurvey'">
+                <a data-toggle="modal" (click)="openLinkToSurveyModal(textItem.clickAction[0].linkToSurvey)">
+                    <div class="boothDesignInput" id="text_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="textItem.dragPosition" style="white-space:pre-wrap;">
+                        <p [ngStyle]="textStyle(i)" tooltip="{{textItem.description}}" style="clear: both; float: left;"
+                            [innerHTML]="textItem.text | safeHtml">
+                        </p>
+                    </div>
+                </a>
+
+            </div>
+
+
+            <!-- Add To Chat Screen -->
+            <div *ngIf="textItem.selectedAction=='linkToChatScreen'">
+                <a (click)="openLinkToChatScreenPopup()">
+                    <div class="boothDesignInput" id="text_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="textItem.dragPosition" style="white-space:pre-wrap;">
+                        <p [ngStyle]="textStyle(i)" tooltip="{{textItem.description}}" style="clear: both; float: left;"
+                            [innerHTML]="textItem.text | safeHtml">
+                        </p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Add To social media -->
+            <div *ngIf="textItem.selectedAction=='linkToSocialMedia'">
+                <a tooltip="{{textItem.clickAction[0].linktoSocialMedia[0].name}}"
+                    href="{{textItem.clickAction[0].linktoSocialMedia[0].url}}" target="_blank">
+                    <div class="boothDesignInput" id="text_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="textItem.dragPosition" style="white-space:pre-wrap;">
+                        <p [ngStyle]="textStyle(i)" tooltip="{{textItem.description}}" style="clear: both; float: left;"
+                            [innerHTML]="textItem.text | safeHtml">
+                        </p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Link To Webinar -->
+            <div *ngIf="textItem.selectedAction=='linkWebinar'">
+                <div>
+                    <a data-toggle="modal"
+                        (click)="openLinktoWebinarModal(textItem,textItem.clickAction[0].linktoWebinar)">
+                        <div class="boothDesignInput" id="text_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                            [cdkDragFreeDragPosition]="textItem.dragPosition" style="white-space:pre-wrap;">
+                            <p [ngStyle]="textStyle(i)" tooltip="{{textItem.description}}"
+                                style="clear: both; float: left;" [innerHTML]="textItem.text | safeHtml">
+                            </p>
+                        </div>
+                    </a>
+                </div>
+
+
+            </div>
+
+
+            <!-- Add To link To One To One Chat -->
+            <div *ngIf="textItem.selectedAction=='linkToOneToOneChat'">
+                <a (click)="openLinkToOneToOneChatPopup()">
+                    <div class="boothDesignInput" id="text_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="textItem.dragPosition" style="white-space:pre-wrap;">
+                        <p [ngStyle]="textStyle(i)" tooltip="{{textItem.description}}" style="clear: both; float: left;"
+                            [innerHTML]="textItem.text | safeHtml">
+                        </p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Add To Website -->
+            <div *ngIf="textItem.selectedAction=='linkWebsite'">
+
+                <a data-toggle="modal" data-target="#openWebisteInIframe"
+                    tooltip="{{textItem.clickAction[0].linkWebsite[0].name}}"
+                    *ngIf="textItem.clickAction[0].linkWebsite[0].type=='iFrame'"
+                    (click)="openIframeForWebsite(textItem.clickAction[0].linkWebsite[0].name,textItem.clickAction[0].linkWebsite[0].location,textItem.clickAction[0].linkWebsite[0].type)">
+                    <div class="boothDesignInput" id="text_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="textItem.dragPosition" style="white-space:pre-wrap;">
+                        <p [ngStyle]="textStyle(i)" tooltip="{{textItem.description}}" style="clear: both; float: left;"
+                            [innerHTML]="textItem.text | safeHtml">
+                        </p>
+                    </div>
+                </a>
+
+
+                <a *ngIf="textItem.clickAction[0].linkWebsite[0].type=='anotherWindow'"
+                    tooltip="{{textItem.clickAction[0].linkWebsite[0].name}}"
+                    (click)="logAttendeeClicks($event, 'Weblinks', textItem.clickAction[0].linkWebsite[0].name + '^^^^' + textItem.clickAction[0].linkWebsite[0].location+'^^^^'+textItem.clickAction[0].linkWebsite[0].type)"
+                    href="{{textItem.clickAction[0].linkWebsite[0].location}}" target="_blank">
+                    <div class="boothDesignInput" id="text_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="textItem.dragPosition" style="white-space:pre-wrap;">
+                        <p [ngStyle]="textStyle(i)" tooltip="{{textItem.description}}" style="clear: both; float: left;"
+                            [innerHTML]="textItem.text | safeHtml">
+                        </p>
+                    </div>
+                </a>
+
+
+            </div>
+
+        </div>
+
+        <!-- End -->
+        <!-- if click action is not selected -->
+        <!-- Start -->
+        <div *ngIf="textItem.selectedAction===''">
+            <div class="boothDesignInput" id="text_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                [cdkDragFreeDragPosition]="textItem.dragPosition" style="white-space:pre-wrap;">
+                <p [ngStyle]="textStyle(i)" tooltip="{{textItem.description}}" style="clear: both; float: left;"
+                    [innerHTML]="textItem.text | safeHtml">
+                </p>
+            </div>
+        </div>
+        <!-- End -->
+    </div>
+
+    <!-- End -->
+
+
+    <!-- Audio Section -->
+    <!-- Start -->
+    <div>
+        <div style="position: absolute;" *ngFor="let audioItem of audiosArr;let i=index">
+
+
+            <div *ngIf="audioItem.playList[0].type=='embedaudio'" id="audioBannerImage_{{i}}" cdkDrag
+                [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="audioItem.dragPosition"
+                [innerHTML]="audioItem.playList[0].src |  safeHtml">
+
+            </div>
+            <audio *ngIf="audioItem.playList[0].type!='embedaudio'" controls src="{{audioItem.playList[0].src}}"
+                autoplay id="audioBannerImage_{{i}}" name="audioBannerImage_{{i}}" height="32px" width="32px" cdkDrag
+                [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="audioItem.dragPosition">
+            </audio>
+        </div>
+        <!-- End -->
+
+
+        <!-- InfoCard Section -->
+        <!-- Start -->
+
+        <div>
+            <div *ngFor="let infoCardItem of infoCardArr;let i=index" style="cursor:pointer"
+                (click)="getBoothRepresentatives(infoCardItem)">
+                <img style="width: 32px;height:auto;position:absolute" src='../../../assets/Images/info.png'
+                    tooltip="{{representatives.length>0?infoCardItem.infoCardDescWhenRoomRepsAreAsigned:infoCardItem.infoCardDescWhenNoRoomRepsAreAsigned}}"
+                    id="infoCardItem_{{i}}" name="infoCardItem_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                    [cdkDragFreeDragPosition]="infoCardItem.dragPosition" />
+            </div>
+        </div>
+
+
+        <!-- End -->
+
+
+
+        <!-- Standee section -->
+        <!-- start -->
+        <div>
+            <div style="position: absolute;" *ngFor="let standeeItem of standeekArr;let i=index">
+                <!-- Bind Click to action event -->
+                <!-- if click action is  selected -->
+                <!-- Start -->
+                <div *ngIf="standeeItem.selectedAction!==''">
+
+                    <!-- Add To Chat Queue Section -->
+                    <div *ngIf="standeeItem.selectedAction=='addToChatQueue'">
+                        <a (click)="openAddToChatQueuePopup(standeeItem.clickAction[0].addToChatQueue)">
+                            <img tooltip="{{standeeItem.standeeDescription}}" [src]="standeeItem.standeeBanner"
+                                id="standeeBanner_{{i}}" name="standeeBanner_{{i}}"
+                                [attr.height]="standeeItem.standeeHeight+'px'"
+                                [attr.width]="standeeItem.standeeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="standeeItem.dragPosition" />
+                        </a>
+                    </div>
+
+                    <!-- Link to content -->
+                    <div *ngIf="standeeItem.selectedAction=='linkContent'">
+                        <a data-toggle="modal" data-target="#linkContentModal"
+                            (click)="fillDataForLinkToContent(standeeItem.clickAction[0].linkContent)">
+                            <img tooltip="{{standeeItem.standeeDescription}}" [src]="standeeItem.standeeBanner"
+                                id="standeeBanner_{{i}}" name="standeeBanner_{{i}}"
+                                [attr.height]="standeeItem.standeeHeight+'px'"
+                                [attr.width]="standeeItem.standeeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="standeeItem.dragPosition" />
+                        </a>
+                    </div>
+                    <!-- Link To Location -->
+                    <div *ngIf="standeeItem.selectedAction=='linkLocation'">
+                        <a
+                            [attr.href]="eventLocationUrl+standeeItem.clickAction[0].linkLocation[0].location+'/'+eventId">
+                            <img tooltip="{{standeeItem.standeeDescription}}" [src]="standeeItem.standeeBanner"
+                                id="standeeBanner_{{i}}" name="standeeBanner_{{i}}"
+                                [attr.height]="standeeItem.standeeHeight+'px'"
+                                [attr.width]="standeeItem.standeeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="standeeItem.dragPosition" />
+                        </a>
+                    </div>
+
+                    <!-- Link To Leaderboard -->
+                    <div *ngIf="standeeItem.selectedAction=='linktoLeaderboard'">
+                        <a data-toggle="modal" data-target="#leaderboardModal">
+                            <img tooltip="{{standeeItem.standeeDescription}}" [src]="standeeItem.standeeBanner"
+                                id="standeeBanner_{{i}}" name="standeeBanner_{{i}}"
+                                [attr.height]="standeeItem.standeeHeight+'px'"
+                                [attr.width]="standeeItem.standeeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="standeeItem.dragPosition" />
+                        </a>
+                    </div>
+
+
+
+                    <!-- Link To Quiz -->
+                    <div *ngIf="standeeItem.selectedAction=='linkQuiz'">
+                        <a data-toggle="modal" (click)="openLinkToQuizModal(standeeItem.clickAction[0].linkToQuiz)">
+                            <img tooltip="{{standeeItem.standeeDescription}}" [src]="standeeItem.standeeBanner"
+                                id="standeeBanner_{{i}}" name="standeeBanner_{{i}}"
+                                [attr.height]="standeeItem.standeeHeight+'px'"
+                                [attr.width]="standeeItem.standeeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="standeeItem.dragPosition" />
+                        </a>
+
+                    </div>
+
+                    <!-- Link To Poll -->
+                    <div *ngIf="standeeItem.selectedAction=='linkPoll'">
+                        <a data-toggle="modal" (click)="openLinkToPollModal(standeeItem.clickAction[0].linkToPoll)">
+                            <img tooltip="{{standeeItem.standeeDescription}}" [src]="standeeItem.standeeBanner"
+                                id="standeeBanner_{{i}}" name="standeeBanner_{{i}}"
+                                [attr.height]="standeeItem.standeeHeight+'px'"
+                                [attr.width]="standeeItem.standeeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="standeeItem.dragPosition" />
+                        </a>
+                    </div>
+
+                    <!-- Link To Surveys -->
+                    <div *ngIf="standeeItem.selectedAction=='linkSurvey'">
+                        <a data-toggle="modal" (click)="openLinkToSurveyModal(standeeItem.clickAction[0].linkToSurvey)">
+                            <img tooltip="{{standeeItem.standeeDescription}}" [src]="standeeItem.standeeBanner"
+                                id="standeeBanner_{{i}}" name="standeeBanner_{{i}}"
+                                [attr.height]="standeeItem.standeeHeight+'px'"
+                                [attr.width]="standeeItem.standeeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="standeeItem.dragPosition" />
+                        </a>
+                    </div>
+
+                    <!-- Add To Chat Screen -->
+                    <div *ngIf="standeeItem.selectedAction=='linkToChatScreen'">
+                        <a (click)="openLinkToChatScreenPopup()">
+                            <img tooltip="{{standeeItem.standeeDescription}}" [src]="standeeItem.standeeBanner"
+                                id="standeeBanner_{{i}}" name="standeeBanner_{{i}}"
+                                [attr.height]="standeeItem.standeeHeight+'px'"
+                                [attr.width]="standeeItem.standeeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="standeeItem.dragPosition" />
+                        </a>
+                    </div>
+
+                    <!-- Add To social media -->
+                    <div *ngIf="standeeItem.selectedAction=='linkToSocialMedia'">
+                        <a tooltip="{{standeeItem.clickAction[0].linktoSocialMedia[0].name}}"
+                            href="{{standeeItem.clickAction[0].linktoSocialMedia[0].url}}" target="_blank">
+                            <img tooltip="{{standeeItem.standeeDescription}}" [src]="standeeItem.standeeBanner"
+                                id="standeeBanner_{{i}}" name="standeeBanner_{{i}}"
+                                [attr.height]="standeeItem.standeeHeight+'px'"
+                                [attr.width]="standeeItem.standeeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="standeeItem.dragPosition" />
+                        </a>
+                    </div>
+
+                    <!-- Add To link To One To One Chat -->
+                    <div *ngIf="standeeItem.selectedAction=='linkToOneToOneChat'">
+                        <a (click)="openLinkToOneToOneChatPopup()">
+                            <img tooltip="{{standeeItem.standeeDescription}}" [src]="standeeItem.standeeBanner"
+                                id="standeeBanner_{{i}}" name="standeeBanner_{{i}}"
+                                [attr.height]="standeeItem.standeeHeight+'px'"
+                                [attr.width]="standeeItem.standeeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="standeeItem.dragPosition" />
+                        </a>
+                    </div>
+
+                    <!-- Add To Website -->
+                    <div *ngIf="standeeItem.selectedAction=='linkWebsite'">
+
+                        <a data-toggle="modal" data-target="#openWebisteInIframe"
+                            tooltip="{{standeeItem.clickAction[0].linkWebsite[0].name}}"
+                            *ngIf="standeeItem.clickAction[0].linkWebsite[0].type=='iFrame'"
+                            (click)="openIframeForWebsite(standeeItem.clickAction[0].linkWebsite[0].name,standeeItem.clickAction[0].linkWebsite[0].location,standeeItem.clickAction[0].linkWebsite[0].type)">
+                            <img tooltip="{{standeeItem.standeeDescription}}" [src]="standeeItem.standeeBanner"
+                                id="standeeBanner_{{i}}" name="standeeBanner_{{i}}"
+                                [attr.height]="standeeItem.standeeHeight+'px'"
+                                [attr.width]="standeeItem.standeeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="standeeItem.dragPosition" />
+                        </a>
+
+
+                        <a *ngIf="standeeItem.clickAction[0].linkWebsite[0].type=='anotherWindow'"
+                            tooltip="{{standeeItem.clickAction[0].linkWebsite[0].name}}"
+                            href="{{standeeItem.clickAction[0].linkWebsite[0].location}}" target="_blank"
+                            (click)="logAttendeeClicks($event, 'Weblinks', standeeItem.clickAction[0].linkWebsite[0].name + '^^^^' + standeeItem.clickAction[0].linkWebsite[0].location+'^^^^'+standeeItem.clickAction[0].linkWebsite[0].type)">
+                            <img tooltip="{{standeeItem.standeeDescription}}" [src]="standeeItem.standeeBanner"
+                                id="standeeBanner_{{i}}" name="standeeBanner_{{i}}"
+                                [attr.height]="standeeItem.standeeHeight+'px'"
+                                [attr.width]="standeeItem.standeeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="standeeItem.dragPosition" />
+                        </a>
+                    </div>
+
+
+                </div>
+                <!-- End -->
+                <!-- if click action is not selected -->
+                <!-- Start -->
+                <div *ngIf="standeeItem.selectedAction===''">
+                    <img tooltip="{{standeeItem.standeeDescription}}" [src]="standeeItem.standeeBanner"
+                        id="standeeBanner_{{i}}" name="standeeBanner_{{i}}"
+                        [attr.height]="standeeItem.standeeHeight+'px'" [attr.width]="standeeItem.standeeWidth+'px'"
+                        cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="standeeItem.dragPosition" />
+                </div>
+                <!-- End -->
+            </div>
+        </div>
+        <!-- End -->
+
+
+        <!-- Marquee section -->
+        <!-- start -->
+        <div>
+            <div style="position: absolute;" *ngFor="let marqueeItem of marqueeArr;let i=index">
+                <!-- Bind Click to action event -->
+                <!-- if click action is  selected -->
+                <!-- Start -->
+                <div *ngIf="marqueeItem.selectedAction!==''">
+
+                    <!-- Add To Chat Queue Section -->
+                    <div *ngIf="marqueeItem.selectedAction=='addToChatQueue'">
+                        <a (click)="openAddToChatQueuePopup(marqueeItem.clickAction[0].addToChatQueue)">
+                            <marquee id="marqueeBanner_{{i}}" style="color:{{marqueeItem.textColor}}"
+                                (click)="logAttendeeClicks($event,'marquee',marqueeItem)" [ngStyle]="marqueeStyle(i)"
+                                [attr.bgcolor]="marqueeItem.backgroundColor" direction='{{marqueeItem.transition}}'
+                                [attr.height]="marqueeItem.marqueeHeight+'px'"
+                                [attr.width]="marqueeItem.marqueeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="marqueeItem.dragPosition"
+                                tooltip="{{marqueeItem.marqueeDescription}}">
+                                {{marqueeItem.text}}</marquee>
+                        </a>
+                    </div>
+
+                    <!-- Link to content -->
+                    <div *ngIf="marqueeItem.selectedAction=='linkContent'">
+                        <a data-toggle="modal" data-target="#linkContentModal"
+                            (click)="fillDataForLinkToContent(marqueeItem.clickAction[0].linkContent)">
+                            <marquee id="marqueeBanner_{{i}}" style="color:{{marqueeItem.textColor}}"
+                                (click)="logAttendeeClicks($event,'marquee',marqueeItem)" [ngStyle]="marqueeStyle(i)"
+                                [attr.bgcolor]="marqueeItem.backgroundColor" direction='{{marqueeItem.transition}}'
+                                [attr.height]="marqueeItem.marqueeHeight+'px'"
+                                [attr.width]="marqueeItem.marqueeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="marqueeItem.dragPosition"
+                                tooltip="{{marqueeItem.marqueeDescription}}">
+                                {{marqueeItem.text}}</marquee>
+                        </a>
+                    </div>
+                    <!-- Link To Location -->
+                    <div *ngIf="marqueeItem.selectedAction=='linkLocation'">
+                        <a
+                            [attr.href]="eventLocationUrl+marqueeItem.clickAction[0].linkLocation[0].location+'/'+eventId">
+                            <marquee id="marqueeBanner_{{i}}" style="color:{{marqueeItem.textColor}}"
+                                [ngStyle]="marqueeStyle(i)" (click)="logAttendeeClicks($event,'marquee',marqueeItem)"
+                                [attr.bgcolor]="marqueeItem.backgroundColor" direction='{{marqueeItem.transition}}'
+                                [attr.height]="marqueeItem.marqueeHeight+'px'"
+                                [attr.width]="marqueeItem.marqueeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="marqueeItem.dragPosition"
+                                tooltip="{{marqueeItem.marqueeDescription}}">
+                                {{marqueeItem.text}}</marquee>
+                        </a>
+                    </div>
+
+                    <!-- Link To Leaderboard -->
+                    <div *ngIf="marqueeItem.selectedAction=='linktoLeaderboard'">
+                        <a data-toggle="modal" data-target="#leaderboardModal">
+                            <marquee id="marqueeBanner_{{i}}" style="color:{{marqueeItem.textColor}}"
+                                [ngStyle]="marqueeStyle(i)" (click)="logAttendeeClicks($event,'marquee',marqueeItem)"
+                                [attr.bgcolor]="marqueeItem.backgroundColor" direction='{{marqueeItem.transition}}'
+                                [attr.height]="marqueeItem.marqueeHeight+'px'"
+                                [attr.width]="marqueeItem.marqueeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="marqueeItem.dragPosition"
+                                tooltip="{{marqueeItem.marqueeDescription}}">
+                                {{marqueeItem.text}}</marquee>
+                        </a>
+                    </div>
+
+                    <!-- Link To Quiz -->
+                    <div *ngIf="marqueeItem.selectedAction=='linkQuiz'">
+                        <a data-toggle="modal" (click)="openLinkToQuizModal(marqueeItem.clickAction[0].linkToQuiz)">
+                            <marquee id="marqueeBanner_{{i}}" style="color:{{marqueeItem.textColor}}"
+                                [ngStyle]="marqueeStyle(i)" (click)="logAttendeeClicks($event,'marquee',marqueeItem)"
+                                [attr.bgcolor]="marqueeItem.backgroundColor" direction='{{marqueeItem.transition}}'
+                                [attr.height]="marqueeItem.marqueeHeight+'px'"
+                                [attr.width]="marqueeItem.marqueeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="marqueeItem.dragPosition"
+                                tooltip="{{marqueeItem.marqueeDescription}}">
+                                {{marqueeItem.text}}</marquee>
+                        </a>
+
+                    </div>
+
+                    <!-- Link To Poll -->
+                    <div *ngIf="marqueeItem.selectedAction=='linkPoll'">
+                        <a data-toggle="modal" (click)="openLinkToPollModal(marqueeItem.clickAction[0].linkToPoll)">
+                            <marquee id="marqueeBanner_{{i}}" style="color:{{marqueeItem.textColor}}"
+                                [ngStyle]="marqueeStyle(i)" (click)="logAttendeeClicks($event,'marquee',marqueeItem)"
+                                [attr.bgcolor]="marqueeItem.backgroundColor" direction='{{marqueeItem.transition}}'
+                                [attr.height]="marqueeItem.marqueeHeight+'px'"
+                                [attr.width]="marqueeItem.marqueeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="marqueeItem.dragPosition"
+                                tooltip="{{marqueeItem.marqueeDescription}}">
+                                {{marqueeItem.text}}</marquee>
+                        </a>
+                    </div>
+
+                    <!-- Link To Surveys -->
+                    <div *ngIf="marqueeItem.selectedAction=='linkSurvey'">
+                        <a data-toggle="modal" (click)="openLinkToSurveyModal(marqueeItem.clickAction[0].linkToSurvey)">
+                            <marquee id="marqueeBanner_{{i}}" style="color:{{marqueeItem.textColor}}"
+                                [ngStyle]="marqueeStyle(i)" (click)="logAttendeeClicks($event,'marquee',marqueeItem)"
+                                [attr.bgcolor]="marqueeItem.backgroundColor" direction='{{marqueeItem.transition}}'
+                                [attr.height]="marqueeItem.marqueeHeight+'px'"
+                                [attr.width]="marqueeItem.marqueeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="marqueeItem.dragPosition"
+                                tooltip="{{marqueeItem.marqueeDescription}}">
+                                {{marqueeItem.text}}</marquee>
+                        </a>
+                    </div>
+
+
+                    <!-- Add To Chat Screen -->
+                    <div *ngIf="marqueeItem.selectedAction=='linkToChatScreen'">
+                        <a (click)="openLinkToChatScreenPopup()">
+                            <marquee id="marqueeBanner_{{i}}" style="color:{{marqueeItem.textColor}}"
+                                [ngStyle]="marqueeStyle(i)" (click)="logAttendeeClicks($event,'marquee',marqueeItem)"
+                                [attr.bgcolor]="marqueeItem.backgroundColor" direction='{{marqueeItem.transition}}'
+                                [attr.height]="marqueeItem.marqueeHeight+'px'"
+                                [attr.width]="marqueeItem.marqueeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="marqueeItem.dragPosition"
+                                tooltip="{{marqueeItem.marqueeDescription}}">
+                                {{marqueeItem.text}}</marquee>
+                        </a>
+                    </div>
+
+                    <!-- Add To social media -->
+                    <div *ngIf="marqueeItem.selectedAction=='linkToSocialMedia'">
+                        <a tooltip="{{marqueeItem.clickAction[0].linktoSocialMedia[0].name}}"
+                            href="{{marqueeItem.clickAction[0].linktoSocialMedia[0].url}}" target="_blank">
+                            <marquee id="marqueeBanner_{{i}}" style="color:{{marqueeItem.textColor}}"
+                                [ngStyle]="marqueeStyle(i)" (click)="logAttendeeClicks($event,'marquee',marqueeItem)"
+                                [attr.bgcolor]="marqueeItem.backgroundColor" direction='{{marqueeItem.transition}}'
+                                [attr.height]="marqueeItem.marqueeHeight+'px'"
+                                [attr.width]="marqueeItem.marqueeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="marqueeItem.dragPosition"
+                                tooltip="{{marqueeItem.marqueeDescription}}">
+                                {{marqueeItem.text}}</marquee>
+                        </a>
+                    </div>
+
+                    <!-- Add To link To One To One Chat -->
+                    <div *ngIf="marqueeItem.selectedAction=='linkToOneToOneChat'">
+                        <a (click)="openLinkToOneToOneChatPopup()">
+                            <marquee id="marqueeBanner_{{i}}" style="color:{{marqueeItem.textColor}}"
+                                [ngStyle]="marqueeStyle(i)" (click)="logAttendeeClicks($event,'marquee',marqueeItem)"
+                                [attr.bgcolor]="marqueeItem.backgroundColor" direction='{{marqueeItem.transition}}'
+                                [attr.height]="marqueeItem.marqueeHeight+'px'"
+                                [attr.width]="marqueeItem.marqueeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="marqueeItem.dragPosition"
+                                tooltip="{{marqueeItem.marqueeDescription}}">
+                                {{marqueeItem.text}}</marquee>
+                        </a>
+                    </div>
+
+                    <!-- Add To Website -->
+                    <div *ngIf="marqueeItem.selectedAction=='linkWebsite'">
+
+                        <a data-toggle="modal" data-target="#openWebisteInIframe"
+                            tooltip="{{marqueeItem.clickAction[0].linkWebsite[0].name}}"
+                            *ngIf="marqueeItem.clickAction[0].linkWebsite[0].type=='iFrame'"
+                            (click)="openIframeForWebsite(marqueeItem.clickAction[0].linkWebsite[0].name,marqueeItem.clickAction[0].linkWebsite[0].location,marqueeItem.clickAction[0].linkWebsite[0].type)">
+                            <marquee id="marqueeBanner_{{i}}" style="color:{{marqueeItem.textColor}}"
+                                [ngStyle]="marqueeStyle(i)" (click)="logAttendeeClicks($event,'marquee',marqueeItem)"
+                                [attr.bgcolor]="marqueeItem.backgroundColor" direction='{{marqueeItem.transition}}'
+                                [attr.height]="marqueeItem.marqueeHeight+'px'"
+                                [attr.width]="marqueeItem.marqueeWidth+'px'" cdkDrag [cdkDragDisabled]="true"
+                                [cdkDragFreeDragPosition]="marqueeItem.dragPosition"
+                                tooltip="{{marqueeItem.marqueeDescription}}">
+                                {{marqueeItem.text}}</marquee>
+                        </a>
+
+
+                        <a *ngIf="marqueeItem.clickAction[0].linkWebsite[0].type=='anotherWindow'"
+                            (click)="logAttendeeClicks($event, 'Weblinks', marqueeItem.clickAction[0].linkWebsite[0].name + '^^^^' + marqueeItem.clickAction[0].linkWebsite[0].location +'^^^^'+marqueeItem.clickAction[0].linkWebsite[0].type)"
+                            tooltip="{{marqueeItem.clickAction[0].linkWebsite[0].name}}"
+                            href="{{marqueeItem.clickAction[0].linkWebsite[0].location}}" target="_blank">
+
+                        </a>
+                    </div>
+
+
+                </div>
+                <!-- End -->
+                <!-- if click action is not selected -->
+                <!-- Start -->
+                <div *ngIf="marqueeItem.selectedAction===''">
+                    <marquee id="marqueeBanner_{{i}}" style="color:{{marqueeItem.textColor}}"
+                        [ngStyle]="marqueeStyle(i)" (click)="logAttendeeClicks($event,'marquee',marqueeItem)"
+                        [attr.bgcolor]="marqueeItem.backgroundColor" direction='{{marqueeItem.transition}}'
+                        [attr.height]="marqueeItem.marqueeHeight+'px'" [attr.width]="marqueeItem.marqueeWidth+'px'"
+                        cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="marqueeItem.dragPosition"
+                        tooltip="{{marqueeItem.marqueeDescription}}">
+                        {{marqueeItem.text}}</marquee>
+                </div>
+                <!-- End -->
+            </div>
+        </div>
+        <!-- End -->
+
+
+        <!-- Shape Section -->
+        <!-- Start -->
+        <div>
+            <ng-template #selectShapeModal let-modal>
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-basic-title">{{'SelectShape' | translate}}</h4>
+                    <button type="button" class="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <img src="../../assets/Images/line.png" class="imgBorder" />
+                            <img src="../../assets/Images/arrow_next.png" class="imgBorder" />
+                            <img src="../../assets/Images/circle.png" class="imgBorder" />
+                            <!-- <img src="../../assets/Images/triangle.png" class="imgBorder"
+                                (click)="addShape('triangle',i)" /> -->
+                            <img src="../../assets/Images/square.png" class="imgBorder" />
+                            <img src="../../assets/Images/pentagon.png" class="imgBorder" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark">Save</button>
+                </div>
+            </ng-template>
+
+
+
+            <div *ngFor="let shapeItem of shapeArr;let i=index">
+
+                <div class="{{shapeItem.type}}" id="shapeItem_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                    [ngStyle]="shapeStyle(i)" [cdkDragFreeDragPosition]="shapeItem.dragPosition">
+                </div>
+
+
+
+            </div>
+        </div>
+        <!-- End -->
+
+
+        <!-- Guest section -->
+        <!-- start -->
+        <div>
+            <div style="position: absolute;" *ngFor="let guestItem of guestArr;let i=index">
+                <img [src]="guestItem.guestBanner" id="guestBanner_{{i}}" name="guestBanner_{{i}}"
+                    [attr.height]="guestItem.guestHeight+'px'" [attr.width]="guestItem.guestWidth+'px'" cdkDrag
+                    [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="guestItem.dragPosition"
+                    tooltip="{{guestItem.guestDescription}}" />
+
+            </div>
+        </div>
+        <!-- End -->
+
+        <!-- Facebook Section -->
+        <!-- Start -->
+        <div>
+            <div style="position: absolute;" *ngFor="let fbItem of faceBookLinkArr;let i=index">
+                <a href="{{fbItem.fbLinkUrl==null || fbItem.fbLinkUrl==''?'javascript:void(0);':fbItem.fbLinkUrl}}"
+                    target="{{fbItem.fbLinkUrl==null || fbItem.fbLinkUrl==''?'':'_blank'}}"> <img
+                        style="width: 32px;height:auto;" src='../../../assets/Images/facebook_blue.png'
+                        id="fbImage_{{i}}" name="fbImage_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="fbItem.dragPosition" /></a>
+
+
+            </div>
+        </div>
+        <!--Facebook End -->
+
+        <!-- Twitter Section -->
+        <!-- Start -->
+        <div>
+            <div style="position: absolute;" *ngFor="let twitterItem of twitterLinkArr;let i=index">
+                <a href="{{twitterItem.twitterLinkUrl==null || twitterItem.twitterLinkUrl==''?'javascript:void(0);':twitterItem.twitterLinkUrl}}"
+                    target="{{twitterItem.twitterLinkUrl==null || twitterItem.twitterLinkUrl==''?'':'_blank'}}">
+                    <img style="width: 32px;height:auto;" src='../../../assets/Images/twitter_blue.png'
+                        id="twitterImage_{{i}}" name="twitterImage_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="twitterItem.dragPosition" /></a>
+
+
+            </div>
+        </div>
+        <!--Twitter End -->
+
+
+        <!-- Instagram Section -->
+        <!-- Start -->
+        <div>
+            <div style="position: absolute;" *ngFor="let instaItem of instagramLinkArr;let i=index">
+
+                <a href="{{instaItem.instagramUrl==null || instaItem.instagramUrl==''?'javascript:void(0);':instaItem.instagramUrl}}"
+                    target="{{instaItem.instagramUrl==null || instaItem.instagramUrl==''?'':'_blank'}}">
+                    <img style="width: 32px;height:auto;" src='../../../assets/Images/instagram_blue.png'
+                        id="instaItem_{{i}}" name="instaItem_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="instaItem.dragPosition" /></a>
+
+
+            </div>
+        </div>
+        <!--Instagram End -->
+
+
+
+
+        <!-- LinkedIn Section -->
+        <!-- Start -->
+        <div>
+            <div style="position: absolute;" *ngFor="let linkedInItem of linkedInLinkArr;let i=index">
+                <a href="{{linkedInItem.linkedInLinkUrl==null || linkedInItem.linkedInLinkUrl==''?'javascript:void(0);':linkedInItem.linkedInLinkUrl}}"
+                    target="{{linkedInItem.linkedInLinkUrl==null || linkedInItem.linkedInLinkUrl==''?'':'_blank'}}">
+
+
+                    <img style="width: 32px;height:auto;" src='../../../assets/Images/linkedin_blue.png'
+                        id="linkedInImage_{{i}}" name="linkedInImage_{{i}}" cdkDrag [cdkDragDisabled]="true"
+                        [cdkDragFreeDragPosition]="linkedInItem.dragPosition" /></a>
+
+
+            </div>
+        </div>
+        <!--LinkedIn End -->
+
+
+
+
+    </div>
+
+
+    <!-- HTML Section -->
+    <!-- Start -->
+
+    <div>
+        <div style="position: absolute;" id="htmlItem_{{i}}" *ngFor="let htmlItem of htmlArr;let i=index">
+            <span [innerHTML]="htmlItem.htmlCode | safeHtml"></span>
+        </div>
+    </div>
+
+
+
+    <!-- End -->
+
+    <!-- IFrame Popup window -->
+
+    <div id="openWebisteInIframe" class="modal fade" role="document"
+        style="margin-top: 0px !important;margin-bottom: 0px !important;">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'"
+                    [style.color]="eventDetails.headerTextColor">
+                    <h5 class="modal-title">{{iframeModalName}}</h5>
+                    <button *ngIf="roomDesignDetails.events" type="button" class="close" data-dismiss="modal"
+                        aria-label="Close" [style.color]="roomDesignDetails.events.headerTextColor">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <iframe [src]="iframeWebsitePopup | safe" width="100%" style="height:80vh"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button *ngIf="roomDesignDetails.events"
+                        [style.background]="roomDesignDetails.events.headerBackgroundColor"
+                        [style.color]="roomDesignDetails.events.headerTextColor" type="button"
+                        class="btn btnOrangeFrontEnd" data-dismiss="modal">{{'Close' | translate}}</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Link To Content Popup window -->
+
+    <div id="linkContentModal" class="modal fade" role="document"
+        style="margin-top: 0px !important;margin-bottom: 0px !important;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'"
+                    [style.color]="eventDetails.headerTextColor">
+                    <h5 class="modal-title">Link To Content</h5>
+                    <button *ngIf="roomDesignDetails.events" type="button" class="close" data-dismiss="modal"
+                        aria-label="Close" [style.color]="roomDesignDetails.events.headerTextColor">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover table-striped table-bordered" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th style="border: 0px;" [style.color]="eventDetails.uiAccentColor">
+                                    {{'Name' | translate}}
+                                </th>
+                                <th style="border: 0px;" [style.color]="eventDetails.uiAccentColor">
+                                    {{'File' | translate}}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of linkContentData;let i=index">
+                                <td style="border: 0px;" [style.color]="eventDetails.sectionHeaderTextColor">
+                                    <label name="linkContentData_{{i}}" [(ngModel)]="item.name"
+                                        class="form-Lable Poppins-Regular">{{item.name}}</label>
+                                </td>
+                                <td style="border: 0px;" [style.color]="eventDetails.sectionHeaderTextColor">
+
+                                    <a *ngIf="item.linkUrl && item.targetType!=='iFrame'" class="btn btn-link"
+                                        href="{{item.linkUrl}}"
+                                        (click)="logAttendeeClicks($event,'DocumentsandResources',item.name+'^^^^'+item.linkUrl+'^^^^'+item.targetType)"
+                                        target="_blank">{{'Download '| translate}}</a>
+                                    <a *ngIf="item.targetType =='iFrame' && item.isVideo" data-toggle="modal"
+                                        data-target="#linkContentInIframe"
+                                        (click)="openIframeForVideo(item.name,item.linkUrl,item.targetType)"
+                                        class="btn btn-link">{{'Link '| translate}}</a>
+                                    <a *ngIf="item.targetType =='iFrame' && item.isPDF"
+                                        (click)="openDocument(item.linkUrl,item.name,item.targetType)"
+                                        class="btn btn-link" target="_blank">{{'Link '| translate}}</a>
+                                    <a *ngIf="item.targetType =='iFrame' && item.isImage"
+                                        (click)="openImage(item.linkUrl,item.name,item.targetType)" class="btn btn-link"
+                                        target="_blank">{{'Link '| translate}}</a>
+
+
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button *ngIf="roomDesignDetails.events"
+                        [style.background]="roomDesignDetails.events.headerBackgroundColor"
+                        [style.color]="roomDesignDetails.events.headerTextColor" type="button"
+                        class="btn btnOrangeFrontEnd" data-dismiss="modal">{{'Close' | translate}}</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <img *ngIf="rooms.isVideoChatEnabled" src="/assets/Images/camera.png" height="64px" width="64px"
+        style="position: absolute;bottom:10px;left:10px" cdkDrag cdkDragBoundary=".dvBoundry" data-toggle="modal"
+        data-target="#whereBByVideoChatModal" role="button" (click)="assignChatRoom()" />
+
+    <img *ngIf="eventDetails.videoType!==''" src="/assets/Images/welcome-video.png" height="64px" width="64px"
+        style="position: absolute;top:10px;right:10px;border-radius: 64px;" cdkDrag cdkDragBoundary=".dvBoundry"
+        data-toggle="modal" data-target="#firstTimeLoggedInVideoModal" role="button"
+        (click)="openWelcomeVideo(eventDetails.videoUrl)" />
+
+    <!-- Link To whereby video Popup window -->
+    <div id="whereBByVideoChatModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static"
+        style="margin-top: 0px !important;margin-bottom: 0px !important;">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content" style="height: 80vh;">
+                <div *ngIf="whereByChatMeeting" class="modal-header"
+                    [style.background]="eventDetails.headerBackgroundColor+'!important'"
+                    [style.color]="eventDetails.headerTextColor">
+                    <h5 class="modal-title">{{whereByChatMeeting.roomName}}</h5>
+                    <button *ngIf="roomDesignDetails.events" type="button" class="close" data-dismiss="modal"
+                        (click)="closeVideoChat()" aria-label="Close"
+                        [style.color]="roomDesignDetails.events.headerTextColor">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <iframe [src]="videoChatUrl | safe" allow="camera;microphone" width="100%" height="100%"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button *ngIf="roomDesignDetails.events" (click)="closeVideoChat()"
+                        [style.background]="roomDesignDetails.events.headerBackgroundColor"
+                        [style.color]="roomDesignDetails.events.headerTextColor" type="button"
+                        class="btn btnOrangeFrontEnd" data-dismiss="modal">{{'Close' | translate}}</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Link To Content Popup window for Iframe -->
+    <div id="linkContentInIframe" class="modal fade" role="document"
+        style="margin-top: 0px !important;margin-bottom: 0px !important;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'"
+                    [style.color]="eventDetails.headerTextColor">
+                    <h5 class="modal-title">{{iframeVideoModalName}}</h5>
+                    <button *ngIf="roomDesignDetails.events" type="button" class="close" data-dismiss="modal"
+                        aria-label="Close" [style.color]="roomDesignDetails.events.headerTextColor"
+                        (click)="closeIframeForVideo()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <video [src]="iframeVideoPopup | safe" width="100%" height="100%" autoplay="true" controls
+                        controlsList="nodownload"></video>
+                </div>
+                <div class="modal-footer">
+                    <button *ngIf="roomDesignDetails.events"
+                        [style.background]="roomDesignDetails.events.headerBackgroundColor"
+                        [style.color]="roomDesignDetails.events.headerTextColor" type="button"
+                        class="btn btnOrangeFrontEnd" (click)="closeIframeForVideo()" data-dismiss="modal">{{'Close' |
+                        translate}}</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

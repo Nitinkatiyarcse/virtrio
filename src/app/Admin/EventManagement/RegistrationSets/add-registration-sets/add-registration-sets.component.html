@@ -1,0 +1,151 @@
+<div>
+    <div class="bg-white pageHeader" style="border:none;text-align: left;padding:10px">
+        <label *ngIf='IsAdd' class="col-sm-12 text-Medium" style="text-align: left;">{{'AddRegistrationSet'| translate}}</label>
+        <label *ngIf='!IsAdd' class="col-sm-12 text-Medium" style="text-align: left;">{{'UpdateRegistrationSet'| translate}}</label>
+        <label class="col-sm-12 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+    </div>
+    <div class="flex-container row bg-white" id="usrListItems" style="margin-top: 25px;padding: 20px;margin-left: 0px;margin-right: 0px;">
+
+        <form method="Post" class="form-group" #AddRegistrationSetForm="ngForm">
+            <div class="mb-3 row" *ngIf="showLanguageDDL">
+                <div class="col-sm-2">
+                    <label class=" Poppins-Regular" for="LanguageVersion">{{'LanguageVersion'| translate}} <sup> <i
+                                class="fa fa-info-circle p-1" data-placement="bottom"
+                                tooltip="{{'PleaseSelectWhichLanguageVersion' | translate}}"></i></sup></label>
+                </div>
+
+
+                <div class="col-sm-10">
+                    <select class="form-select Poppins-Regular" [(ngModel)]="inputRegistrationModel.languageId" data-val="true" name="LanguageVersion" #LanguageVersion>
+                        <option *ngFor="let item of languageDropdownList" value="{{item.languageId}}">{{item.language}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="Name">{{'Name' | translate}}</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control Poppins-Regular" placeholder="{{'Name' | translate}}" required #Name="ngModel" [(ngModel)]="inputRegistrationModel.Name" name="Name" value="" maxlength="30">
+                    <span *ngIf="Name.invalid && Name.touched" class="error">{{'Namerequired'| translate}}</span>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="UrlSlug">{{'URLSlug' | translate}}</label>
+                <div class="col-sm-10">
+                    <input type="text" [disabled]="inputRegistrationModel.UrlSlug=='Default' || inputRegistrationModel.UrlSlug=='default'" class="form-control Poppins-Regular" placeholder="{{'URLSlug' | translate}}" pattern="^[A-Za-z0-9]+$" required #UrlSlug="ngModel" maxlength="15"
+                        [(ngModel)]="inputRegistrationModel.UrlSlug" name="UrlSlug" value="">
+                    <span class="Poppins-Regular fs-12px ml-5px">url look like :-
+                        {{domainUrl+""+eventURLSlag+"/"+(inputRegistrationModel.UrlSlug?inputRegistrationModel.UrlSlug:'')}}
+                    </span><br>
+                    <span *ngIf="UrlSlug.invalid && UrlSlug.touched" class="error">{{'UrlSlugrequired'| translate}}</span>
+
+                </div>
+
+
+
+            </div>
+
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="StartDate">{{'StartDate' | translate}}
+                </label>
+                <div class="col-sm-10">
+                    <div class="input-group bootstrap-timepicker timepicker">
+                        <app-date-picker [(ngModel)]="inputRegistrationModel.StartDate" [minDate]="projectStartDate" [maxDate]="projectEndDate" #StartDate="ngModel" required="" [(ngModel)]="inputRegistrationModel.StartDate" name="StartDate" (ngModelChange)="validateRegistrationDates()"></app-date-picker>
+                    </div>
+                    <span *ngIf="StartDate.invalid && StartDate.touched" class="error">{{'StartDaterequired'| translate}}</span>
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="EndDate">{{'EndDate' | translate}} </label>
+                <div class="col-sm-10">
+                    <div class="input-group bootstrap-timepicker timepicker">
+                        <app-date-picker [maxDate]="projectEndDate" [minDate]="registrationSetEndDate" [(ngModel)]="inputRegistrationModel.EndDate" #EndDate="ngModel" required="" name="EndDate" (ngModelChange)="validateRegistrationDates()"> </app-date-picker>
+                    </div>
+                    <span *ngIf="EndDate.invalid && EndDate.touched" class="error">{{'EndDaterequired'| translate}}</span>
+                    <span *ngIf="InvalidDate" class="error">
+                        {{'startDateGreaterThanEndDate'| translate}}
+                    </span>
+
+                </div>
+            </div>
+
+
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="StartTime">{{'StartTime' | translate}}
+                </label>
+                <div class="col-sm-10">
+                    <div class="input-group bootstrap-timepicker timepicker">
+                        <app-time-picker #StartTime="ngModel" [(ngModel)]="inputRegistrationModel.StartTime" name="StartTime" class=" Poppins-Regular" required="" value="" name="StartTime" (ngModelChange)="validateRegistrationTime()">
+                        </app-time-picker>
+                    </div>
+                    <span *ngIf="StartTime.invalid && StartTime.touched" class="error">{{'StartTimerequired'| translate}}</span>
+
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="EndTime">{{'EndTime'| translate}} </label>
+                <div class="col-sm-10">
+                    <div class="input-group bootstrap-timepicker timepicker">
+                        <app-time-picker #EndTime="ngModel" type="text" class="Poppins-Regular" [(ngModel)]="inputRegistrationModel.EndTime" required="" value="" name="EndTime" (ngModelChange)="validateRegistrationTime()">
+                        </app-time-picker>
+                    </div>
+
+                    <span *ngIf="EndTime.invalid && EndTime.touched" class="error">{{'EndTimerequired'| translate}}</span>
+                    <span *ngIf="InvalidTime" class="error">
+                        {{'startTimeGreaterThanEndTime'| translate}}
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="TimeZone">{{'TimeZone'| translate}}</label>
+                <div class="col-sm-10">
+                    <select id="timeZone" [(ngModel)]="inputRegistrationModel.timeZone" name="timeZone" class="form-select" required #timeZone="ngModel" [(ngModel)]="inputRegistrationModel.timeZone" name="timeZone" value="">
+
+                        <option value="{{selectedTimeZone}}">{{'SelectTimezone' | translate}}</option>
+                        <option *ngFor="let item of allTimezones" value="{{item.timeZoneId}}">{{item.timeZoneName}}
+                            ({{item.offset}})</option>
+                    </select>
+
+                    <span *ngIf="timeZone.invalid && timeZone.touched" class="error">{{'TimeZonerequired'| translate}}</span>
+
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular">{{'Banner' | translate}}
+                <br><span class="Poppins-Regular" style="font-size: 10px;">{{'imagetypeshouldbepng,jpgorjpeg' |translate}}</span>
+                <br>
+                <span class="Poppins-Regular" style="font-size: 10px;">
+                        {{'MaxSizeSevenhundred' |translate}}
+                    </span></label>
+                <div class=" col-sm-10">
+                    <span id="spnImageErrorMessage" class="text-danger"></span>
+                    <input *ngIf="!inputRegistrationModel.banner" id="fileupload" type="file" (change)="onFileChange($event)" name="EventImage">
+                    <img *ngIf="inputRegistrationModel.banner" src="{{inputRegistrationModel.banner}}" id="UploadedEventImage" height="100" width="200">
+                    <i *ngIf="inputRegistrationModel.banner" class="fa fa-times" style="vertical-align: top;margin-left:10px" tooltip="{'Remove' | translate}}" (click)="removeBanner()"></i>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for=""></label>
+                <div class="col-sm-12 text-right">
+                    <button type="submit" (click)="upsertRegistrationSet()" [disabled]="AddRegistrationSetForm.invalid" class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 Poppins-Regular">{{'Save' | translate}}</button> &nbsp;
+                    <a type="button" [routerLink]="[ '../../../../registrationset/manageregistrationset',inputRegistrationModel.eventId]" class="commonbtn btn btn-primary text-white btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 ml-20px Poppins-Regular">{{'Cancel' | translate}}</a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</div>

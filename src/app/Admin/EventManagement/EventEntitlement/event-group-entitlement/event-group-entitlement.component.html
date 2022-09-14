@@ -1,0 +1,502 @@
+<div class="pageHeader bg-white" style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'Entitlement'| translate}}</label>
+        <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+    </div>
+</div>
+
+<div class="bgWhite" style="margin-top: 25px;">
+    <nav class="bg-white">
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <!-- Whitelist section -->
+            <!-- Start -->
+            <a class="nav-item nav-link active Poppins-Regular {{isWhitelistOrBlackList==1?'active':''}} {{isWhitelistOrBlackList==2?'disabled':''}}" id="nav-whitelisting-tab" data-toggle="tab" href="#nav-whitelist" role="tab" aria-controls="nav-whitelist" aria-selected="true">{{'Whitelisting'|translate}}</a>
+            <!-- End -->
+            <!-- Blacklist section -->
+            <!-- Start -->
+            <a class="nav-item nav-link Poppins-Regular  {{isWhitelistOrBlackList==2?'active':''}} {{isWhitelistOrBlackList==1?'disabled':''}}" id="nav-blacklisting-tab" data-toggle="tab" href="#nav-blacklist" role="tab" aria-controls="nav-blacklist" aria-selected="false">{{'Blacklisting'|translate}}</a>
+            <!-- End -->
+            <!-- Group Entitlement section -->
+            <!-- Start -->
+            <a class="nav-item nav-link Poppins-Regular" id="nav-groupAndSet-tab" data-toggle="tab" href="#nav-groupAndSet" role="tab" aria-controls="nav-groupAndSet" aria-selected="false">{{'Group&Sets'|translate}}</a>
+            <!-- End -->
+            <!-- Entitlement attendee -->
+            <!-- Start -->
+            <!-- <a class="nav-item nav-link Poppins-Regular" id="nav-EntitleAttendees-tab" data-toggle="tab" href="#nav-EntitleAttendees" role="tab" aria-controls="nav-EntitleAttendees" aria-selected="false">{{'EntitleAttendees'|translate}}</a> -->
+            <!-- End -->
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent bg-white" style="background-color: #ffffff;padding: 20px;">
+        <!-- Whitelist section -->
+        <!-- Start -->
+        <div class="tab-pane fade  {{isWhitelistOrBlackList==1 ||isWhitelistOrBlackList==0 ?'show active':''}}" id="nav-whitelist" role="tabpanel" aria-labelledby="nav-whitelisting-tab">
+            <div>
+                <div class="mb-3 row">
+                    <label class="col-sm-6" for="">{{'WouldyouliketoenableWhitelisting'|translate}}</label>
+                </div>
+                <div class="mb-3 row">
+                    <div class="row col-sm-8">
+                        <div class="col-sm-3 Poppins-Regular">
+                            <div class="form-check form-check-inline">
+                                <input type="radio" id="OptionWhitelistYesRadio" [checked]="isWHitelistCheckedYes" style="margin-top: 12px;padding: 0px;" class="form-check-input" (click)="isWHitelistYesNo($event,true)" name="OptionWhitelistYesNoRadio">
+                                <label class="form-check-label col-sm-2 Poppins-Regular" style="margin-left: 0px;margin-top: 10px" for="OptionYesRadio">{{'Yes'|translate}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 Poppins-Regular">
+                            <div class="form-check form-check-inline">
+                                <input type="radio" id="OptionWhitelitsNoRadio" [checked]="isWHitelistCheckedNo" style="margin-top: 12px;padding: 0px;" class="form-check-input" (click)="isWHitelistYesNo($event,false)" name="OptionWhitelistYesNoRadio">
+                                <label class="form-check-label col-sm-2 Poppins-Regular" style="margin-left: 0px;margin-top: 10px" for="OptionWhitelitsNoRadio">{{'No'|translate}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <br>
+                <div id="domaintable">
+                    <div class="mb-3 row">
+                        <div class="col-sm-12">
+                            <button [disabled]="isWhitelistOrBlackList==0" class="commonbtn col-lg-2 col-xl-2 col-md-2 col-sl-12 btn btn-primary Poppins-Regular" data-toggle="modal" (click)="showAddWhitelistDomainPopup()" data-target="#addWhitelistDomain" style="float: right;">{{'AddDomain'|translate}}</button>
+                        </div>
+                    </div>
+                    <table id="whitelistDomainTable" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <a style="cursor: pointer;"> {{'Domain' | translate}}</a>
+                                </th>
+                                <th>
+
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of whitelistDomainList">
+                                <td style="border:none;">
+                                    {{item.addressValue}}
+                                </td>
+                                <td style="border:none;">
+                                    <i class="fa fa-trash" style="cursor: pointer;" (click)="deleteWhiteListedDomain(item)" tooltip="{{'Delete' | translate}}"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <hr>
+                <br>
+                <div id="EmailAddresstable">
+                    <div class="mb-3 row">
+                        <div class="col-sm-12">
+
+                            <button [disabled]="isWhitelistOrBlackList==0" class="commonbtn col-lg-2 col-xl-2 col-md-2 col-sl-12 btn btn-primary Poppins-Regular ml-20px" data-toggle="modal" data-target="#whitelistedEmailAddressLoadFile" style="float: right;">{{'LoadFile' | translate}}</button>
+
+                            <button [disabled]="isWhitelistOrBlackList==0" class="btn btn-primary col-sm-2" data-toggle="modal" (click)="showAddWhitelistEmailPopup()" data-target="#addWhitelistEmailAddress" style="float: right; width: 160px;">{{'AddEmailAddress'|translate}}</button>
+                        </div>
+
+                    </div>
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <a style="cursor: pointer;"> {{'EmailAddress' | translate}}</a>
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of whitelistEmailList">
+                                <td style="border:none;">
+                                    {{item.addressValue}}
+                                </td>
+                                <td style="border:none;">
+                                    <i class="fa fa-trash" style="cursor: pointer;" (click)="deleteWhiteListedDomain(item)" tooltip="{{'Delete' | translate}}"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+
+        </div>
+        <!-- End -->
+        <!-- Blacklist section -->
+        <!-- Start -->
+        <div class="tab-pane fade  {{isWhitelistOrBlackList==2?'show active':''}}" id="nav-blacklist" role="tabpanel" aria-labelledby="nav-blacklisting-tab">
+            <div>
+                <div class="mb-3 row">
+                    <label class="col-sm-6" for="">{{'WouldyouliketoenableBlacklisting'|translate}}</label>
+                </div>
+
+                <div class="mb-3 row">
+
+                    <div class="row col-sm-8">
+
+                        <div class="col-sm-3 Poppins-Regular">
+                            <div class="form-check form-check-inline">
+
+                                <input type="radio" id="OptionBlacklistYesRadio" name="OptionBlacklistYesRadioYes" [checked]="isBlacklistCheckedYes" style="margin-top: 12px;padding: 0px;" class="form-check-input" (click)="isBlacklistYesNo($event,true)">
+                                <label class="form-check-label col-sm-2 Poppins-Regular" style="margin-left: 0px;margin-top: 10px" for="OptionBlacklistYesRadio">{{'Yes'|translate}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 Poppins-Regular">
+                            <div class="form-check form-check-inline">
+
+                                <input type="radio" id="OptionBlacklistNoRadio" name="OptionBlacklistYesRadioNo" [checked]="isBlacklistCheckedNo" style="margin-top: 12px;padding: 0px;" class="form-check-input" (click)="isBlacklistYesNo($event,false)">
+                                <label class="form-check-label col-sm-2 Poppins-Regular" style="margin-left: 0px;margin-top: 10px" for="OptionBlacklistNoRadio">{{'No'|translate}}</label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <hr>
+                <br>
+                <div id="domaintable">
+                    <div class="mb-3 row">
+                        <div class="col-sm-12">
+                            <button [disabled]="isWhitelistOrBlackList==0" class="btn btn-primary" (click)="showAddBlacklistDomainPopup()" data-toggle="modal" data-target="#addBlacklistDomain" style="float: right;">{{'AddDomain'|translate}}</button>
+
+
+                        </div>
+
+                    </div>
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <a style="cursor: pointer;"> {{'Domain' | translate}}</a>
+                                </th>
+                                <th>
+
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of blackListDomainList">
+                                <td style="border:none;">
+                                    {{item.addressValue}}
+                                </td>
+                                <td style="border:none;">
+                                    <i class="fa fa-trash" style="cursor: pointer;" (click)="deleteBlackListedItem(item)" tooltip="{{'Delete' | translate}}"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <br>
+                <hr>
+                <br>
+
+
+                <div id="EmailAddresstable">
+                    <div class="mb-3 row">
+                        <div class="col-sm-12">
+                            <button [disabled]="isWhitelistOrBlackList==0" class="btn btn-primary col-sm-2 Poppins-Regular ml-10px" data-toggle="modal" data-target="#whitelistedEmailAddressLoadFile" style="float: right;">{{'LoadFile' | translate}}</button>
+
+                            <button [disabled]="isWhitelistOrBlackList==0" class="btn btn-primary" (click)="showBlacklistEmailPopup()" data-toggle="modal" data-target="#addBlacklistEmailAddress" style="float: right;">{{'AddEmailAddress'|translate}}</button>
+
+
+                        </div>
+                    </div>
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <a style="cursor: pointer;"> {{'Domain' | translate}}</a>
+                                </th>
+                                <th>
+
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of blackListEmailList">
+                                <td style="border:none;">
+                                    {{item.addressValue}}
+                                </td>
+                                <td style="border:none;">
+                                    <i class="fa fa-trash" style="cursor: pointer;" (click)="deleteBlackListedItem(item)" tooltip="{{'Delete' | translate}}"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <!-- End -->
+        <!-- Entitlement attendee -->
+        <!-- Start -->
+        <div class="tab-pane fade" id="nav-groupAndSet" role="tabpanel" aria-labelledby="nav-groupAndSet-tab">
+            <div>
+                <a style="float: right; margin-bottom: 30px;;" href="/admin/events/AddEntitlementGroup/{{eventId}}" class="btn btn-primary text-white Poppins-Regular">{{'AddEntitlementGroup' | translate}}</a>
+
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" style="margin-top:30px" class="table table-hover table-striped table-bordered" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>
+                                <a style="cursor: pointer;"> {{'GroupName' | translate}}</a>
+                            </th>
+                            <!-- <th>
+                                <a style="cursor: pointer;">
+                                    {{'RegistrationCriteria' | translate}}</a>
+                            </th>
+                            <th>
+                                <a style="cursor: pointer;">
+                                    {{'CourseCriteria' | translate}}</a>
+                            </th> -->
+                            <th>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor='let item of groupEntitlements'>
+                            <td style="border: none;">{{item.groupName}}</td>
+                            <!-- <td style="border: none;">{{item.registrationCretiria ===true?'Yes':'No'}}</td>
+                            <td style="border: none;">{{item.courseCriteria ===true?'Yes':'No'}}</td> -->
+                            <td style="border: none;">
+                                <div class="dropdown">
+                                    <a href="#" data-bs-toggle="dropdown" class="text-muted"><i
+                                            class="fa fa-gear"></i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a *ngIf="item.groupName!=='Default' || item.groupName!=='default'" class="dropdown-item Poppins-Regular" id="btnDetails" (click)='deleteGroup(item.groupId)' translate>{{'Delete' | translate }}</a>
+                                        <a class="dropdown-item Poppins-Regular" id="btnUpdate" [routerLink]="['/admin/events/eventgroupentitlement/details',item.groupId,eventId]" routerLinkActive="router-link-active">{{'Details'| translate}}</a>
+
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- End -->
+        <!-- Entitlement attendee -->
+        <!-- Start -->
+        <!-- <div class="tab-pane fade" id="nav-EntitleAttendees" role="tabpanel" aria-labelledby="nav-EntitleAttendees-tab">
+            No record found
+        </div> -->
+        <!-- End -->
+    </div>
+</div>
+
+<!-- Modal Add Whitelist Domain -->
+<div class="modal fade" id="addWhitelistDomain" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{'AddWhitelistedDomain'|translate}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form method="Post" class="form-group" #AddWhitelistDomainForm="ngForm">
+                    <!-- <div class="text-center pageHeader" translate>
+                    {{'AddWhitelistedDomain'}}
+                    <i class="fa fa-times" type="button" data-dismiss="modal" style="cursor:pointer;float:right;"></i>
+                </div> -->
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <input type="text" pattern="^(?!:\/\/)(?=.{1,255}$)((.{1,63}\.){1,127}(?![0-9]*$)[a-z0-9-]+\.?)$" #AddWhitelistDomainName="ngModel" [(ngModel)]="whitelistedEmailAndDomainItems.addressValue" name="AddWhitelistDomainName" class="form-control Poppins-Regular"
+                                placeholder="{{'DomainNameWithExample' | translate}}" required maxlength="50">
+                            <span *ngIf="AddWhitelistDomainName.invalid && AddWhitelistDomainName.touched" class="error">{{'DomainNameRequired'| translate}}
+                        </span>
+                        </div>
+                    </div>
+                    <!-- <div class="" style="text-align: right;">
+                    
+                </div> -->
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="save" (click)="saveWhitelistDomainOrEmailAddress()" [disabled]="AddWhitelistDomainForm.invalid" id="btnadddomianname" class="commonbtn btn btn-primary col-sm-5">
+                {{'Save'|translate }}
+            </button>
+                <button type="button" #popupCloseBtn class="commonbtn btn  btn-primary  text-white  col-sm-5" style="margin-left: 20px;" data-dismiss="modal" (click)="closePopup();">
+                {{'Cancel' | translate}}
+            </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add Whitelist Email Address -->
+<div class="modal fade" id="addWhitelistEmailAddress" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{'AddWhitelistedEmail'|translate}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="Post" class="form-group" #AddWhitelistEmailAddress="ngForm">
+                    <!-- <div class="text-center pageHeader" translate>
+                    {{'AddWhitelistedEmail'}}
+                    <i class="fa fa-times" type="button" data-dismiss="modal" style="cursor:pointer;float:right;"></i>
+                </div> -->
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <input type="text" #AddWhitelistEmail="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="whitelistedEmailAndDomainItems.addressValue" name="AddWhitelistEmail" class="form-control Poppins-Regular" placeholder="{{'EmailAddress' | translate}}"
+                                required maxlength="50">
+                            <span *ngIf="AddWhitelistEmail.invalid && AddWhitelistEmail.touched" class="error">{{'Emailrequired'| translate}}
+                        </span>
+                        </div>
+                    </div>
+                    <!-- <div class="" style="text-align: right;">
+                    
+                </div> -->
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="save" (click)="saveWhitelistDomainOrEmailAddress()" [disabled]="AddWhitelistEmailAddress.invalid" id="btnaddemailaddress" class="commonbtn btn btn-primary col-sm-5">
+                {{'Save'|translate }}
+            </button>
+                <button #popupCloseBtn1 type="button" class="commonbtn btn  btn-primary  text-white  col-sm-5" style="margin-left: 20px;" data-dismiss="modal" (click)="closePopup();">
+                {{'Cancel' | translate}}
+            </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Add Blacklist Domain -->
+<div class="modal fade" id="addBlacklistDomain" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{'AddBlacklistedDomain'|translate}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="Post" class="form-group" #AddBlacklistDomainForm="ngForm">
+                    <!-- <div class="text-center pageHeader" translate>
+                    {{'AddBlacklistedDomain'}}
+                    <i class="fa fa-times" type="button" data-dismiss="modal" style="cursor:pointer;float:right;"></i>
+                </div> -->
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <input type="text" #AddBlacklistDomainName="ngModel" pattern="^(?!:\/\/)(?=.{1,255}$)((.{1,63}\.){1,127}(?![0-9]*$)[a-z0-9-]+\.?)$" [(ngModel)]="blacklistedEmailAndDomainItems.addressValue" name="AddBlacklistDomainName" class="form-control Poppins-Regular"
+                                placeholder="{{'DomainNameWithExample' | translate}}" required maxlength="50">
+                            <span *ngIf="AddBlacklistDomainName.invalid && AddBlacklistDomainName.touched" class="error">{{'DomainNameRequired'| translate}}
+                        </span>
+                        </div>
+                    </div>
+                    <!-- <div class="" style="text-align: right;">
+                    <button type="save" (click)="saveBlacklistDomainOrEmailAddress()" [disabled]="AddBlacklistDomainForm.invalid" id="btnadddomianname" data-dismiss="modal" class="commonbtn btn btn-primary col-sm-5">
+                        {{'Save'|translate }}
+                    </button>
+                    <button type="button" #popupCloseBtn2 class="commonbtn btn  btn-primary  text-white  col-sm-5" style="margin-left: 20px;" data-dismiss="modal" (click)="closePopup();">
+                        {{'Cancel' | translate}}
+                    </button>
+                </div> -->
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="save" (click)="saveBlacklistDomainOrEmailAddress()" [disabled]="AddBlacklistDomainForm.invalid" id="btnadddomianname" data-dismiss="modal" class="commonbtn btn btn-primary col-sm-5">
+                {{'Save'|translate }}
+            </button>
+                <button type="button" #popupCloseBtn2 class="commonbtn btn  btn-primary  text-white  col-sm-5" style="margin-left: 20px;" data-dismiss="modal" (click)="closePopup();">
+                {{'Cancel' | translate}}
+            </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add Blacklist Email Address -->
+<div class="modal fade" id="addBlacklistEmailAddress" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{'AddBlacklistedEmail'|translate}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="Post" class="form-group" #AddBlacklistEmailAddress="ngForm">
+                    <!-- <div class="text-center pageHeader" translate>
+                    {{'AddBlacklistedEmail'}}
+                    <i class="fa fa-times" type="button" data-dismiss="modal" style="cursor:pointer;float:right;"></i>
+                </div> -->
+                    <div class="form-group row">
+
+                        <div class="col-sm-12 mt-20px">
+                            <input type="text" #AddBlacklistEmail="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="blacklistedEmailAndDomainItems.addressValue" name="AddBlacklistEmail" class="form-control Poppins-Regular" placeholder="{{'EmailAddress' | translate}}"
+                                required maxlength="50">
+                            <span *ngIf="AddBlacklistEmail.invalid && AddBlacklistEmail.touched" class="error">{{'Emailrequired'| translate}}
+                        </span>
+                        </div>
+                    </div>
+                    <!-- <div class="" style="text-align: right;">
+                    
+                </div> -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="save" (click)="saveBlacklistDomainOrEmailAddress()" [disabled]="AddBlacklistEmailAddress.invalid" id="btnaddemailaddress" class="commonbtn btn btn-primary col-sm-5">
+                {{'Save'|translate }}
+            </button>
+                <button type="button" #popupCloseBtn3 class="commonbtn btn  btn-primary  text-white  col-sm-5" style="margin-left: 20px;" data-dismiss="modal" (click)="closePopup();">
+                {{'Cancel' | translate}}
+            </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Model For Load FIle of Email Address -->
+<div class="modal fade" id="whitelistedEmailAddressLoadFile" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{'UploadCSVFile'|translate}}</h5>
+                <a href="{{whitelistedEmailAddressLoadFileSample}}" target="_blank">
+                    <i class="fa fa-info-circle" style="margin-left:20px;cursor:pointer;" tooltip="{{'ClickToDownloadSampleFile' | translate}}"></i></a>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="Post" class="form-group" #WhitelistedEmailAddressLoadFile="ngForm">
+                    <!-- <div class="text-center pageHeader" translate>
+                    {{'UploadCSVFile'}}
+                    <i class="fa fa-times" type="button" data-dismiss="modal" style="cursor:pointer;float:right;"></i>
+                </div> -->
+                    <div class="form-group row">
+                        <div class="col-sm-12" style="margin-left: 30px;">
+                            <input type="file" class="form-control-file" #whitelistedEmailAddressUplaodControl name="whitelistedEmailAddressUplaodControl" id="whitelistedEmailAddressUplaodControl" (change)="uploadWhitelistedEmailAddresses($event)">
+                        </div>
+                    </div>
+                    <!-- <div class="" style="text-align: right;">
+                    
+                </div> -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="whitelistedEmailAddressUploadBtn" (click)="whitelistedEmailAddressUplaodControl.click()" class="commonbtn btn btn-primary col-sm-5">{{'Save'|translate }}</button>
+                <button #whitelistEmailUploadFormCloseBtn type="button" class="commonbtn btn  btn-primary  text-white  col-sm-5" style="margin-left: 20px;" data-dismiss="modal">
+                {{'Cancel' | translate}}
+            </button>
+            </div>
+        </div>
+    </div>
+</div>

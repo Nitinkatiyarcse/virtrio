@@ -1,0 +1,59 @@
+<!-- BEGIN login -->
+<div class="login">
+    <!-- BEGIN login-content -->
+    <div class="login-content">
+        <form #loginForm="ngForm" *ngIf='!isLoggedInUser'>
+            <div class="text-center  Poppins-SemiBold" style="font-size: 20px;font-weight: 600; margin: 6px 0px 6px 0px;">{{'VirtualEventsPlateform'| translate}}</div>
+            <h1 class="text-center  Poppins-SemiBold" style="font-size: 20px;font-weight: 600; margin: 6px 0px 6px 0px;"> {{'Login'| translate}}</h1>
+            <div class="text-muted text-center mb-4">
+                <div class="Poppins-Regular text-danger" *ngIf='isThereAnyError'>
+                    <ul class="list-style-none">
+
+                        <li *ngFor="let error of user.errors">
+                            <p translate> {{error}} </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mb-3">
+                <input type="email" autofocus name="Email" #Email="ngModel" [(ngModel)]="user.Email" class="form-control form-control-lg fs-15px  Poppins-Regular" value="" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" placeholder="{{'Email'| translate}}" required
+                    email maxlength="100" />
+                <span *ngIf="Email.invalid && Email.touched" class="error">{{'InvalidEmail'| translate}}</span>
+            </div>
+
+            <button (click)="loginUser()" [disabled]="loginForm.invalid" type="submit" class="btn btn-primary btn-lg d-block w-100 fw-500 mb-3">{{'Login'| translate}}  </button>
+            <!-- <div class="text-center text-muted  Poppins-Regular" style="font-size:15px">
+                {{'DontHaveAccount'| translate}} <a routerLink='/admin/SignUp' class="btn-link">  {{'SignUp'| translate}}   </a>.
+            </div> -->
+        </form>
+
+        <form #loginOTPForm="ngForm" *ngIf='isLoggedInUser'>
+            <div class="text-center  Poppins-SemiBold" style="font-size: 20px;font-weight: 600; margin: 6px 0px 6px 0px;">{{'VirtualEventsPlateform'| translate}}</div>
+            <h1 class="text-center  Poppins-SemiBold" style="font-size: 20px;font-weight: 600; margin: 6px 0px 6px 0px;"> {{'Login'| translate}}</h1>
+            <div class="text-muted text-center mb-4">
+                <div class="Poppins-Regular text-danger" *ngIf='isThereAnyError'>
+                    <ul class="list-style-none">
+                        <li *ngFor="let error of user.errors">
+                            <p translate> {{error}} </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mb-3">
+                <input type="hidden" name="hdnEmail" #hdnEmail="ngModel" [(ngModel)]="user.Email" value='{{user.Email}}' />
+                <input type="text" name="LoginOTP" type="password" #LoginOTP="ngModel" [(ngModel)]="user.LoginOTP" class="form-control form-control-lg fs-15px  Poppins-Regular" value="" placeholder="{{'Enterotp'| translate}}" required maxlength="5" />
+                <span *ngIf="LoginOTP.invalid && LoginOTP.touched" class="error">{{'InvalidOTP'| translate}}</span>
+            </div>
+
+            <button (click)="loginOTPUser()" [disabled]="loginOTPForm.invalid" type="submit" class="btn btn-primary btn-lg d-block w-100 fw-500 mb-3">{{'Submit'| translate}}  </button>
+            <div class="text-center text-muted  Poppins-Regular" style="font-size:15px">
+                <button type="button" (click)="redirectToLogin()" class="btn btn-link">  {{'BackToLogin'| translate}}   </button>.
+            </div>
+        </form>
+        <ngx-spinner></ngx-spinner>
+
+    </div>
+    <!-- END login-content -->
+</div>
+<!-- END login -->
+<router-outlet></router-outlet>

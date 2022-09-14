@@ -1,0 +1,10 @@
+::ng-deep input .ng-untouched .ng-pristine .ng-valid {
+    -webkit-box-shadow: none;
+    -ms-box-shadow: none;
+    box-shadow:none;
+     border-left:none !important;
+}
+
+.yellowClass{ color: yellow;}
+.greenClass { color: green; }
+.redClass { color: red }

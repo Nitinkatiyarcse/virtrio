@@ -1,0 +1,561 @@
+<!-- <p>create-badge works!</p> -->
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'AddBadge'| translate}}</label>
+
+        <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+    </div>
+</div>
+
+<div class="flex-container row bg-white" id="roomListItems" style="margin-top: 25px;padding: 20px;margin-left: 0px;margin-right: 0px;">
+
+    <form class="form-group" #AddBadgeForm="ngForm">
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="BadgeTitle">{{'BadgeTitle'| translate}}
+            </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control Poppins-Regular" placeholder="{{'BadgeTitle' | translate}}" required #BadgeTitle="ngModel" maxlength="50" [(ngModel)]="adminLeaderboardBadges.badgeTitle" name="BadgeTitle" value="">
+
+                <span *ngIf="BadgeTitle.invalid && BadgeTitle.touched" class="error">{{'BadgeTitlerequired'| translate}}</span>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="DisplayOrder">{{'DisplayOrder'| translate}}
+            </label>
+            <div class="col-sm-10">
+                <input type="text" pattern="[0-9]+" class="form-control Poppins-Regular" placeholder="{{'DisplayOrder' | translate}}" required #DisplayOrder="ngModel" maxlength="3" [(ngModel)]="adminLeaderboardBadges.displayTitle" name="DisplayOrder" value="">
+                <span *ngIf="DisplayOrder.invalid && DisplayOrder.touched" class="error">{{'DisplayOrderrequired'| translate}}</span>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="BadgeValue">{{'BadgeValue'| translate}}
+            </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control Poppins-Regular" pattern="[0-9]+" placeholder="{{'BadgeValue' | translate}}" required #BadgeValue="ngModel" maxlength="3" [(ngModel)]="adminLeaderboardBadges.badgeValue" name="BadgeValue" value="">
+                <span *ngIf="BadgeValue.invalid && BadgeValue.touched" class="error">{{'BadgeValuerequired'| translate}}</span>
+            </div>
+        </div>
+
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="Roomsscreenoption">{{'BadgeFor' | translate}}</label>
+            <div class="row col-sm-8">
+
+
+                <div class="col-sm-3 Poppins-Regular">
+                    <div class="form-check form-check-inline">
+                        <input type="radio" value="" id="BadgeAttendees" style="margin-top: 12px;padding: 0px;" [checked]="true" class="form-check-input" name="BadgeAttendees" #Attendees [checked]="this.adminLeaderboardBadges.badgeFor=='Attendees'" (change)="selectBadgeFor($event,'Attendees')">
+                        <label class="form-check-label col-sm-2 Poppins-Regular" style="margin-left: 0px;margin-top: 10px" for="BadgeAttendees">{{'Attendees'|translate}}</label>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-4 Poppins-Regular">
+                    <div class="form-check form-check-inline">
+                        <input type="radio" value="" id="BadgeRepresentative" style="margin-top: 12px;padding: 0px;" class="form-check-input" name="BadgeAttendees" #Representative [checked]="this.adminLeaderboardBadges.badgeFor=='Representative'" (change)="selectBadgeFor($event,'Representative')">
+                        <label class="form-check-label col-sm-2 Poppins-Regular" style="margin-left: 0px;margin-top: 10px" for="Representative">{{'Representative'|translate}}
+                        </label></div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="BadgeDesc">{{'BadgeDescription' | translate}}
+
+            </label>
+            <div class="col-sm-10">
+                <textarea class="form-control Poppins-Regular" placeholder="{{'BadgeDescription' | translate}}" #BadgeDesc="ngModel" maxlength="250" [(ngModel)]="adminLeaderboardBadges.description" name="BadgeDesc"></textarea>
+
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular">{{'BadgeImage' | translate}}<br><span
+                    class="Poppins-Regular"
+                    style="font-size: 10px;">{{'Small image url 24*24' |translate}}</span></label>
+            <div class="col-sm-10">
+                <span id="spnImageErrorMessage" class="text-danger"></span>
+                <input id="fileupload" type="file" (change)="onFileChange($event,24)" name="smallImageUrl">
+                <img src="{{adminLeaderboardBadges.smallImageUrl}}" id="smallImageUrl" *ngIf="adminLeaderboardBadges.smallImageUrl" height="24" width="24">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular">{{'BadgeImages' | translate}}<br><span
+                    class="Poppins-Regular" style="font-size: 10px;">{{'Big image url 48*48' |translate}}</span></label>
+            <div class="col-sm-10">
+                <span id="spnImageErrorMessage" class="text-danger"></span>
+                <input id="fileupload" type="file" (change)="onFileChange($event,48)" name="largeImageUrl">
+                <img src="{{adminLeaderboardBadges.largeImageUrl}}" id="largeImageUrl" *ngIf="adminLeaderboardBadges.largeImageUrl" height="48" width="48">
+            </div>
+        </div>
+
+
+
+        <!--Start QualificationRules-->
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Bold" for="Badge">{{'QualificationRules'| translate}}
+            </label>
+
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="Badge">{{'RuleType'| translate}}
+            </label>
+            <div class="col-sm-10">
+                <select class="form-select Poppins-Regular" required [(ngModel)]="ruleType" #RuleType="ngModel" name="RuleType" (change)="showActivities($event)">
+                    <option value="">{{'Select' | translate}}</option>
+                    <option *ngFor="let item of leaderboardActivityType" value="{{item.toLowerCase()}}">
+                        {{item | translate }}</option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="mb-3 row" *ngIf="leaderboardActivity!=null && leaderboardActivity!=undefined">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="Badge">{{'SelectRules'| translate}}
+            </label>
+            <div class="col-sm-10">
+                <select class="form-select Poppins-Regular" required name="RuleTypesss" #RuleTypesss="ngModel" [(ngModel)]="ruleTypesss" (change)="selectRuleType($event)">
+                    <option value="">{{'Select' | translate}}</option>
+                    <option *ngFor="let item of leaderboardActivity"
+                        value="{{item.leaderboardActivityId}}_{{item.leaderboardActivityType.toLowerCase()}}">
+                        {{item.leaderboardActivityName | translate }}</option>  
+                </select>
+            </div>
+        </div>
+
+
+        <div *ngIf="adminLeaderboardBadges.visitType!=={}">
+            <div class="mb-3 row" *ngIf="adminLeaderboardBadges.visitType.visitId!==''">
+                <label class="col-sm-2 col-form-label Poppins-Bold" for="Badge">{{'VisitType'| translate}}
+                </label>
+            </div>
+
+            <div class="mb-3 row" *ngIf="adminLeaderboardBadges.visitType.type==='click'">
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Badge">{{'ClickCount'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control Poppins-Regular col-sm-8" id="visitType_count" style="max-width: 234px;" #visitType_count="ngModel" name="visitType_count" [(ngModel)]='adminLeaderboardBadges.visitType.count' />
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Badge">{{'StartDate'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-date-picker [(ngModel)]="adminLeaderboardBadges.visitType.startDate" #StartDate="ngModel" name="StartDate"></app-date-picker>
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="EndDate">{{'EndDate'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-date-picker [(ngModel)]="adminLeaderboardBadges.visitType.endDate" #EndDate="ngModel" name="EndDate"></app-date-picker>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="StartTime">{{'StartTime' | translate}}
+                    </label>
+                    <div class="col-sm-4">
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-time-picker #EventStartTime="ngModel" [(ngModel)]="adminLeaderboardBadges.visitType.startTime" name="StartTime" value="" name="StartTime">
+                            </app-time-picker>
+                        </div>
+                        <!-- <span
+                            *ngIf="adminLeaderboardBadges.visitType.startTime.invalid && adminLeaderboardBadges.visitType.startTime.touched"
+                            class="error">{{'StartTimerequired'| translate}}</span> -->
+                    </div>
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="EndTime">{{'EndTime'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-time-picker #EndTime="ngModel" type="text" [(ngModel)]="adminLeaderboardBadges.visitType.endTime" value="" name="EndTime">
+                            </app-time-picker>
+                        </div>
+                        <!-- <span
+                            *ngIf="adminLeaderboardBadges.visitType.endTime.invalid && adminLeaderboardBadges.visitType.endTime.touched"
+                            class="error">{{'EndTimerequired'| translate}}</span>
+                        <span *ngIf="InvalidTime" class="error">
+                            {{'startTimeGreaterThanEndTime'| translate}}
+                        </span> -->
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="mb-3 row" *ngIf="adminLeaderboardBadges.visitType.type==='Complete Items'">
+                <div class="mb-3 row" *ngIf="adminLeaderboardBadges.visitType.typeId.toLowerCase()==='8b80532e-8e91-4565-9dc0-903574a9ff4a'">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Survey">{{'SelectSurvey'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+                        <ng-multiselect-dropdown name="itemKey" #itemKey [placeholder]="'SelectSurvey'| translate" [settings]="dropdownSettings" [data]="allEventLevelSurveys" [(ngModel)]="adminLeaderboardBadges.visitType.itemKey" [ngClass]='setClass()'>
+                        </ng-multiselect-dropdown>
+
+                    </div>
+                </div>
+                <div class="mb-3 row" *ngIf="adminLeaderboardBadges.visitType.typeId.toLowerCase()==='c736ac57-563a-4da9-8a9f-96960a427e1e'">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Survey">{{'SelectSurvey'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+                        <ng-multiselect-dropdown name="itemKey" #itemKey [placeholder]="'SelectSurvey'| translate" style="max-width: 234px;" [settings]="dropdownSettings" [data]="allboothLevelSurveys" [(ngModel)]="adminLeaderboardBadges.visitType.itemKey" [ngClass]='setClass()'>
+                        </ng-multiselect-dropdown>
+
+                    </div>
+                </div>
+                <div class="mb-3 row" *ngIf="adminLeaderboardBadges.visitType.typeId==='2e2aeef4-1251-4a37-be45-cfc8f493f082'">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Survey">{{'SelectPoll'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+                        <ng-multiselect-dropdown name="itemKey" #itemKey [placeholder]="'SelectPoll'| translate" style="max-width: 234px;" [settings]="dropdownSettings" [data]="allPolls" [(ngModel)]="adminLeaderboardBadges.visitType.itemKey" [ngClass]='setClass()'>
+                        </ng-multiselect-dropdown>
+
+                    </div>
+                </div>
+
+
+
+
+                <div class="mb-3 row" *ngIf="adminLeaderboardBadges.visitType.typeId.toLowerCase()==='6bbbe75d-b7df-4f71-b111-9801195639ff'">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Quiz">{{'SelectQuiz'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+                        <ng-multiselect-dropdown name="itemKey" #itemKey [placeholder]="'SelectQuiz'| translate" style="max-width: 234px;" [settings]="dropdownSettings" [data]="allQuiz" [(ngModel)]="adminLeaderboardBadges.visitType.itemKey" [ngClass]='setClass()'>
+                        </ng-multiselect-dropdown>
+                    </div>
+                </div>
+
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Badge">{{'StartDate'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-date-picker [(ngModel)]="adminLeaderboardBadges.visitType.startDate" #StartDate="ngModel" name="StartDate"></app-date-picker>
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="EndDate">{{'EndDate'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-date-picker [(ngModel)]="adminLeaderboardBadges.visitType.endDate" #EndDate="ngModel" name="EndDate"></app-date-picker>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="StartTime">{{'StartTime' | translate}}
+                    </label>
+                    <div class="col-sm-4">
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-time-picker #EventStartTime="ngModel" [(ngModel)]="adminLeaderboardBadges.visitType.startTime" name="StartTime" value="" name="StartTime">
+                            </app-time-picker>
+                        </div>
+                        <!-- <span
+                            *ngIf="adminLeaderboardBadges.visitType.startTime.invalid && adminLeaderboardBadges.visitType.startTime.touched"
+                            class="error">{{'StartTimerequired'| translate}}</span> -->
+
+                    </div>
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="EndTime">{{'EndTime'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-time-picker #EndTime="ngModel" type="text" [(ngModel)]="adminLeaderboardBadges.visitType.endTime" value="" name="EndTime">
+                            </app-time-picker>
+                        </div>
+
+                        <!-- <span
+                            *ngIf="adminLeaderboardBadges.visitType.endTime.invalid && adminLeaderboardBadges.visitType.endTime.touched"
+                            class="error">{{'EndTimerequired'| translate}}</span>
+                        <span *ngIf="InvalidTime" class="error">
+                            {{'startTimeGreaterThanEndTime'| translate}}
+                        </span> -->
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="mb-3 row" *ngIf="adminLeaderboardBadges.visitType.type==='duration'">
+                <div class="mb-3 row">
+
+                    <label *ngIf="adminLeaderboardBadges.visitType.typeId.toLowerCase()==='b7e1d33a-acc6-4d4f-a443-1ce5ed5fe60f'" class="col-sm-2 col-form-label Poppins-Regular" for="Survey">{{'SelectBooth'| translate}}
+                    </label>
+                    <div *ngIf="adminLeaderboardBadges.visitType.typeId.toLowerCase()==='b7e1d33a-acc6-4d4f-a443-1ce5ed5fe60f'" class="col-sm-4">
+                        <ng-multiselect-dropdown name="itemKey" #itemKey [placeholder]="'SelectBooth'| translate" style="max-width: 234px;" [settings]="dropdownSettings" [data]="allBooths" [(ngModel)]="adminLeaderboardBadges.visitType.itemKey" [ngClass]='setClass()'>
+                        </ng-multiselect-dropdown>
+                    </div>
+
+                    <label *ngIf="adminLeaderboardBadges.visitType.typeId.toLowerCase()==='e87c2361-0331-43bb-bd76-20a7fb30db81'" class="col-sm-2 col-form-label Poppins-Regular" for="Survey">{{'SelectRoom'| translate}}
+                    </label>
+                    <div *ngIf="adminLeaderboardBadges.visitType.typeId.toLowerCase()==='e87c2361-0331-43bb-bd76-20a7fb30db81'" class="col-sm-4">
+                        <ng-multiselect-dropdown name="itemKey" #itemKey [placeholder]="'SelectRoom'| translate" style="max-width: 234px;" [settings]="dropdownSettings" [data]="allRoomsOtherThanBooths" [(ngModel)]="adminLeaderboardBadges.visitType.itemKey" [ngClass]='setClass()'>
+                        </ng-multiselect-dropdown>
+                    </div>
+
+                    <label *ngIf="adminLeaderboardBadges.visitType.typeId.toLowerCase()==='c7621d82-6815-47ad-8886-8221d2b7d3f7'" class="col-sm-2 col-form-label Poppins-Regular" for="Survey">{{'SelectBooth'| translate}}
+                    </label>
+                    <div *ngIf="adminLeaderboardBadges.visitType.typeId.toLowerCase()==='c7621d82-6815-47ad-8886-8221d2b7d3f7'" class="col-sm-4">
+                        <ng-multiselect-dropdown name="itemKey" #itemKey [placeholder]="'SelectBooth'| translate" style="max-width: 234px;" [settings]="dropdownSettings" [data]="allBooths" [(ngModel)]="adminLeaderboardBadges.visitType.itemKey" [ngClass]='setClass()'>
+                        </ng-multiselect-dropdown>
+                    </div>
+
+
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Badge">{{'MinDuration_InSeconds'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control Poppins-Regular col-sm-8" id="visitType_minDuration" style="max-width: 234px;" #visitType_minDuration="ngModel" name="visitType_minDuration" [(ngModel)]='adminLeaderboardBadges.visitType.minDuration' />
+
+                    </div>
+
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Badge">{{'StartDate'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-date-picker [(ngModel)]="adminLeaderboardBadges.visitType.startDate" #StartDate="ngModel" name="StartDate"></app-date-picker>
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="EndDate">{{'EndDate'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-date-picker [(ngModel)]="adminLeaderboardBadges.visitType.endDate" #EndDate="ngModel" name="EndDate"></app-date-picker>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="StartTime">{{'StartTime' | translate}}
+                    </label>
+                    <div class="col-sm-4">
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-time-picker #EventStartTime="ngModel" [(ngModel)]="adminLeaderboardBadges.visitType.startTime" name="StartTime" value="" name="StartTime">
+                            </app-time-picker>
+                        </div>
+                        <!-- <span
+                            *ngIf="adminLeaderboardBadges.visitType.startTime.invalid && adminLeaderboardBadges.visitType.startTime.touched"
+                            class="error">{{'StartTimerequired'| translate}}</span> -->
+
+                    </div>
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="EndTime">{{'EndTime'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-time-picker #EndTime="ngModel" type="text" [(ngModel)]="adminLeaderboardBadges.visitType.endTime" value="" name="EndTime">
+                            </app-time-picker>
+                        </div>
+
+                        <!-- <span
+                            *ngIf="adminLeaderboardBadges.visitType.endTime.invalid && adminLeaderboardBadges.visitType.endTime.touched"
+                            class="error">{{'EndTimerequired'| translate}}</span>
+                        <span *ngIf="InvalidTime" class="error">
+                            {{'startTimeGreaterThanEndTime'| translate}}
+                        </span> -->
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+            <div class="mb-3 row" *ngIf="adminLeaderboardBadges.visitType.type==='login/visit'">
+                <div class="mb-3 row">
+
+                    <label *ngIf="adminLeaderboardBadges.visitType.typeId.toLowerCase()==='30a36c56-a8ea-41f6-88c2-ded6e249a942'" class="col-sm-2 col-form-label Poppins-Regular" for="Survey">{{'SelectAuditorium'| translate}}
+                    </label>
+                    <div *ngIf="adminLeaderboardBadges.visitType.typeId.toLowerCase()==='30a36c56-a8ea-41f6-88c2-ded6e249a942'" class="col-sm-4">
+                        <ng-multiselect-dropdown name="itemKey" #itemKey [placeholder]="'SelectAuditorium'| translate" style="max-width: 234px;" [settings]="dropdownSettings" [data]="allAuditorium" [(ngModel)]="adminLeaderboardBadges.visitType.itemKey" [ngClass]='setClass()'>
+                        </ng-multiselect-dropdown>
+                    </div>
+
+
+                    <label *ngIf="adminLeaderboardBadges.visitType.typeId.toLowerCase()==='df6e5184-45b7-4ad2-ab77-1bbd7d46d2a5'" class="col-sm-2 col-form-label Poppins-Regular" for="Survey">{{'SelectCustomRoom'| translate}}
+                    </label>
+                    <div *ngIf="adminLeaderboardBadges.visitType.typeId.toLowerCase()==='df6e5184-45b7-4ad2-ab77-1bbd7d46d2a5'" class="col-sm-4">
+                        <ng-multiselect-dropdown name="itemKey" #itemKey [placeholder]="'SelectCustomRoom'| translate" style="max-width: 234px;" [settings]="dropdownSettings" [data]="allCustomRooms" [(ngModel)]="adminLeaderboardBadges.visitType.itemKey" [ngClass]='setClass()'>
+                        </ng-multiselect-dropdown>
+                    </div>
+
+                    <label *ngIf="adminLeaderboardBadges.visitType.typeId.toLowerCase()==='a343491f-b9d9-4ab5-8bf6-deec56f44112'" class="col-sm-2 col-form-label Poppins-Regular" for="Survey">{{'SelectExhibitHall'| translate}}
+                    </label>
+                    <div *ngIf="adminLeaderboardBadges.visitType.typeId.toLowerCase()==='a343491f-b9d9-4ab5-8bf6-deec56f44112'" class="col-sm-4">
+                        <ng-multiselect-dropdown name="itemKey" #itemKey [placeholder]="'SelectExhibitHall'| translate" style="max-width: 234px;" [settings]="dropdownSettings" [data]="allExihibitHalls" [(ngModel)]="adminLeaderboardBadges.visitType.itemKey" [ngClass]='setClass()'>
+                        </ng-multiselect-dropdown>
+                    </div>
+
+                    <label *ngIf="adminLeaderboardBadges.visitType.typeId.toLowerCase()==='3722e5ed-6591-4372-b805-ed4229ee4e33'" class="col-sm-2 col-form-label Poppins-Regular" for="Survey">{{'SelectMeetingRoom'| translate}}
+                    </label>
+                    <div *ngIf="adminLeaderboardBadges.visitType.typeId.toLowerCase()==='3722e5ed-6591-4372-b805-ed4229ee4e33'" class="col-sm-4">
+                        <ng-multiselect-dropdown name="itemKey" #itemKey [placeholder]="'SelectMeetingRoom'| translate" style="max-width: 234px;" [settings]="dropdownSettings" [data]="allMeetingRooms" [(ngModel)]="adminLeaderboardBadges.visitType.itemKey" [ngClass]='setClass()'>
+                        </ng-multiselect-dropdown>
+                    </div>
+
+
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Badge">{{'Count'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control Poppins-Regular col-sm-8" id="visitType_count" style="max-width: 234px;" #visitType_count="ngModel" name="visitType_count" [(ngModel)]='adminLeaderboardBadges.visitType.count' />
+
+                    </div>
+
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Badge">{{'StartDate'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-date-picker [(ngModel)]="adminLeaderboardBadges.visitType.startDate" #StartDate="ngModel" name="StartDate"></app-date-picker>
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="EndDate">{{'EndDate'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-date-picker [(ngModel)]="adminLeaderboardBadges.visitType.endDate" #EndDate="ngModel" name="EndDate"></app-date-picker>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="StartTime">{{'StartTime' | translate}}
+                    </label>
+                    <div class="col-sm-4">
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-time-picker #EventStartTime="ngModel" [(ngModel)]="adminLeaderboardBadges.visitType.startTime" name="StartTime" value="" name="StartTime">
+                            </app-time-picker>
+                        </div>
+                        <!-- <span
+                            *ngIf="adminLeaderboardBadges.visitType.startTime.invalid && adminLeaderboardBadges.visitType.startTime.touched"
+                            class="error">{{'StartTimerequired'| translate}}</span> -->
+
+                    </div>
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="EndTime">{{'EndTime'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-time-picker #EndTime="ngModel" type="text" [(ngModel)]="adminLeaderboardBadges.visitType.endTime" value="" name="EndTime">
+                            </app-time-picker>
+                        </div>
+
+                        <!-- <span
+                            *ngIf="adminLeaderboardBadges.visitType.endTime.invalid && adminLeaderboardBadges.visitType.endTime.touched"
+                            class="error">{{'EndTimerequired'| translate}}</span>
+                        <span *ngIf="InvalidTime" class="error">
+                            {{'startTimeGreaterThanEndTime'| translate}}
+                        </span> -->
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div *ngIf="adminLeaderboardBadges.visitType.type==='others'">
+
+            </div>
+            <div *ngIf="adminLeaderboardBadges.visitType.type==='presentation/web cast'">
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Badge">{{'Count'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+
+                        <input type="text" class="form-control Poppins-Regular" #visitType_count="ngModel" style="max-width: 234px;" name="visitType_count" [(ngModel)]='adminLeaderboardBadges.visitType.count' />
+
+                    </div>
+
+
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Badge">{{'MinDuration'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+
+                        <input type="text" class="form-control Poppins-Regular" #visitType_minDuration="ngModel" name="visitType_minDuration" [(ngModel)]='adminLeaderboardBadges.visitType.minDuration' />
+
+                    </div>
+                </div>
+                <!-- <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Badge">{{'MinAttendees'| translate}}
+                    </label>
+                    <div class="col-sm-10">
+
+                        <input type="text" class="form-control Poppins-Regular" #visitType_minAttendees="ngModel"
+                            name="visitType_minAttendees" [(ngModel)]='adminLeaderboardBadges.visitType.minAttendees' />
+
+                    </div>
+                </div> -->
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Badge">{{'Presentation'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+
+                        <select class="form-select Poppins-Regular" #visitType_method="ngModel" name="visitType_method" [(ngModel)]='adminLeaderboardBadges.visitType.method'>
+                            <option value="any">{{'any' | translate}}</option>
+                        </select>
+
+                    </div>
+                </div>
+                <!-- <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Badge">{{'Mode'| translate}}
+                    </label>
+                    <div class="col-sm-10">
+
+                        <select class="form-select Poppins-Regular" #visitTypemode="ngModel" name="visitType_mode"
+                            [(ngModel)]='adminLeaderboardBadges.visitType.mode'>
+                            <option value="both">{{'Both' | translate}}
+                            </option>
+                        </select>
+
+                    </div>
+                </div> -->
+            </div>
+
+            <div *ngIf="adminLeaderboardBadges.visitType.type==='room specific'">
+                <div class="mb-3 row">
+
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Survey">{{'SelectRoom'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+                        <ng-multiselect-dropdown name="itemKey" #itemKey [placeholder]="'SelectRoom'| translate" style="max-width: 234px;" [settings]="dropdownSettings" [data]="allRooms" [(ngModel)]="adminLeaderboardBadges.visitType.itemKey" [ngClass]='setClass()'>
+                        </ng-multiselect-dropdown>
+                    </div>
+
+
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Badge">{{'Count'| translate}}
+                    </label>
+                    <div class="col-sm-4">
+
+                        <input type="text" class="form-control Poppins-Regular" #visitType_count="ngModel" style="max-width: 234px;" name="visitType_count" [(ngModel)]='adminLeaderboardBadges.visitType.count' />
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!--End QualificationRules-->
+
+        <div class="mb-3 row">
+            <input type="hidden" [(ngModel)]="adminLeaderboardBadges.adminLeaderboardBadgeId" value="{{adminLeaderboardBadges.adminLeaderboardBadgeId}}" id="adminLeaderboardBadgeId" name="adminLeaderboardBadgeId" />
+            <input type="hidden" [(ngModel)]="adminLeaderboardBadges.adminLeaderboardId" value="{{adminLeaderboardBadges.adminLeaderboardId}}" id="adminLeaderboardId" name="adminLeaderboardId" />
+            <button type="save" (click)="saveBadge()" [disabled]="AddBadgeForm.invalid" class="btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12">{{'Save' | translate}}</button>
+            <a href="/admin/events/Leaderboard/{{eventId}}" class="btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 ml-20px text-white">{{'Cancel' | translate}}</a>
+        </div>
+
+
+    </form>
+</div>

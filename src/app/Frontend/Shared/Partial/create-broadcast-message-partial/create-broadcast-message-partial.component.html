@@ -1,0 +1,194 @@
+<form class="form-group" #messageToREpresentativeForm="ngForm">
+    <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'" [style.color]="eventDetails.headerTextColor">
+        <h5 class="modal-title">{{'CreateBroadcastMessagee'|translate}}</h5>
+        <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+    <div class="modal-body" [style.color]="eventDetails.sectionHeaderTextColor">
+        <form method="Post" class="form-group" #AddBroadcastMessage="ngForm">
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="BroadcastMessageTitle">{{'BroadcastMessageTitle' | translate}}</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control Poppins-Regular" placeholder="{{'BroadcastMessageTitle' | translate}}" required #BroadcastMessageTitle="ngModel" [(ngModel)]="inputBroadcastMessageModel.broadcastMessageTitle" name="BroadcastMessageTitle" style="margin-top:10px">
+                   
+                </div>
+    
+            </div>
+    
+    
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="Language">Select RegistrationSet</label>
+                <div class="col-sm-10">
+                    <select class="form-select" required name="registrationSet" id="registrationSet" [(ngModel)]="inputBroadcastMessageModel.registrationSetId">
+                        <option value="">{{'SelectRegistrationSet' | translate}}</option>
+                        <option *ngFor="let item of allRegistrationSetsByEvent" value="{{item.registrationSetId}}">{{item.name}}</option>
+                    </select>
+                </div>
+    
+            </div>
+    
+    
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="BroadcastMsgDesc">{{'BroadcastMessage' |
+                    translate}}</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control Poppins-Regular" placeholder="{{'BroadcastMessage' | translate}}" required
+                     maxlength="5000" name="BroadcastMsgDesc" rows="3" #BroadcastMsgDesc="ngModel" [(ngModel)]="inputBroadcastMessageModel.broadcastMsgDesc"></textarea>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="Targetattendee">{{'TargetAttendee' |
+                    translate}}</label>
+                <div class="col-sm-10">
+                    <select class="form-select" required name="targetattendee" id="Targetattendee" [(ngModel)]="inputBroadcastMessageModel.targetattendee" (change)="selectTargetattendee($event.target.value)">
+                        <option value="">{{'SelectTargetAttendee' | translate}}</option>
+                        <option value="Everyone">Everyone</option>
+                        <option value="ByEntitlement">By Entitlement</option>
+                        <!-- <option value="ByLocation">By Location</option> -->
+                    </select>
+    
+                </div>
+    
+            </div>
+    
+          
+    
+    
+            <div class="mb-3 row" *ngIf="isByEntitlementSelect">
+                <label class="col-sm-2 col-form-label Poppins-Regular" style="margin-bottom: 0px;">{{'Entitlement' |
+                    translate}}</label>
+                <div class="col-sm-10">
+                    <ng-multiselect-dropdown name="Entltilement" #Entitlement [placeholder]="'SelectEntitlement'| translate" [required]='entitlementRequiredField' [settings]="EntitlementDropdownSettings" [data]="entitlementDropdownList" [(ngModel)]="inputBroadcastMessageModel.selectedEntitlement">
+                    </ng-multiselect-dropdown>
+    
+                </div>
+            </div>
+    
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="SendMessage">{{'SendMessage' |
+                    translate}}</label>
+    
+    
+                <div class="col-sm-10">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="" name="Message" #SendNow  (change)="showHideMessageDateAndTime($event,'SendNow')" [checked]="inputBroadcastMessageModel.sendNow">
+                        <label class="form-check-label" for="SendNow">{{'SendNow' | translate}}</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="" name="Message" #SendLater  (change)="showHideMessageDateAndTime($event,'SendLater')" [checked]="inputBroadcastMessageModel.sendLater"> 
+                        <label class="form-check-label" for="SendLater">{{'SendLater' | translate}}</label>
+                    </div>
+    
+    
+    
+                    <div class="mb-3 row mt-10px" *ngIf="isSendLaterSelected">
+                        <label class="col-sm-2 col-form-label Poppins-Regular" for="MessageStartDate">{{'StartDate' |
+                            translate}}
+                        </label>
+                        <div class="col-sm-4" >
+                            <div class="input-group bootstrap-timepicker timepicker">
+                                <app-date-picker  #MessageStartDate="ngModel" required="" [(ngModel)]="inputBroadcastMessageModel.messageStartDate" name="MessageStartDate" ></app-date-picker>
+                                <!-- <app-date-picker [maxDate]="" [minDate]="reportAccessStartMinDate" #RepaccessStartDate="ngModel" required="" [(ngModel)]="inputEventModel.reportAccessStartDate" name="RepaccessStartDate" (ngModelChange)="validateRepaccessDates()"></app-date-picker> -->
+                            </div>
+                            <span *ngIf="MessageStartDate.invalid && MessageStartDate.touched" class="error">{{'StartDaterequired'| translate}}</span>
+                        </div>
+    
+    
+                        <label class="col-sm-2 col-form-label Poppins-Regular" for="MessageStartTime">{{'StartTime' |
+                            translate}} </label>
+                        <div class="col-sm-4" >
+                            <div class="input-group bootstrap-timepicker timepicker">
+                                <app-time-picker #MessageStartTime="ngModel" [(ngModel)]="inputBroadcastMessageModel.messsageStartTime" name="MessageStartTime" required="" value="" name="|MessageStartTime">
+                                </app-time-picker>
+                            </div>
+                            <span *ngIf="MessageStartTime.invalid && MessageStartTime.touched" class="error">{{'StartTimerequired'| translate}}</span>
+    
+                        </div>
+    
+                      
+    
+                    </div>
+    
+                
+                </div>
+                <div class="mb-3 row" *ngIf="isSendLaterSelected"> 
+                    <label class="form-check-label col-sm-2 Poppins-Regular" for="includeMessageDuration">{{'Message
+                        Duration'|translate}}</label>
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-input" name="includeMessageDuration" (change)="ifMsgDurationEnabled($event)" [checked]="inputBroadcastMessageModel.includeMessageDuration" #IncludeMessageDuration>
+                    </div>
+                </div>
+        
+                <div class="mb-3 row" *ngIf="isMsgDurationEnabled">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="Minutes">{{'Minutes' |
+                        translate}}</label>
+                    <div class="col-sm-10">
+                        <div>
+                            <input type="number" class="form-control Poppins-Regular" placeholder="{{'Minutes' | translate}}" required #Minutes="ngModel" [(ngModel)]="inputBroadcastMessageModel.minutes" name="Minutes" style="margin-top:10px">
+                        </div>
+        
+                    </div>
+                </div>
+            </div>
+    
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" style="margin-bottom: 0px;">{{'ClickAction' |
+                    translate}}</label>
+                <div class="col-sm-10">
+                    <select class="form-select" name="messageClickAction" id="messageClickAction"  [(ngModel)]="inputBroadcastMessageModel.selectedClickAction" (change)="selectClickActions($event.target.value)">
+                        <option value="">{{'SelectAction' | translate}}</option>
+                        <!-- <option value="addToChatQueue">{{'addTochatQueue' | translate}}</option> -->
+                        <option value="linkContent">{{'LinkContent' | translate}}</option>
+                        <option value="linkLocation">{{'LinkLocation' | translate}}</option>
+                        <!-- <option value="LinkToLeaderboard">{{'LinkToLeaderboard' | translate}}
+                        </option> -->
+                        <option value="linkQuiz">{{'LinktoQuiz' | translate}}</option>
+                        <option value="linkSurvey">{{'LinktoSurvey' | translate}}</option>
+                        <option value="linkPoll">{{'LinktoPoll' | translate}}</option>
+                        <!-- <option value="linkToInfocard">
+                            {{'LinktoInfocardwhereboothrepresentativesarepresentonlineforchat' |
+                            translate}}
+                        </option> -->
+                        <option value="linkToChatScreen">{{'LinktoChatScreen' | translate}}
+                        </option>
+                        <!-- <option value="linkToCalendar">
+                            {{'LinktoCalendartosetupacalendarwithBoothrepresentative' | translate}}
+                        </option> -->
+                        <!-- <option value="linkToWall">{{'LinktoWalltowritecomments' | translate}}
+                        </option> -->
+                        <option value="linkToSocialMedia">{{'LinktoSocialMedia' | translate}}
+                        </option>
+                        <option value="linkToWebinar">{{'Linktowebinar' | translate}}</option>
+                        <option value="linkToOneToOneChat">{{'Linkto1to1meeting' | translate}}
+                        </option>
+                        <option value="openBriefcase">{{'Linktodocuments' | translate}}</option>
+                        <option value="linkWebsite">{{'Linktowebsite' | translate}}</option>
+                    </select>
+                </div>
+            </div>
+    
+    
+            <!-- <div class="mb-3 row">
+                <div class="col-sm-12 text-muted Poppins-Regular text-right">
+                    <button (click)=savemessage() class="width: 175px !important; btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 Poppins-Regular">Save
+                        Broadcast</button>
+                    <a class="btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 ml-20px commonbtn btn btn-primary text-white Poppins-Regular">Cancel</a>
+                </div>
+            </div> -->
+    
+    
+    
+        </form>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" id="inviteEmailBtn" [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" class="btn  btnOrangeFrontEnd" [disabled]="messageToREpresentativeForm.invalid" data-dismiss="modal" (click)="savemessage()">{{'Save' |
+                translate}}</button>
+        <button type="button" [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" class="btn  btnOrangeFrontEnd" data-dismiss="modal" (click)="closeModal()">
+                {{'Close' | translate}}
+            </button>
+    </div>
+</form>

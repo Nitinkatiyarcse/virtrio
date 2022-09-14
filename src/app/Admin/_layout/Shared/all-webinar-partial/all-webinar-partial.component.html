@@ -1,0 +1,299 @@
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium row">
+        <div class="col-sm-10">
+            <label class="col-sm-10 text-Medium" *ngIf="ShowWebinarCategory" style="text-align: left;">{{'WebinarCategories'|translate}}</label>
+            <label class="col-sm-10 text-Medium" *ngIf="showWebinarList" style="text-align: left;">{{'AllWebinars'|translate}}</label>
+
+            <label class="col-sm-10 text-Medium" *ngIf="showAddOrUpdate" style="text-align: left;">{{'AddOrUpdateWebinar'|translate}}</label>
+
+
+            <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+        </div>
+
+        <div class="col-sm-2 text-right mb-15px" style="margin-top:25px;text-align: right;">
+            <div *ngIf="showWebinarList">
+                <i class="fa fa-plus" tooltip="{{'AddNewWebinar' | translate}}" (click)="AddWebinar()"></i>
+                <i class="fa fa-list ml-20px" tooltip="{{'ShowWebinarCategory' | translate}}" (click)="showWebinarCategory()"></i>
+            </div>
+            <div *ngIf="ShowWebinarCategory">
+                <i class="fa fa-plus" tooltip="{{'AddNewCategory' | translate}}" (click)="AddNewCategory()"></i>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="flex-container bg-white" id="roomListItems" style="margin-top: 25px;padding: 20px;">
+    <div class="col-sm-12 row">
+        <div *ngIf="showAddOrUpdate">
+            <div class="mb-3 row">
+                <div class="col-sm-12">
+                    <label class="form-label Poppins-Regular fs-10px" for="Badge" style="margin-bottom: 0px;margin-left: 4px;">{{'Category'| translate}}
+                    </label>
+                    <select name="webCatId" #webCatId="ngModel" [(ngModel)]="inputWebinarModel.webinarCategoryId" class="form-select col-sm-12 Poppins-Regular">
+                        <option value="">{{'SelectCategory' | translate}}</option>
+                        <option *ngFor="let item of webinarCategories" value="{{item.webinarCategoryId}}">
+                            {{item.categoryName}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-12">
+                    <label class="form-label Poppins-Regular fs-10px" for="Badge" style="margin-bottom: 0px;margin-left: 4px;">{{'ContentTitle'| translate}}
+                    </label>
+                    <input type="text" [(ngModel)]="inputWebinarModel.contentTitle" name="contentTitle" #contentTtle="ngModel" class="form-control Poppins-Regular" maxlength="80" />
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-12">
+                    <label class="form-label Poppins-Regular fs-10px" for="Badge" style="margin-bottom: 0px;margin-left: 4px;">{{'DisplayName'| translate}}
+                    </label>
+                    <input type="text" [(ngModel)]="inputWebinarModel.displayName" name="displayName" #displayName="ngModel" class="form-control Poppins-Regular" maxlength="80" />
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-12">
+                    <label class="form-label Poppins-Regular fs-10px" for="Badge" style="margin-bottom: 0px;margin-left: 4px;">{{'Description'| translate}}
+                    </label>
+                    <textarea type="text" rows="10" [(ngModel)]="inputWebinarModel.description" name="description" #displayName="ngModel" class="form-control Poppins-Regular" maxlength="500">{{inputWebinarModel.description}}</textarea>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-12">
+                    <label class="form-label Poppins-Regular fs-10px" for="Badge" style="margin-bottom: 0px;margin-left: 4px;">{{'Language'| translate}}
+                    </label>
+                    <ng-multiselect-dropdown name="Language" #Language [placeholder]="'SelectLanguage'| translate" [required]='requiredField' [settings]="dropdownSettings" style="background-color: #fff;" [data]="languageDropdownList" [(ngModel)]="inputWebinarModel.language">
+                    </ng-multiselect-dropdown>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-12 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="EnableTimeBracket">{{'TimeBracket'|translate}} </label>
+
+                    <div class="col-sm-9">
+                        <input type="checkbox" style="margin-left: 0px;margin-top:10px;" class="form-check-inline " [(ngModel)]="inputWebinarModel.enableTimeBracket" name="EnableTimeBracket" #EnableTimeBracket (change)="timeBracketChangedChanged()" [checked]="timeBracketEnabled">
+                    </div>
+                </div>
+            </div>
+
+
+            <div *ngIf="inputWebinarModel.enableTimeBracket">
+                <div class="mb-3 row">
+
+                    <div class="col-sm-6">
+                        <label class=" form-label Poppins-Regular fs-10px" for="RoomStartDate" style="margin-bottom: 0px;margin-left: 4px;">{{'StartDate' |
+                            translate}}
+                        </label>
+                        <div class=" input-group bootstrap-timepicker timepicker">
+                            <app-date-picker [minDate]="roomStartMinDate" [maxDate]="" [(ngModel)]="inputWebinarModel.startDate" #RoomStartDate="ngModel" required="" name="RoomStartDate" (ngModelChange)="validateRoomDates()">
+                            </app-date-picker>
+                        </div>
+                        <span *ngIf="RoomStartDate.invalid && RoomStartDate.touched" class="error">{{'StartDaterequired'|
+                            translate}}</span>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label class="form-label Poppins-Regular fs-10px" for="RoomStartTime" style="margin-bottom: 0px;margin-left: 4px;">{{'StartTime' |
+                            translate}}
+                        </label>
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-time-picker #RoomStartTime="ngModel" [(ngModel)]="inputWebinarModel.startTime" name="RoomStartTime" required="" value="" name="RoomStartTime" (ngModelChange)="validateRoomTime()">
+                            </app-time-picker>
+                        </div>
+                        <span *ngIf="RoomStartTime.invalid && RoomStartTime.touched" class="error">{{'StartTimerequired'|
+                            translate}}</span>
+
+                    </div>
+                </div>
+
+
+
+                <div class="mb-3 row">
+                    <div class="col-sm-6">
+                        <label class="form-label Poppins-Regular fs-10px" for="RoomStartDate" style="margin-bottom: 0px;margin-left: 4px;">{{'EndDate' |
+                            translate}}
+                        </label>
+                        <div class=" input-group bootstrap-timepicker timepicker">
+                            <!-- <app-date-picker [(ngModel)]="inputWebinarModel.endDate" #RoomEndDate="ngModel" required="" name="RoomEndDate" [minDate]="createroomEndMinDate" [maxDate]="roomEndMaxDate" (ngModelChange)="validateRoomDates()"> </app-date-picker> -->
+                            <app-date-picker [(ngModel)]="inputWebinarModel.endDate" #RoomEndDate="ngModel" required="" name="RoomEndDate" (ngModelChange)="validateRoomDates()">
+                            </app-date-picker>
+                        </div>
+                        <span *ngIf="RoomEndDate.invalid && RoomEndDate.touched" class="error">{{'EndDaterequired'|
+                            translate}}</span>
+                        <span *ngIf="InvalidDate" class="error">
+                            {{'startDateGreaterThanEndDate'| translate}}
+                        </span>
+                    </div>
+
+
+                    <div class="col-sm-6">
+                        <label class=" form-label Poppins-Regular fs-10px" for="RoomEndTime" style="margin-bottom: 0px;margin-left: 4px;">{{'EndTime' |
+                            translate}}
+                        </label>
+                        <div class=" input-group bootstrap-timepicker timepicker">
+                            <app-time-picker #RoomEndTime="ngModel" [(ngModel)]="inputWebinarModel.endTime" name="RoomEndTime" required="" value="" name="RoomEndTime" (ngModelChange)="validateRoomTime()">
+                            </app-time-picker>
+                        </div>
+                        <span *ngIf="RoomEndTime.invalid && RoomEndTime.touched" class="error">{{'EndTimerequired'|
+                            translate}}</span>
+                        <span *ngIf="InvalidTime" class="error">
+                            {{'startTimeGreaterThanEndTime'| translate}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-12">
+                    <label class="form-label Poppins-Regular fs-10px" for="Badge" style="margin-bottom: 0px;margin-left: 4px;">{{'WebinarType'| translate}}
+                    </label>
+                    <select name="webType" #webType="ngModel" [(ngModel)]="inputWebinarModel.webinarType" class="form-select col-sm-12 Poppins-Regular">
+                        <option value="webinar.net">webinar.net</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-sm-12">
+                    <label class="form-label Poppins-Regular fs-10px" for="WebinarId" style="margin-bottom: 0px;margin-left: 4px;">{{'WebinarId'| translate}}
+                    </label>
+                    <input type="text" [(ngModel)]="inputWebinarModel.webinarURL" name="WebinarURL" #WebinarURL="ngModel" class="form-control Poppins-Regular" maxlength="250" />
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-sm-12">
+                    <label class="form-label Poppins-Regular fs-10px" for="logo" style="margin-bottom: 0px;margin-left: 4px;">{{'Logo'| translate}}
+                    </label>
+                    <div class=" Poppins-Regular">
+                        <input id="fileupload" type="file" (change)="onFileChange($event)" name="logo" *ngIf="!inputWebinarModel.logo">
+                        <img src="{{inputWebinarModel.logo}}" id="UploadedBoothImage" *ngIf="inputWebinarModel.logo" style="width:100px;height: auto;">
+                        <i class="fa fa-times-circle" tooltip="{{'Delete' | translate}}" (click)="removeBoothIcon()" style="cursor: pointer;vertical-align: top;margin-left: 5px;" *ngIf="inputWebinarModel.logo"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-sm-12 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="EnableTimeBracket">{{'UseSurvey'|translate}}
+
+                    </label>
+
+                    <div class="col-sm-9">
+                        <input type="checkbox" style="margin-left: 0px;margin-top:10px;" class="form-check-inline " [(ngModel)]="inputWebinarModel.useSurvey" name="UseSurvey" #EnableTimeBracket (change)="useSurveyCheckChanged()" [checked]="useSurvey">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3 row" *ngIf="useSurvey">
+                <div class="col-sm-12">
+                    <label class=" form-label Poppins-Regular fs-10px" for="SelectSurvey" style="margin-bottom: 0px;margin-left: 4px;">{{'SelectSurvey'|translate}} </label>
+
+
+                    <select name="webSurveyId" #webSurveyId="ngModel" [(ngModel)]="inputWebinarModel.surveyId" class="form-select Poppins-Regular">
+                        <option value="">{{'SelectSurvey' | translate}}</option>
+                        <option *ngFor="let item of allEventLevelSurveys" value="{{item.surveys.surveyId}}">
+                            {{item.surveys.title}}
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+
+        <div *ngIf="ShowWebinarCategory">
+            <table class="table table-hover table-striped table-bordered" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{'Category' | translate}}</th>
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of webinarCategories">
+                        <td>
+                            <label class="Poppins-Regular" *ngIf="!item.isWebinarCategoryAdd">{{item.categoryName}}</label>
+                            <input type="text" class="Poppins-Regular form-control col-sm-6" name="catName" [(ngModel)]="item.categoryName" #catName="ngModel" value="{{item.categoryName}}" *ngIf="item.isWebinarCategoryAdd" />
+                        </td>
+                        <td style="vertical-align: middle;text-align: center;">
+                            <i *ngIf="!item.isWebinarCategoryAdd" class="fa fa-pencil-square-o ml-20px" tooltip="{{'Edit' | translate}}" (click)="editWebinarCategory(item)"></i>
+                            <i *ngIf="!item.isWebinarCategoryAdd" class="fa fa-trash ml-20px" tooltip="{{'Delete' | translate}}" (click)="deleteWebinarCategory(item)"></i>
+                            <i *ngIf="item.isWebinarCategoryAdd" class="fa fa-save ml-20px" tooltip="{{'Save' | translate}}" (click)="upsertWebinarCategory(item)"></i>
+                            <i *ngIf="item.isWebinarCategoryAdd" class="fa fa-times ml-20px" tooltip="{{'Cancel' | translate}}" (click)="cancelWebinarCategory(item)"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div *ngIf="showWebinarList">
+            <table class="table table-hover table-striped table-bordered" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{'Logo' | translate}}
+                        </th>
+                        <th>
+                            {{'ContentTitle' | translate}}
+                        </th>
+                        <th>
+                            {{'DisplayName' | translate}}
+                        </th>
+                        <th>
+                            {{'WebinarId' | translate}}
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of webinarList">
+                        <td>
+                            <img src="{{item.logo}}" style="width: 64px;height: auto;" />
+                        </td>
+                        <td>
+                            <label class="form-label Poppins-Regular">{{item.contentTitle}}</label>
+                        </td>
+                        <td>
+                            <label class="form-label Poppins-Regular">{{item.displayName}}</label>
+                        </td>
+                        <td>
+                            <label class="form-label Poppins-Regular">{{item.webinarURL}}</label>
+                        </td>
+                        <td style="vertical-align: middle;text-align: center;">
+                            <i *ngIf="!item.isWebinarUpdate" class="fa fa-pencil-square-o ml-20px" tooltip="{{'Edit' | translate}}" (click)="editWebinar(item)"></i>
+                            <i *ngIf="!item.isWebinarUpdate" class="fa fa-trash ml-20px" tooltip="{{'Delete' | translate}}" (click)="deleteWebinar(item)"></i>
+                            <i *ngIf="item.isWebinarUpdate" class="fa fa-save ml-20px" tooltip="{{'Save' | translate}}" (click)="upsertWebinar(item)"></i>
+                            <i *ngIf="item.isWebinarUpdate" class="fa fa-times ml-20px" tooltip="{{'Cancel' | translate}}" (click)="cancelWebinar(item)"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="row col-sm-12 text-right">
+
+            <div *ngIf="showAddOrUpdate">
+                <button type="button" id="saveWebinar" class="btn btn-primary commonbtn Poppins-Regular" (click)="saveWebinar()">{{'Save' | translate}}</button>
+                <button type="button" class="btn btn-primary  commonbtn ml-10px text-white Poppins-Regular" style="width: 200px !important;" (click)="BackToWebinarList()">{{'BackToWebinarList' |
+                    translate}}</button>
+            </div>
+            <div *ngIf="ShowWebinarCategory">
+                <button type="button" class="btn btn-primary  commonbtn ml-10px text-white Poppins-Regular" style="width: 200px !important;" (click)="BackToWebinarList()">{{'BackToWebinarList' |
+                    translate}}</button>
+            </div>
+
+        </div>
+    </div>
+</div>

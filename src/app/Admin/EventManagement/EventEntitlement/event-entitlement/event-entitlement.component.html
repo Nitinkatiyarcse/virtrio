@@ -1,0 +1,63 @@
+<!-- <p>event-entitlement works!</p> -->
+<div class="pageHeader bg-white" style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'Entitlements'| translate}}</label>
+        <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+        <a style="float: right;text-align: left;margin-top:5px;margin-top:-15px" class="col-sm-1" routerLink="../../../admin/events/addentitlement/{{eventId}}">
+            <i class="fa fa-plus text-primary" type="button" tooltip="{{'AddEntitlement' | translate}}" style=" -webkit-transform: scaleX(-1);  transform: scaleX(-1);"></i>
+        </a>
+
+
+        <a style="float: right;text-align: right;margin-top:5px;margin-top:-15px" class="col-sm-1" routerLink="../../../admin/events/entitlementmatrix/{{eventId}}">
+            <i class="fa fa-th text-primary" type="button" tooltip="{{'GroupMatrix' | translate}}" style=" -webkit-transform: scaleX(-1);  transform: scaleX(-1);"></i>
+        </a>
+
+
+
+    </div>
+</div>
+
+<div class="flex-container bg-white" id="roomListItems" style="margin-top: 25px;padding: 20px;">
+    <!-- <div *ngIf='NoRecordFoundMessage' class="text-danger text-center">
+            {{ 'NoRecordFound' | translate}}
+        </div> -->
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    <a style="cursor: pointer;"> {{'Entitlement'| translate}}</a>
+                </th>
+                <th>
+                    <a style="cursor: pointer;"> {{'GroupName'| translate}}</a>
+                </th>
+                <th>
+                    <a style="cursor: pointer;"> {{'DomainAssignment'| translate}}</a>
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let item of groupTableData'>
+                <td style="border: none;">{{item.entitlement}}</td>
+
+                <td style="border: none;">
+                    <ul style="list-style: none;">
+                        <li *ngFor="let grpItems of item.groups" style="width: 20%;display: inline;margin-right: 15px;"> {{grpItems.groupName}}</li>
+                    </ul>
+                </td>
+                <td style="border: none;"> {{item.domainAssignment}}</td>
+                <td style="border: none;">
+                    <div class="dropdown">
+                        <a href="#" data-bs-toggle="dropdown" class="text-muted"><i class="fa fa-gear"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item Poppins-Regular" id="btnDetails" [routerLink]="['/admin/events/updateentitlement',item.entitlementId,item.eventId]" routerLinkActive="router-link-active" translate>{{'Details'}}</a>
+                            <a class="dropdown-item Poppins-Regular" id="btnDetails" (click)='deleteEventEntitlement(item)' translate>{{'Delete'}}</a>
+
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>

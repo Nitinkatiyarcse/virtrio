@@ -1,0 +1,14 @@
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active
+{
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+
+}
+.nav-tabs .nav-link.disabled {
+    color: #657eae;
+    background-color: #c3bfbf;
+    border-color: transparent;
+    color: #807b74;
+}
+

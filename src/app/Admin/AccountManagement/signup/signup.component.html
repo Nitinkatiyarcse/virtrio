@@ -1,0 +1,89 @@
+<!-- BEGIN Signup-Content -->
+<div class="login">
+    <div class="login-content">
+        <form  #regForm="ngForm" *ngIf="!isUserRegisterd && !isVerifyEmailPage">
+            <div class="text-center  Poppins-SemiBold" style="font-size: 20px;font-weight: 600; margin: 6px 0px 6px 0px;">{{'VirtualEventsPlateform'| translate}}</div>
+            <h1 class="text-center  Poppins-SemiBold" style="font-size: 20px;font-weight: 600; margin: 6px 0px 6px 0px;"> {{'SignUp'| translate}}</h1>
+            <div class="text-muted text-center mb-4">
+                <div class="Poppins-Regular text-danger">
+                    <ul class="list-style-none">
+                        <li *ngFor="let error of user.errors">
+                            <p  translate> {{error}} </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mb-3">
+                <input type="text" name="FirstName"  #FirstName="ngModel" [(ngModel)]="user.FirstName" class="form-control form-control-lg fs-15px  Poppins-Regular" value="" placeholder="{{'FirstName'| translate}}" required pattern="^[a-zA-Z ]+$"  maxlength="30" />
+                <span *ngIf="FirstName.invalid && FirstName.touched" class="error">{{'FirstNameRequired'| translate}} </span>
+            </div>
+            <div class="mb-3">
+                <input type="text" name="LastName" #LastName="ngModel" [(ngModel)]="user.LastName" class="form-control form-control-lg fs-15px  Poppins-Regular" value="" placeholder="{{'LastName'| translate}}" required pattern="^[a-zA-Z ]+$"  maxlength="30" />
+                <span *ngIf="LastName.invalid && LastName.touched"  class="error">{{'LastNameRequired'| translate}} </span>
+            </div>
+            <div class="mb-3">
+                <input type="email" name="Email" #Email="ngModel" [(ngModel)]="user.Email" class="form-control form-control-lg fs-15px  Poppins-Regular" value="" placeholder="{{'Email'| translate}}" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"   required  email  maxlength="100" />
+                <span  *ngIf="Email.invalid && Email.touched"  class="error">{{'InvalidEmail'| translate}}</span>
+            </div>
+
+            <button type="submit" (click)="registerUser()" [disabled]="regForm.invalid" class="btn btn-primary btn-lg d-block w-100 fw-500 mb-3">{{'SignUp'| translate}}</button>
+            <div class="text-center text-muted  Poppins-Regular" style="font-size:15px">
+                <a routerLink="/admin/login" class="btn-link">{{'BackToLogin'| translate}}</a>.
+            </div>
+        </form>
+
+        <form  *ngIf="isUserRegisterd && !isVerifyEmailPage">
+            <div class="text-center  Poppins-SemiBold" style="font-size: 20px;font-weight: 600; margin: 6px 0px 6px 0px;">{{'VirtualEventsPlateform'| translate}}</div>
+            <h1 class="text-center  Poppins-SemiBold" style="font-size: 20px;font-weight: 600; margin: 6px 0px 6px 0px;"> {{'VerifyYourEmail'| translate}} </h1>
+            <div class="text-muted text-center mb-4">
+                <div class="Poppins-Regular text-danger" *ngIf="!isEmailSentSuccess">
+                    <ul class="list-style-none">
+                        <li *ngFor="let error of user.errors">
+                            <p  translate> {{error}} </p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="Poppins-Regular text-success" *ngIf="isEmailSentSuccess">
+                     {{'EmailSentSuccessfully'| translate}}
+                </div>
+            </div>
+            <div class="mb-3">
+                <input type="hidden" name="hdnEmail" #hdnEmail="ngModel" [(ngModel)]="user.Email"  value='{{user.Email}}' />
+                <p class="text-success Poppins-SemiBold" style="font-size:15px;">
+                    {{'PleaseVerifYourEmail'| translate}} 
+                </p>
+            </div>
+
+
+            <button type="submit" (click)="resendEmailForSignup()" class="btn btn-primary btn-lg d-block w-100 fw-500 mb-3">    {{'ResendEmail'| translate}} </button>
+            <div class="text-center text-muted  Poppins-Regular" style="font-size:15px">
+                <a routerLink="/admin/login" class="btn-link">{{'Login'| translate}} </a>
+            </div>
+        </form>
+        <form *ngIf="!isUserRegisterd && isVerifyEmailPage" >
+            <div class="text-center  Poppins-SemiBold" style="font-size: 20px;font-weight: 600; margin: 6px 0px 6px 0px;">{{'VirtualEventsPlateform'| translate}}</div>
+            <h1 class="text-center  Poppins-SemiBold" style="font-size: 20px;font-weight: 600; margin: 6px 0px 6px 0px;"> {{'VerifyYourEmail'| translate}} </h1>
+             <div class="text-muted text-center mb-4 mt-4">
+                <p class="Poppins-Regular text-success" *ngIf='user.message!=null' translate>
+                   {{user.message | translate}}
+                </p>
+                <div class="Poppins-Regular text-danger" *ngIf='user.errors!=null'>
+                    <ul class="list-style-none">
+                        <li *ngFor="let error of user.errors">
+                            <p translate> {{error}} </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center text-muted  Poppins-Regular" style="font-size:15px">
+                <a routerLink="/" class="btn-link">{{'Login'| translate}} </a>
+            </div>
+        </form>
+
+        <ngx-spinner></ngx-spinner>
+        
+    </div>
+   
+</div>
+
+<!-- END Signup-Content -->

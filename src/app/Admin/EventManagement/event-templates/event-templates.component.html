@@ -1,0 +1,68 @@
+<!-- <p>event-templates works!</p> -->
+<!-- <a [routerLink]="['/admin/events/createemailtemplate', eventId]">Create new</a> -->
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'RoomTemplate'| translate}}</label>
+        <div class="dropdown" style="float: right;text-align: right;margin-top:25px;">
+            <a class="col-sm-2" [routerLink]="['/admin/events/createroomtemplate', eventId]">
+                <i class="fa fa-user-plus text-primary" type="button" tooltip="{{'Createnew' | translate}}"></i>
+            </a>
+            
+        </div>
+        <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+    </div>
+</div>
+
+
+<div class="flex-container bg-white" id="emailtemplateItems" style="margin-top: 25px;padding: 20px;">
+
+    
+    <div >
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+        class="table table-hover table-striped table-bordered" cellspacing="0">
+            <thead>
+                <tr>
+                    <th style="border: none;">
+                        {{'ProfilePicture' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'Name' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'RoomType' | translate}}
+                    </th>
+                    <!-- <th style="border: none;">
+                        {{'Organization' | translate}}
+                    </th> -->
+                    <!-- <th style="border: none;">
+                        {{'Status' | translate}}
+                    </th> -->
+
+                    <th style="border: none;">
+
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let item of roomTemplates'>
+                    <td style="border: none;vertical-align: middle;"><img [src]="item.roomTemplateUrl" style="width: 100px;height: auto;" /></td>
+                    <td style="border: none;vertical-align: middle;">{{item.roomTemplate}}</td>
+                    <td style="border: none;vertical-align: middle;"> 
+                        {{item.roomTypes.roomType}}
+                    </td>
+                    <td style="border: none;vertical-align: middle;text-align: center;">
+                        <div class="dropdown">
+                            <a href="#" data-bs-toggle="dropdown" class="text-muted"><i class="fa fa-gear"></i></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item Poppins-Regular" (click)="getTemplateDetails(item)" id="btnDetails"  style="cursor:pointer">{{'Details'|translate}}</a>
+                                <a class="dropdown-item Poppins-Regular" (click)="deleteTemplate(item)" id="btnDelete" style="cursor:pointer">{{'Delete' | translate}}</a>
+                            </div>
+                        </div>
+                        
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>

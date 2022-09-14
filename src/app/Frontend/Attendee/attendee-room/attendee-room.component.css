@@ -1,0 +1,21 @@
+.modal-dialog {
+    position: absolute;
+    top: 0px;
+    right: 1125px;
+    bottom: 0;
+    left: 0;
+    z-index: 10050;
+    overflow: auto;
+    overflow-y: auto;
+  }
+ 
+ /* .modal-dialog {
+    position: fixed;
+    margin: auto;
+    width: 320px;
+    height: 100%;
+    right: 50px;
+} */
+.modal-content {
+    height: 50%;
+}

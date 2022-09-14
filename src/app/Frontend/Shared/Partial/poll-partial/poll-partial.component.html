@@ -1,0 +1,45 @@
+<div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'" [style.color]="eventDetails.headerTextColor">
+    <div class="col-sm-8">
+        <h5 class="modal-title">Polls</h5>
+        <h5 class="modal-title"></h5>
+    </div>
+
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+</div>
+<div class="modal-body">
+    <div class="col-sm-12 Poppins-SemiBold text-center text-capitalize fs-16px" [style.color]="eventDetails.uiAccentColor">
+        {{polls[0].polls.pollTitle}}
+    </div>
+    <div>
+
+        <div class="row col-sm-12 Poppins-Regular" style="margin-top: 15px;" [style.color]="eventDetails.sectionHeaderTextColor">
+            <div class="col-sm-2 Poppins-SemiBold">
+                Question :- </div>
+            <div class="col-sm-10"> {{polls[0].pollsQuestions.question}}</div>
+        </div>
+        <div class="col-sm-12 Poppins-Regular" style="margin-top: 5px;" *ngIf="polls[0].pollsQuestions.isChoice" [style.color]="eventDetails.sectionHeaderTextColor">
+            <div *ngFor="let item of polls[0].pollsQuestions.choices;let i=index">
+                <input type="radio" class="form-radio" id="choices_{{i}}" name="pollQuestion" (change)="submitChoice($event,i)" />
+                <label class="form-radio-label Poppins-Regular"> {{item.choice}}</label>
+            </div>
+        </div>
+        <div class="col-sm-12 Poppins-Regular" style="margin-top: 5px;" *ngIf="!polls[0].pollsQuestions.isChoice" [style.color]="eventDetails.sectionHeaderTextColor">
+            <div *ngIf="isRequired">
+                <textarea [style.color]="eventDetails.sectionHeaderTextColor" class="form-control Poppins-Regular required" required placeholder="{{'PlaceYourAnswerHere' | translate}}" rows="3" [(ngModel)]="polls[0].pollsQuestions.answer">{{polls[0].pollsQuestions.answer}}</textarea>
+
+            </div>
+            <div *ngIf="!isRequired">
+                <textarea [style.color]="eventDetails.sectionHeaderTextColor" class="form-control Poppins-Regular" placeholder="{{'PlaceYourAnswerHere' | translate}}" rows="3" name="answer" #answer="ngModel" id="answer" [(ngModel)]="polls[0].pollsQuestions.answer">{{polls[0].pollsQuestions.answer}}</textarea>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" type="submit" class="btn btnOrangeFrontEnd" data-dismiss="modal" (click)="submitPolls()">{{'Submit' | translate}}</button>
+    <button [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" type="button" class="btn btnOrangeFrontEnd" data-dismiss="modal" (click)="closeModal()">{{'Close' | translate}}</button>
+</div>

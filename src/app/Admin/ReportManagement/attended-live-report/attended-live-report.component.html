@@ -1,0 +1,108 @@
+<!-- <p>Attended Live-report works!</p> -->
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'AttendedLivereport'| translate}}</label>
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2"
+            [routerLink]="['/admin/events/reports',eventId]" routerLinkActive="router-link-active">
+            <i class="fa fa-arrow-right text-primary" type="button" tooltip="{{'Back to reports' | translate}}"
+                style=" -webkit-transform: scaleX(-1);  transform: scaleX(-1);"></i>
+        </a>
+
+        <label class="col-sm-10 Poppins-Regular text-small"
+            style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+    </div>
+</div>
+
+<div class="flex-container bg-white" id="representativeItems" style="margin-top: 25px;padding: 20px;">
+    <div *ngIf='noRecordFound' class="text-danger text-center">
+        {{ 'NoRecordFound' | translate}}
+    </div>
+    <div *ngIf='!noRecordFound'>
+        <!-- <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+            class="table table-hover table-striped table-bordered" cellspacing="0">
+            <thead>
+                <tr> -->
+
+        <!-- <th style="border: none;">
+                        {{'AttendeeId' | translate}}
+                    </th> -->
+        <!-- <th style="border: none;">
+                        {{'FirstName' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'LastName' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'EmailAddress' | translate}}
+                    </th> -->
+        <!-- <th style="border: none;">
+                        {{'AttendeeSessionId' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'EventId' | translate}}
+                    </th> -->
+        <!-- <th style="border: none;">
+                        {{'EventName' | translate}}
+                    </th> -->
+        <!-- <th style="border: none;">
+                        {{'IsActive' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'IsAvailableForChat' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'LoginTime' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'LogoutTime' | translate}}
+                    </th> -->
+
+
+        <!-- </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let item of attendeeData'>
+                     -->
+        <!-- <td style="border: none;vertical-align: middle;">{{item.attendeeId}}</td> -->
+        <!-- <td style="border: none;vertical-align: middle;"> {{item.attendees!==null?item.attendees.firstName:''}}</td>
+                    <td style="border: none;vertical-align: middle;"> {{item.attendees!==null?item.attendees.lastName:''}}</td>
+                    <td style="border: none;vertical-align: middle;"> {{item.attendees!==null?item.attendees.emailAddress:''}}</td> -->
+
+        <!-- <td style="border: none;vertical-align: middle;"> {{item.attendeeSessionId}}</td>
+                    <td style="border: none;vertical-align: middle;"> {{item.eventId}}</td> -->
+        <!-- <td style="border: none;vertical-align: middle;"> {{item.eventName}}</td> -->
+        <!-- <td style="border: none;vertical-align: middle;"> {{item.isActive}}</td>
+                    <td style="border: none;vertical-align: middle;"> {{item.isAvailableForChat}}</td>
+                    <td style="border: none;vertical-align: middle;"> {{item.loginTime | date: 'shortTime'}}</td>
+                    <td style="border: none;vertical-align: middle;"> {{item.logoutTime | date: 'shortTime'}}</td> -->
+
+
+
+
+        <!-- </tr>
+            </tbody>
+        </table> -->
+        <div style="display: flex; flex-direction: column; height: 100%;">
+            <div style="margin-bottom: 5px; font-weight: bold; margin-right:auto">
+                <button (click)="onBtnExport()" style="font-weight: bold;">Export to Excel</button>
+                <!-- <button  class="btn btn-primary mr-1" (click)="show()"style="font-weight: bold;">Show table</button>
+            <button  class="btn btn-primary mr-1" (click)="hide()"style="font-weight: bold;">Hide table</button> -->
+
+
+            </div>
+            <div style="flex: 1 1 0; position: relative;">
+                <div id="gridContainer">
+                    <ag-grid-angular style="width: 100%; height: 500px;" class="ag-theme-alpine" [rowData]="rowData"
+                        [columnDefs]="columnDefs" [pagination]="true"
+                        [defaultExcelExportParams]="defaultExcelExportParams" [addImageToCell]="true"
+                        [rowDragManaged]="true" [rowHeight]="40" [paginationPageSize]=10 row-selection="multiple"
+                        [isFullWidthRow]="isFullWidthRow" [fullWidthCellRenderer]="fullWidthCellRenderer"
+                        (gridReady)="onGridReady($event)">
+                    </ag-grid-angular>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

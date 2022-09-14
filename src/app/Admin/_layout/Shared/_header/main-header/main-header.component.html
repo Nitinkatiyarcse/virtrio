@@ -1,0 +1,85 @@
+<div id="header" class="app-header text-white {{headerClass}} ">
+    <!-- BEGIN mobile-toggler -->
+    <div class="mobile-toggler" >
+        <button type="button" class="menu-toggler"  data-toggle="sidebar-mobile">
+            <span class="bar bg-white"></span>
+            <span class="bar bg-white"></span>
+        </button>
+    </div>
+    <!-- END mobile-toggler -->
+    <!-- BEGIN brand -->
+    <div class="brand" >
+        <div class="desktop-toggler">
+            <button type="button" class="menu-toggler" (click)='clickSidebar()'>
+                <span class="bar bg-white"></span>
+                <span class="bar bg-white"></span>
+            </button>
+        </div>
+
+        <a href="/admin/events" class="brand-logo">
+            <img src="../../../../../assets/Images/logo.png" alt="" style="height:50px" />
+        </a>
+    </div>
+    <!-- END brand -->
+    <!-- BEGIN menu -->
+    <div class="menu">
+
+        <div class="menu-header" style="font-size:20px;font-family:poppins-semibold;width:75%;text-align:center">
+            {{roleHeaderName | translate}}
+        </div>
+        <div class="desktopNotificationIcons" >
+            <div  style="margin-right: 20px;">
+                <i class="fa fa-question-circle fa-lg"></i>
+            </div>
+            <div  style="margin-right: 20px;">
+                <i class="fa fa-envelope fa-lg"></i>
+            </div>
+            <div >
+                <i class="fa fa-bell fa-lg"></i>
+            </div>
+        </div>
+
+
+        <div class="menu-item dropdown">
+            <a href="#" data-bs-toggle="dropdown" data-bs-display="static" class="menu-link">
+                <div class="menu-img">
+                    <img src='{{profileImage}}' alt="" class="mw-100 mh-100 rounded-circle"
+                        style="  height: 50px;  width: 50px; " />
+
+                </div>
+                <div class="menu-text text-white Poppins-Semibold"></div>
+                <i class="fa fa-sort-desc fa-lg text-white" aria-hidden="true"
+                    style="margin-left: 5px;margin-top:-5px;;"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end me-lg-3 ">
+                <a class="dropdown-item d-flex align-items-center subMenuItems"
+                    style="font-family: Poppins-Regular;">{{'Help' | translate}} <i
+                        class="fa fa-question-circle fa-fw ms-auto text-gray-400 f-s-16"></i></a>
+                <div class="dropdown-divider subMenuItems"></div>
+                <a class="dropdown-item d-flex align-items-center subMenuItems"
+                    style="font-family: Poppins-Regular;">{{'Message' | translate}} <i
+                        class="fa fa-envelope fa-fw ms-auto text-gray-400 f-s-16"></i></a>
+                <div class="dropdown-divider subMenuItems"></div>
+                <a class="dropdown-item d-flex align-items-center subMenuItems"
+                    style="font-family: Poppins-Regular;">{{'Notifications' | translate}} <i
+                        class="fa fa-bell fa-fw ms-auto text-gray-400 f-s-16"></i></a>
+                <div class="dropdown-divider subMenuItems"></div>
+                <a class="dropdown-item d-flex align-items-center" routerLink='/admin/profile'
+                    style="font-family: Poppins-Regular;">{{'Profile' | translate}} <i
+                        class="fa fa-user-circle fa-fw ms-auto text-gray-400 f-s-16"></i></a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item d-flex align-items-center" (click)="logoutUser()"
+                    style="font-family: Poppins-Regular;">{{'Logout' | translate}} <i
+                        class="fa fa-toggle-off fa-fw ms-auto text-gray-400 f-s-16"></i></a>
+                <div class="dropdown-divider"></div>
+
+                <a class="dropdown-item d-flex align-items-center" style="font-family: Poppins-Regular;">{{name}} </a>
+                <div class="dropdown-divider"></div>
+            </div>
+        </div>
+        <app-language-header ></app-language-header>
+
+    </div>
+    <!-- END menu -->
+</div>
+<!-- END #header -->

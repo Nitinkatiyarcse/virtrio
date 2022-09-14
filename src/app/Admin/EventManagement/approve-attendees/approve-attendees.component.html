@@ -1,0 +1,146 @@
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'Attendees'| translate}}</label>
+        <div class="dropdown" style="float: right;text-align: right;margin-top:25px;">
+            <a data-bs-toggle="dropdown" class="col-sm-2">
+                <i class="fa fa-user-plus text-primary" type="button"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item Poppins-Regular" data-toggle="modal" data-target="#eventAttendeeLoadFile" id="btnSendMessage">{{'UploadFile'|translate}}</a>
+
+            </div>
+        </div>
+        <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+    </div>
+
+</div>
+
+
+<!-- <div>
+    <input class="form-check-input" type="checkbox" id="autoSizingCheck" style="margin-left: 40px;margin-top: 20px;">
+</div>  -->
+
+<div class="flex-container bg-white" id="representativeItems" style="margin-top: 25px;padding: 20px;">
+    <div class="form-check pull-right">
+        <input class="form-check-input" type="checkbox" [checked]="selectAllApprovedChecks" (change)="selectAllApprovedAttendees($event)">
+        <label class="form-check-label" for="inlineFormCheck">
+            {{'Selectapprovedattendees' | translate}}
+        </label>
+        <br>
+        <input class="form-check-input" type="checkbox" [checked]="selectAllPendingChecks" (change)="selectAllPendingAttendees($event)">
+        <label class="form-check-label" for="inlineFormCheck">
+            {{'Selectpendingattendees' | translate}}
+        </label>
+        <br>
+        <button class="btn btn-primary" style="float: right;margin-bottom:10px;" (click)="bulkReject()" *ngIf="tempStatus!=null  && tempStatus">{{'Reject' | translate}}</button>
+        <button class="btn btn-primary" style="float: right;margin-bottom:10px;" (click)="bulkApprove()" *ngIf="tempStatus!=null && !tempStatus">{{'Approve' | translate}}</button>
+
+
+    </div>
+    <br>
+    <div>
+
+
+    </div>
+
+    <div *ngIf='noRecordFound' class="text-danger text-center">
+        {{ 'NoRecordFound' | translate}}
+    </div>
+    <div *ngIf='!noRecordFound'>
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+            <thead>
+                <tr>
+
+                    <th style="border: none;">
+                        <!-- <input type="checkbox" name="websitecheck" (click)="checkuncheckall()"> select All -->
+                    </th>
+                    <th style="border: none;">
+                        {{'ProfilePicture' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'Name' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'Email' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'RegistrationSet' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'Status' | translate}}
+                    </th>
+
+                    <th style="border: none;">
+
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let item of attendeeData'>
+                    <!-- <td style="border: none;vertical-align: middle;"><input type="checkbox" id="{{item.attendeeId}}" [checked]="item.isChecked" (change)=deselect($event)></td> -->
+                    <td style="border: none;">
+                        <input type="checkbox" name="websitecheck" [checked]="item.isChecked" value="{{item.attendeeId}}" (change)="selectUnslectRecord($event,item);">
+                    </td>
+                    <td style="border: none;vertical-align: middle;"><img [src]="item.profileImage?item.profileImage:'https://vemsimageblobstorage.blob.core.windows.net/profileimage/NoImage.png'" style="height: 50px; width: 50px;border-radius: 50px;" /></td>
+                    <td style="border: none;vertical-align: middle;">{{item.firstName}} {{item.lastName}}</td>
+                    <td style="border: none;vertical-align: middle;"> {{item.emailAddress}}</td>
+                    <td style="border: none;vertical-align: middle;"> {{item.registrationSetName}}</td>
+                    <td style="border: none;vertical-align: middle;" [ngClass]="item.isActive?'text-success':'text-danger'" translate> {{item.isActive?'Approved' :'Pending' }}</td>
+                    <td style="border: none;vertical-align: middle;text-align: center;">
+                        <div class="dropdown">
+                            <a href="#" data-bs-toggle="dropdown" class="text-muted"><i class="fa fa-gear"></i></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item Poppins-Regular" (click)="getDetailsOfAttendee(item)" id="btnDetails">{{'Details'|translate}}</a>
+                                <a *ngIf="item.isActive" class="dropdown-item Poppins-Regular" (click)="approveDisapproveAttendee(item,0)" id="btnReject" style="cursor:pointer">{{'Reject' | translate}}</a>
+                                <a *ngIf="!item.isActive" class="dropdown-item Poppins-Regular" (click)="approveDisapproveAttendee(item,1)" id="btnReject" style="cursor:pointer">{{'Approve' | translate}}</a>
+                                <a *ngIf="!item.isEmailVerified" class="dropdown-item Poppins-Regular" (click)="resendEmail(item)">{{'ResendInviteEmail' | translate}}</a>
+                                <!-- <a  class="dropdown-item Poppins-Regular" (click)="getLeaderboard(item)">{{'Leaderboard' | translate}}</a> -->
+                            </div>
+                        </div>
+                        <!-- <i *ngIf="item.isActive" class="fa fa-2x fa-thumbs-down" style="cursor: pointer;" tooltip="{{'Reject' | translate}}" (click)="rejectSponsorRequest(item)"></i>
+                        <i *ngIf="!item.isActive" class="fa fa-2x fa-thumbs-up" style="cursor: pointer;" tooltip="{{'Approve' | translate}}" (click)="approveSponsorRequest(item)"></i> -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Model For Load FIle of Email Address -->
+    <div class="modal fade" id="eventAttendeeLoadFile" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{'UploadCSVFile'|translate}}</h5>
+                    <a href="{{attendeeUploadSampleFilePath}}" target="_blank">
+                        <i class="fa fa-info-circle" style="margin-left:20px;cursor:pointer;" tooltip="{{'ClickToDownloadSampleFile' | translate}}"></i></a>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="Post" class="form-group" #eventAttendeeLoadFileForm="ngForm">
+                        <div class="form-group row">
+                            <div class="col-sm-12" style="margin-left: 30px;padding-top:15px !important">
+
+                                <input type="file" class="form-control-file" #eventAttendeeLoadFileControl name="eventAttendeeLoadFileControl" id="eventAttendeeLoadFileControl" (change)="changeUplaodEventAttendeeFile($event.target.files)">
+
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="eventAttendeeLoadFileUploadBtn" (click)="uplaodEventAttendee()" class="commonbtn btn btn-primary col-sm-5">
+                        {{'Save'|translate }}
+                    </button>
+                    <button #eventAttendeeLoadFileCloseBtn type="button" class="commonbtn btn  btn-primary  text-white  col-sm-5" style="margin-left: 20px;" data-dismiss="modal">
+                        {{'Cancel' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>

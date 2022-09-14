@@ -1,0 +1,122 @@
+<div style="background-color: {{outputThankyouModel.backgroundColor}}">
+    <div class="container">
+        <!-- Header Image (Logo Section) -->
+        <!-- <img *ngIf="outputThankyouModel.loginPageHeaderGraphics" src="{{outputThankyouModel.loginPageHeaderGraphics}}" class="ribbon" style="width: 200px;height: auto;-o-object-fit: contain;" /> -->
+
+        <app-side-menu></app-side-menu>
+
+        <!-- Image Slider Section -->
+        <ngb-carousel *ngIf="outputThankyouModel.includeSplashImage && outputThankyouModel.splashScreenImages[0].fileType=='thankyoupagesplashimage'" id="imgSliderSplashImages" [interval]="4000" [ngStyle]="{'width': '100%'}" [showNavigationArrows]="false" [showNavigationIndicators]="false">
+            <ng-template ngbSlide *ngFor="let slideimg of outputThankyouModel.splashScreenImages">
+                <img [src]="slideimg.filePath" style="width: 100%;height: 500px;-o-object-fit: contain !important;">
+            </ng-template>+
+        </ngb-carousel>
+
+        <ngb-carousel [interval]="400000" *ngIf="outputThankyouModel.includeSplashImage && outputThankyouModel.splashScreenImages[0].fileType=='thankyoupagesplashmovie'" id="imgSliderSplashImages" [ngStyle]="{'width': '100%'}" [showNavigationArrows]="true" [showNavigationIndicators]="false">
+            <ng-template ngbSlide *ngFor="let slideimg of outputThankyouModel.splashScreenImages">
+                <video contros controlsList="nodownload" autoplay [src]="slideimg.filePath" style="width: 100%;height: 500px;-o-object-fit: contain !important;"></video>
+            </ng-template>
+        </ngb-carousel>
+
+    </div>
+    <div class="container text-left" style="padding-top:30px">
+        <!-- thankyou text Heading Section -->
+        <div class="row" *ngIf="outputThankyouModel.includeThankyouText">
+            <div class="col-sm-12 text-center Poppins-SemiBold fs-20px" style="color: {{outputThankyouModel.sectionHeaderColor}};">
+                {{outputThankyouModel.thankyouforRegistering}}
+            </div>
+            <!-- Welcome Text Section -->
+            <div class="col-sm-12 text-center Poppins-Regular mt-20px" style="text-align: left !important;" [innerHTML]='outputThankyouModel.thankyouText | safeHtml'>
+
+            </div>
+        </div>
+        <!-- Video Spokes Person -->
+        <div class="row mt-20px" *ngIf="outputThankyouModel.videoSpokesPerson">
+            <div class="col-sm-12 text-center Poppins-SemiBold fs-20px" style="color: {{outputThankyouModel.sectionHeaderColor}};">
+                {{'VideoSpokesperson' | translate}}
+            </div>
+            <div class="col-sm-12 text-left  mt-20px">
+                {{outputThankyouModel.videoSpokesPerson}}
+            </div>
+        </div>
+
+        <!-- Footer Graphics Section -->
+        <!-- Image Slider Section -->
+        <ngb-carousel *ngIf="outputThankyouModel.includeFooterGraphics" id="imgSliderSplashImages" [interval]="4000" [ngStyle]="{'width': '100%'}" [showNavigationArrows]="false" [showNavigationIndicators]="false">
+            <ng-template ngbSlide *ngFor="let slideimg of outputThankyouModel.footerGraphicsList">
+                <img [src]="slideimg.filePath" style="width: 100%;height: 500px;-o-object-fit: contain !important;">
+            </ng-template>
+        </ngb-carousel>
+
+        <!-- Custom Footer controls -->
+        <div *ngIf="outputThankyouModel.customFooterText!=''">
+            <div [innerHTML]='outputThankyouModel.customFooterText'>
+            </div>
+        </div>
+
+        <!-- Privacy Polict and contact and support -->
+        <div class="row col-sm-12 Poppins-Regular" style="margin-top:20px; margin-bottom:20px;height: 60px;">
+            <div class="col-sm-6 text-right" *ngIf="outputThankyouModel.customSupportLinkName">
+                <a *ngIf="outputThankyouModel.customSupportLinkUrl" href="{{outputThankyouModel.customSupportLinkUrl}}">{{outputThankyouModel.customSupportLinkName}}</a>
+            </div>
+            <div class="col-sm-6" *ngIf="outputThankyouModel.privacyPolicyName">
+                <a *ngIf="outputThankyouModel.privacyPolicyUrl" href="{{outputThankyouModel.privacyPolicyUrl}}">{{outputThankyouModel.privacyPolicyName}}</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<!-- Future date Popup -->
+<div id="futureDateModal" class="modal fade" role="document" style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alerts</h5>
+                <!-- <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal"
+                    aria-label="Close" (click)="stopVideo()">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->
+            </div>
+            <div class="modal-body">
+
+
+
+                <span style="font-size: larger;">
+                        Event has not been started yet. Please try later
+                </span>
+
+
+                <!-- <div class="modal-content"> -->
+
+                <!-- <p style="text-align: center;">Event has not been started yet. Please try later</p> -->
+                <!-- <div class="modal-body mb-0 p-0">
+                        <div id="welcomeVideoIFrame"
+                            *ngIf="eventDetails.videoType=='youtube' || eventDetails.videoType== 'vimeoUrl'"
+                            class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                            <iframe height="100%" width="100%" class="embed-responsive-item" allowfullscreen controls=""
+                                [src]="welcomeVideoSrc | safe">
+                            </iframe>
+
+
+                        </div>
+                        <div *ngIf="eventDetails.videoType=='uploadFile'">
+                            <video height="100%" width="100%" controls  controlsList="nodownload"  [src]="welcomeVideoSrc | safe"></video>
+
+
+                        </div>-->
+
+                <!-- </div> -->
+            </div>
+            <!-- <div class="modal-footer">
+                    <button class="btn btnOrangeFrontEnd" [style.background]="eventDetails.headerBackgroundColor"
+                        [style.color]="eventDetails.headerTextColor+'!important'" type="button" data-dismiss="modal"
+                        (click)="closeWelcomeVideo(eventDetails.videoUrl)">{{'Close' | translate}}</button>
+                </div> -->
+        </div>
+
+    </div>
+</div>
+<!-- </div> -->

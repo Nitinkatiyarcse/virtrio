@@ -1,0 +1,14 @@
+
+    <!-- <select *ngIf="selectedLan=='en'" #langselect [(ngModel)]="selectedLan" (change)="changeLanguage(langselect.value)" >
+      <option *ngFor="let lang of translate.getLangs()"  value="{{lang}}"  >{{lang=='en'?'English':'Japanese'}}</option>
+    </select>
+    <select *ngIf="selectedLan=='ja'" #langselect [(ngModel)]="selectedLan" (change)="changeLanguage(langselect.value)" >
+      <option *ngFor="let lang of translate.getLangs()"  value="{{lang}}"  >{{lang=='en'?'英語':'日本語'}}</option>
+    </select> -->
+
+    <select #langselect [(ngModel)]="selectedLan" (change)="changeLanguage($event)" >
+      <option *ngFor="let lang of languageDropdownList"  value="{{lang.abbreviation}}">{{lang.language}}</option>
+    </select>
+
+
+    

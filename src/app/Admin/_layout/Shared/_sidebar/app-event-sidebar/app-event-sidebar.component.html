@@ -1,0 +1,330 @@
+<!-- BEGIN #sidebar -->
+<div id="sidebar" class="app-sidebar {{headerClass}}">
+    <!-- BEGIN scrollbar -->
+    <div class="app-sidebar-content " data-scrollbar="true" data-height="100%">
+        <!-- BEGIN menu -->
+        <div class="menu {{headerClass}}">
+            <div style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" (click)="goToDashboard()" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+
+                        <div class="sidebarIconsParentDiv"><i class="fa fa-arrow-left sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                            translate>{{'Dashboard'}}</span>
+                    </span>
+                </a>
+
+            </div>
+
+            <!-- <div style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;"
+                    (click)="openChat()" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+
+                        <div class="sidebarIconsParentDiv"><i class="fa fa-commenting  sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                            translate>{{'Chat'}}</span>
+                    </span>
+                </a>
+
+            </div> -->
+
+
+
+            <div *ngFor="let item of sidebarItems">
+
+                <div style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                    <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" routerLink="/admin/{{item.controller}}/{{item.action}}/{{eventId}}" [routerLinkActive]="['active']">
+                        <span class="menu-icon" style="vertical-align: super;">
+                            <div class="sidebarIconsParentDiv"><i [attr.class]="item.className"></i></div>
+                            <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                                translate>{{item.name}}</span>
+                        </span>
+                    </a>
+
+                </div>
+            </div>
+
+            <div style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" [routerLink]="['/admin/events/roomtemplates', eventId]" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+                        <div class="sidebarIconsParentDiv"><i class="fa fa-file-image-o sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;" translate>{{'Room
+                            Templates'}}</span>
+                    </span>
+                </a>
+
+            </div>
+            <div style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" [routerLink]="['/admin/events/broadcastmessage', eventId]" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+                        <div class="sidebarIconsParentDiv"><i class="fa fa fa-podcast sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;" translate>{{'Broadcast
+                            Messages'}}</span>
+                    </span>
+                </a>
+            </div>
+
+            <div style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" [routerLink]="['/admin/events/webinars', eventId]" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+                        <div class="sidebarIconsParentDiv"><i class="fa fa-film sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                            translate>{{'Webinar'}}</span>
+                    </span>
+                </a>
+
+            </div>
+
+            <div style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" [routerLink]="['/admin/events/reports', eventId]" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+                      <div class="sidebarIconsParentDiv"><i class="fa fa-pie-chart sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                            translate>
+                            {{'Reports'}}</span>
+                    </span>
+                </a>
+                <!-- 
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;"
+                    href="#submenu1" data-toggle="collapse" data-target="#submenu1" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+                        <div class="sidebarIconsParentDiv"><i class="fa fa-table sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                            translate>{{'Reports'}}</span>
+                    </span>
+                </a>
+
+                <div class="collapse" id="submenu1" aria-expanded="false">
+                    <ul class="flex-column pl-2 nav">
+                        <li class="nav-item">
+                            <a class="menu-link"
+                                style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;"
+                                [routerLink]="['admin/events/reports', eventId]" [routerLinkActive]="['active']">
+                                <span class="menu-icon" style="vertical-align: super;">
+                                    <div class="sidebarIconsParentDiv"><i class="fa fa-info-circle sideBarIcon"></i>
+                                    </div>
+                                    <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                                        translate>{{'RegistrationReport'}}</span>
+                                </span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="menu-link"
+                                style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;"
+                                [routerLink]="['admin/events/Invitationreport', eventId]"
+                                [routerLinkActive]="['active']">
+                                <span class="menu-icon" style="vertical-align: super;">
+                                    <div class="sidebarIconsParentDiv"><i class="fa fa-info-circle sideBarIcon"></i>
+                                    </div>
+                                    <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                                        translate>{{'InvitationReport'}}</span>
+                                </span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="menu-link"
+                                style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;"
+                                [routerLink]="['admin/events/AttendedLivereport', eventId]"
+                                [routerLinkActive]="['active']">
+                                <span class="menu-icon" style="vertical-align: super;">
+                                    <div class="sidebarIconsParentDiv"><i class="fa fa-info-circle sideBarIcon"></i>
+                                    </div>
+                                    <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                                        translate>{{'AttendedLivereport'}}</span>
+                                </span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="menu-link"
+                                style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;"
+                                [routerLink]="['admin/events/Overallattendedreport', eventId]"
+                                [routerLinkActive]="['active']">
+                                <span class="menu-icon" style="vertical-align: super;">
+                                    <div class="sidebarIconsParentDiv"><i class="fa fa-info-circle sideBarIcon"></i>
+                                    </div>
+                                    <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                                        translate>{{'Overallattendedreport'}}</span>
+                                </span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="menu-link"
+                                style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;"
+                                [routerLink]="['admin/events/Quizreport', eventId]" [routerLinkActive]="['active']">
+                                <span class="menu-icon" style="vertical-align: super;">
+                                    <div class="sidebarIconsParentDiv"><i class="fa fa-info-circle sideBarIcon"></i>
+                                    </div>
+                                    <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                                        translate>{{'Quizreport'}}</span>
+                                </span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div> -->
+
+            </div>
+            <!-- <div style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" [routerLink]="['/admin/events/details', eventId]" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+                      <div class="sidebarIconsParentDiv"><i class="fa fa-info-circle sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                            translate>{{'Details'}}</span>
+                    </span>
+                </a>
+
+            </div>
+
+            <div *ngIf="isSuperAdminOREventAdminlogin" style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" [routerLink]="['/admin/events/registrationset/manageregistrationset', eventId]" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+                         <div class="sidebarIconsParentDiv"><i class="fa fa-gear sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                            translate>{{'RegistrationSettings'}}</span>
+                    </span>
+                </a>
+
+            </div>
+            <div style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" [routerLink]="['/admin/events/rooms', eventId]" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+                         <div class="sidebarIconsParentDiv"><i class="fa fa-map-marker sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                            translate>{{'Rooms'}}</span>
+                    </span>
+                </a>
+
+            </div>
+            <div *ngIf="isSuperAdminOREventAdminlogin" style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" [routerLink]="['/admin/events/eventadmin', eventId]" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+                         <div class="sidebarIconsParentDiv"><i class="fa fa-users sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                            translate>{{'EventAdmins'}}</span>
+                    </span>
+                </a>
+
+            </div>
+
+
+            <div *ngIf="isSuperAdminOREventAdminlogin" style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" [routerLink]="['/admin/events/emailtemplate', eventId]" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+                         <div class="sidebarIconsParentDiv"><i class="fa fa-envelope sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                            translate>{{'EmailTemplates'}}</span>
+                    </span>
+                </a>
+
+            </div>
+
+
+
+            <div *ngIf="isSuperAdminOREventAdminlogin" style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" [routerLink]="['admin/events/eventgroupentitlement', eventId]" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+                         <div class="sidebarIconsParentDiv"><i class="fa fa-lock sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                            translate>{{'Entitlement'}}</span>
+                    </span>
+                </a>
+
+            </div>
+
+
+
+
+            <div style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" [routerLink]="['admin/events/Surveylist', eventId]" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+                         <div class="sidebarIconsParentDiv"><i class="fa fa-book sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                            translate>{{'Surveys'}}</span>
+                    </span>
+                </a>
+            </div>
+
+
+            <div style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" [routerLink]="['admin/events/Polllist', eventId]" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+                         <div class="sidebarIconsParentDiv"><i class="fa fa-hand-o-up sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                            translate>{{'Poll'}}</span>
+                    </span>
+                </a>
+            </div>
+
+
+            <div style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" [routerLink]="['admin/events/Quiz', eventId]" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+                         <div class="sidebarIconsParentDiv"><i class="fa fa-question-circle sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                            translate>{{'Quiz'}}</span>
+                    </span>
+                </a>
+
+            </div>
+
+
+            <div *ngIf="isSuperAdminOREventAdminlogin" style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" [routerLink]="['admin/events/Leaderboard', eventId]" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+                         <div class="sidebarIconsParentDiv"><i class="fa fa-bar-chart sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                            translate>{{'LeaderBoard'}}</span>
+                    </span>
+                </a>
+
+            </div>
+
+            <div style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" [routerLink]="['admin/events/eventrepresentative', eventId]" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+                         <div class="sidebarIconsParentDiv"><i class="fa fa-object-group sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                            translate>{{'Representative' | translate}}</span>
+                    </span>
+                </a>
+
+            </div>
+
+            <div *ngIf="isSuperAdminOREventAdminlogin" style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" [routerLink]="['admin/events/eventsponsors', eventId]" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+                         <div class="sidebarIconsParentDiv"><i class="fa fa-handshake-o sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                            translate>{{'EventSponsors' | translate}}</span>
+                    </span>
+                </a>
+
+            </div>
+
+            <div *ngIf="isSuperAdminOREventAdminlogin" style="margin: 5px 0px 5px 0px;vertical-align: sub;" class="menu-item ">
+                <a class="menu-link" style="height: 50px;padding-left:15px;text-decoration: none;cursor:pointer;" [routerLink]="['admin/events/attendees', eventId]" [routerLinkActive]="['active']">
+                    <span class="menu-icon" style="vertical-align: super;">
+                         <div class="sidebarIconsParentDiv"><i class="fa fa-thumbs-up sideBarIcon"></i></div>
+                        <span class="menu-text" style="margin-left: 15px;vertical-align: super;"
+                            translate>{{'Attendees' | translate}}</span>
+                    </span>
+                </a>
+
+            </div> -->
+
+
+
+        </div>
+        <!-- END menu -->
+    </div>
+    <!-- END scrollbar -->
+    <!-- BEGIN mobile-sidebar-backdrop -->
+    <button class="app-sidebar-mobile-backdrop" data-dismiss="sidebar-mobile"></button>
+    <!-- END mobile-sidebar-backdrop -->
+</div>
+<!-- END #sidebar -->

@@ -1,0 +1,70 @@
+<!-- <p>create-event-template works!</p> -->
+<div>
+
+
+    <div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+        <div class="col-sm-12 text-Medium ">
+            <label class="col-sm-10 text-Medium" style="text-align: left;">{{'CreateRoomTemplate'| translate}}</label>
+            <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+        </div>
+    </div>
+
+    <div class="flex-container row bg-white" id="roomListItems" style="margin-top: 25px;padding: 20px;margin-left: 0px;margin-right: 0px;">
+
+        <form class="form-group" #AddRoomForm="ngForm">
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="RoomType">{{'RoomType'| translate}}
+
+                </label>
+                <div class="col-sm-10">
+                    <select id="roomType" required #roomType="ngModel" [(ngModel)]="inputRoomModel.roomTypeId" name="roomtype" class="form-select">
+                        <option value="">{{"SelectRoomType" | translate}}</option>
+                        <option *ngFor="let item of allRoomTypes" value="{{item.roomTypeId}}">{{item.roomType}}</option>
+                    </select>
+
+                    <span *ngIf="roomType.invalid && roomType.touched" class="error">{{'SelectRoomType'| translate}}</span>
+
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="RoomType">{{'Name'| translate}}
+                </label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control Poppins-Regular" placeholder="{{'Name' | translate}}" required #RoomTemplate="ngModel" maxlength="50" [(ngModel)]="inputRoomModel.roomTemplate" name="RoomTemplate" value="">
+                    <span *ngIf="RoomTemplate.invalid && RoomTemplate.touched" class="error">{{'Namerequired'|
+                        translate}}</span>
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular">{{'UploadTemplate' | translate}}<br><span
+                        class="Poppins-Regular"
+                        style="font-size: 10px;">{{'imagetypeshouldbepng,jpgorjpeg' |translate}}</span> <span class="fs-10px Poppins-Regular">{{'MaxSizeHunderd' | translate}}</span></label>
+                <div class="col-sm-10">
+                    <span id="spnImageErrorMessage" class="text-danger"></span>
+                    <input *ngIf="!inputRoomModel.roomTemplateUrl" id="fileupload" type="file" (change)="onFileChange($event)" name="EventImage">
+                    <img src="{{inputRoomModel.roomTemplateUrl}}" id="UploadedEmailTemplate" *ngIf="inputRoomModel.roomTemplateUrl" style="width: 200px;height: auto;">
+                    <i *ngIf="inputRoomModel.roomTemplateUrl" class="fa fa-times" (click)="deleteemailTemplate()" tooltip="{{'Delete' | translate}}" style="cursor: pointer;margin-left: 10px;vertical-align: top;"></i>
+
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <input type="hidden" [(ngModel)]="inputRoomModel.roomTemplateId" name="CreatedBy" #CreatedBy />
+                <div class="col-sm-12 text-right">
+                    <button type="save" (click)="saveRoomTemplate()" [disabled]="AddRoomForm.invalid" class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 Poppins-Regular">{{'Save' | translate}}</button>
+
+                    <a [routerLink]="['/admin/events/roomtemplates',eventId]" routerLinkActive="router-link-active" class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 ml-20px text-white">{{'Cancel' | translate}}</a>
+
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+</div>

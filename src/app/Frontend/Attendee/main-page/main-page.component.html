@@ -1,0 +1,278 @@
+<div class="container" [style.color]="eventDetails.sectionHeaderTextColor">
+    <div class="bg-white">
+        <div class="row Poppins-SemiBold text-center  eventRegisterAndDetailsDiv">
+
+            <div class="row Poppins-SemiBold text-center ">
+                <h2 style="padding-top: 48px;" class="col-sm-12 fs-20px lh-21px" [style.color]="eventDetails.uiAccentColor">{{eventDetails.eventName}}</h2>
+            </div>
+            <div class="col-sm-12 mt-0px"><span class="SFUI-Display-Light fs-14px  text-center">{{eventStartDate |
+                    date:'d MMM, y'}}
+                    -
+                    {{eventEndDate | date:'d MMM, y'}}</span></div>
+            <div *ngIf="showTimer" class="col-sm-12 mt-15px"><span id='timer' class="Poppins-Bold fs-15px  text-center">{{timerData}}</span></div>
+            <div *ngIf="!showTimer" class="col-sm-12 mt-15px"><span id='timer' class="Poppins-Bold fs-15px  text-center">{{'EventIsLiveNow' | translate}}</span></div>
+
+            <div class="col-sm-12 mt-10px" *ngIf="!isUserLoggedIn">
+                <button type="button" *ngIf="loginPageDetails.includeRegisterBox" class="btn btnOrangeFrontEnd" [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" style="border: none;" data-toggle="modal" (click)="openRegisterPopup()">{{'Register' |
+                    translate}}</button>
+                <a [style.color]="eventDetails.headerTextColor" class="btn btnOrangeFrontEnd ml-10px" (click)="openLoginPopup()" [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" style="border: none;">{{'Login' | translate}}</a>
+            </div>
+        </div>
+
+        <div class="row Poppins-SemiBold text-center ">
+            <h2 class="col-sm-12 fs-20px lh-21px" style="padding-top: 48px;" [style.color]="eventDetails.uiAccentColor">
+                {{'AbouttheEvent' | translate}}</h2>
+        </div>
+        <p class="col-sm-12 Poppins-Regular text-left fs-14px mt-20px  lh-21px" style="padding-left: 10%;padding-right: 10%;" [innerHTML]="eventDetails.eventDesc | safeHtml">
+        </p>
+        <div class="col-sm-12 text-center mt-20px " style="height: 50px;">
+            <a [style.color]="eventDetails.headerTextColor" *ngIf="eventDetails.eventBrochure" href="{{eventDetails.eventBrochure}}" class="linkBtnOrangeFrontEnd pb-25px">{{'DownloadBroucher' |
+                translate}}</a>
+        </div>
+
+
+        <div *ngIf="booths?.length>0">
+            <div class="row Poppins-SemiBold text-center  fs-20px mt-25px">
+                <div class="col-sm-12 fs-20px lh-21px" [style.color]="eventDetails.uiAccentColor"> {{'Booths' | translate}}
+                </div>
+                <span class="col-sm-12 Poppins-Regular fs-14px lh-21px">
+                    {{'Clickonalogotoviewboothdetails' | translate}}</span>
+            </div>
+            <div class="row col-sm-12 mt-25px" style="padding-right: 7%;padding-left: 7%;">
+                <div *ngFor="let item of booths" class="col-xs-3 text-center">
+                    <div style="margin: 15px;">
+                        <img style="cursor: pointer;" [src]="item.rooms.boothLogo?item.rooms.boothLogo:'https://vemsimageblobstorage.blob.core.windows.net/profileimage/NoImage.png'" height="81" width="81" (click)="getBoothDetails(item)" /><br>
+                        <span class="Poppins-Regular fs-14px">{{item.rooms.name}}</span>
+                    </div>
+                </div>
+
+            </div>
+            <div *ngIf="booths?.length>10" class="col-sm-12 text-center mt-35px">
+                <a [style.color]="eventDetails.headerTextColor" class="linkBtnOrangeFrontEnd">{{'ViewAll' |
+                    translate}}({{booths?.length+1}})</a>
+            </div>
+
+        </div>
+
+        <div *ngIf="((!isUserLoggedIn && manageRegistrationPage.viewotherattendeesboothrepresentativesbeforeregistration) ||((isUserLoggedIn && manageRegistrationPage.viewotherattendeesboothrepresentativesafterregistration)))">
+
+            <div *ngIf="attedees?.length>0">
+                <div class="row Poppins-SemiBold text-center  fs-20px mt-50px">
+                    <div class="col-sm-12 fs-20px lh-21px" [style.color]="eventDetails.uiAccentColor">
+                        {{'Whoisattending' | translate}}</div>
+                </div>
+                <div class="row col-sm-12 mt-25px" style="padding-right: 7%;padding-left: 7%;">
+                    <div *ngFor="let item of attedees| slice:0:10;" class="col-xs-3 text-center">
+                        <div style="margin: 15px;">
+                            <img [src]="item.profileImage?item.profileImage:'https://vemsimageblobstorage.blob.core.windows.net/profileimage/NoImage.png' " height="132" width="132" style="border-radius: 132px;" /><br>
+                            <span class="Poppins-Regular fs-14px">{{item.firstName}} {{item.lastName}}</span><br>
+                            <a target="_blank" *ngIf="item.linkedInProfileUrl" href="{{item.linkedInProfileUrl}}"><i role="button"
+                                    class="fab fa-linkedin-square fa-2x mr-10px">
+
+                                </i></a>
+                            <a target="_blank" *ngIf="item.facebookProfileUrl" href="{{item.facebookProfileUrl}}"> <i class="fab fa-facebook-square fa-2x"></i></a>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div *ngIf="attedees?.length>5" style="height: 70px;" class="col-sm-12 text-center mt-35px mb-35px">
+                    <a [style.color]="eventDetails.headerTextColor" class="linkBtnOrangeFrontEnd">{{'ViewAll' |
+                            translate}}</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="bg-white">
+        <div>
+            <div class="row Poppins-SemiBold text-center  fs-20px">
+                <h2 class="col-sm-12 fs-20px lh-21px  pt-50px" [style.color]="eventDetails.uiAccentColor">
+                    {{'EventSponsors' | translate}}</h2>
+            </div>
+            <div *ngIf="eventSponsors?.length>0" class="row col-sm-12 mt-25px" style="padding-right: 7%;padding-left: 7%;">
+
+                <div *ngFor="let item of eventSponsors| slice:0:10;" class="col-xs-3 text-center">
+                    <div style="margin: 15px;">
+                        <img [src]="item.profileImage?item.profileImage:'https://vemsimageblobstorage.blob.core.windows.net/profileimage/NoImage.png'" height="81" width="81" style="border-radius: 81px;" /><br>
+                        <span class="Poppins-Regular fs-10px">{{item.orgName}}</span>
+                    </div>
+                </div>
+                <div *ngIf="eventSponsors?.length>5" style="height: 70px;" class="col-sm-12 text-center mt-35px mb-35px">
+                    <a [style.color]="eventDetails.headerTextColor" class="linkBtnOrangeFrontEnd">{{'ViewAll' |
+                            translate}}</a>
+                </div>
+
+            </div>
+
+            <div class="col-sm-12 text-center mt-30px">
+                <span>{{'Getintouchtobecomeaneventoraboothsponsorandgetfeaturedonwallsandvideoevents' |
+                        translate}}</span><br>
+                <button [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" style="border: none;" type="button" class="btn btnOrangeFrontEnd mt-10px" data-toggle="modal" data-target="#BecomeSponsorModal" style="width: 250px; border-radius: 5px; height: 35px;text-transform: none;">
+                        {{'BecomeaSponsor' | translate}}</button>
+            </div>
+        </div>
+
+
+
+
+
+        <div class="col-sm-12 text-center mt-30px" style="max-height: 400px;padding-top: 25px;">
+            <div class="col-sm-12">
+                <img [ngStyle]="(eventDetails.eventLogo!==noImageEventLogoPath && eventDetails.eventLogo) ? {'visibility':'visible'}:{'visibility':'hidden'}" src="{{eventDetails.eventLogo}}" style="width: 225px;height: auto;" />
+
+
+            </div>
+            <div class="col-sm-12  Popins-Regular fs-10x " style="padding-top:30px">
+                <a [style.color]="eventDetails.headerTextColor" class="privacyPolicyDiv" *ngIf="eventDetails.isLinkPrivacyPolicy" href="{{eventDetails.privacyPolicy}}" target="_blank">
+                        {{'PrivacyPolicy' | translate}}</a>
+                <a [style.color]="eventDetails.headerTextColor" class="privacyPolicyDiv" *ngIf="!eventDetails.isLinkPrivacyPolicy" data-toggle="modal" data-target="#privacyPolicymodal">
+                        {{'PrivacyPolicy' | translate}}</a>
+
+                <a [style.color]="eventDetails.headerTextColor" *ngIf="eventDetails.isLinkTermsAndConditions" href="{{eventDetails.termsAndConditions}}" target="_blank">
+                        {{'TermsAndConditions' | translate}}</a>
+                <a [style.color]="eventDetails.headerTextColor" *ngIf="!eventDetails.isLinkTermsAndConditions" data-toggle="modal" data-target="#termsAndConditionsModal">
+                        {{'TermsAndConditions' | translate}}</a>
+            </div>
+            <div class="col-sm-12 text-center" style="padding-top:30px">
+
+
+                <a [style.color]="eventDetails.headerTextColor" *ngFor="let item of eventSocialMedia" href="{{item.Value}}" target="_blank"> <img style="width: 48px;height: auto;margin: 10px;" src="assets/Images/{{item.SocialMedia}}_social.png"></a>
+
+
+            </div>
+        </div>
+       
+    </div>
+
+
+
+</div>
+
+
+
+
+<!-- Modal for Become Sponsor-->
+<div class="modal fade" id="BecomeSponsorModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'" [style.color]="eventDetails.headerTextColor">
+                <h5 class="modal-title">{{'BecomeaSponsor'|translate}}</h5>
+                <button [style.color]="eventDetails.headerTextColor" style="border: none;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <form class="needs-validation h-100" enctype="multipart/form-data" #sponsorForm="ngForm">
+                    <div class="mb-1 row">
+
+                        <div class="col-sm-12">
+                            <label for="FirstName" class="col-form-label fs-12px Poppins-Regular" style="margin-bottom: -5px;margin-left: 5px;">{{'Name' | translate}} </label>
+                            <input type="text" ng-dirty pattern="[a-zA-Z0-9 ]*" name="FirstName" #FirstName="ngModel" [(ngModel)]="sponsorInput.firstName" class="form-control Poppins-Regular" placeholder="{{'EnterFirstName' | translate}}" required maxlength="50">
+
+                        </div>
+                    </div>
+                    <div class="mb-1 row">
+                        <label for="OrgName" class="col-form-label fs-12px Poppins-Regular" style="margin-bottom: -5px;margin-left: 5px;">{{'OrganizationName' | translate}}
+                            </label>
+                        <div class="col-sm-12">
+                            <input type="text" name="OrgName" #OrgName="ngModel" [(ngModel)]="sponsorInput.orgName" class="form-control Poppins-Regular" placeholder="{{'EnterOrganizationName' | translate}}" required maxlength="100">
+                            <span *ngIf="OrgName.invalid && OrgName.touched" class="error">{{'Organizationnamerequired'|
+                                    translate}}
+                                </span>
+                        </div>
+                    </div>
+                    <div class="mb-1 row">
+                        <div class="col-sm-12">
+                            <label for="Email" class="col-form-label fs-12px Poppins-Regular" style="margin-bottom: -5px;margin-left: 5px;">{{'Email' | translate}} </label>
+
+                            <input type="email" name="Email" #Email="ngModel" [(ngModel)]="sponsorInput.emailAddress" maxlength="70" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" class="form-control Poppins-Regular" placeholder="{{'EnterEmail' | translate}}" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-1 row">
+                        <label for="MobileNo" class="col-form-label fs-12px Poppins-Regular" style="margin-bottom: -5px;margin-left: 5px;"> {{'ContactNumber' | translate}} </label>
+                        <div class="col-sm-12">
+                            <select [(ngModel)]="sponsorInput.countryCode" name="countryCode" #countryCode="ngModel" class="form-select float-left col-sm-4 mr-35px" required>
+                                    <option value="">{{'SelectCountryCode' | translate}}</option>
+                                    <option *ngFor="let item of countryList" value="{{item.phonecode}}">{{item.name+'
+                                        (+'+item.phonecode+')'}}</option>
+                                </select>
+                            <input type="text" pattern="\d*" #MobileNo1="ngModel" [(ngModel)]="sponsorInput.mobileNo1" name="mobileNo1" class="form-control Poppins-Regular col-sm-7" placeholder="{{'EnterContactNumber' | translate}}" required maxlength="10">
+                        </div>
+                    </div>
+
+                    <div class="mb-1 row">
+                        <label for="SponsorshipItem" class="col-form-label fs-12px Poppins-Regular" style="margin-bottom: -5px;margin-left: 5px;"> {{'SponsorshipItem' | translate}}
+                            </label>
+                        <div class="col-sm-12">
+                            <select class="form-select Poppins-Regular" name="SponsorshipItem" #SponsorshipItem="ngModel" [(ngModel)]="sponsorInput.sponsorshipItem" required>
+                                    <option value="">{{'PleaseSelect' | translate}}</option>
+                                    <option value="BoothSpace">{{'BoothSpace' | translate}}</option>
+                                    <option value="area space">{{'AreaSpace' | translate}}</option>
+                                    <option value="just a logo display in primary room">
+                                        {{'JustALogoDisplayInPrimaryRoom' | translate}}
+                                    </option>
+                                </select>
+
+                        </div>
+                    </div>
+
+                    <div class="mb-1 row">
+                        <label for="WhyDoYouWantASponsor" class="col-form-label fs-12px Poppins-Regular" style="margin-bottom: -5px;margin-left: 5px;"> {{'WhyDoYouWantASponsor' | translate}}
+                            </label>
+                        <div class="col-sm-12">
+                            <textarea class="form-control Poppins-Regular" maxlength="200" rows="2" cols="20" name="WhyDoYouWantASponsor" #WhyDoYouWantASponsor="ngModel" [(ngModel)]="sponsorInput.whyDoYouWantASponsor"></textarea>
+
+                        </div>
+                    </div>
+                    <div class="mb-1 row">
+                        <div class="col-sm-12">
+                            <label for="inputEmail3" class="col-form-label fs-12px Poppins-Regular" style="margin-bottom: -5px;margin-left: 5px;"> {{'ProfilePicture' | translate}}
+                                </label>
+                            <div *ngIf='isProfileImageAvailable'>
+
+                                <div *ngIf="isProfileImageAvailable">
+                                    <img src='{{sponsorInput.profileImage}}' style="width:200px;height:auto" />
+                                    <i class="fa fa-times" (click)="deleteImage()" tooltip="{{'Delete' | translate}}" style="cursor: pointer;vertical-align: top;margin-left:10px"></i>
+                                </div>
+
+                            </div>
+                            <div>
+                                <input type="file" *ngIf="!isProfileImageAvailable" #FileUploadControl style="visibility:visible" (change)="onFileChange($event)" />
+                                <br><span *ngIf="!isProfileImageAvailable" class="fs-10px Poppins-Regular">{{'MaxSizeTwoHunderd' | translate}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+
+                <button [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" style="border: none;" type="submit" data-dismiss="modal" (click)="addSponsor()" [disabled]="sponsorForm.invalid" class="btn btnOrangeFrontEnd">{{'Save' | translate}} </button>
+                <button [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" style="border: none;" type="button" class="btn btnOrangeFrontEnd" style="margin-left: 20px;" data-dismiss="modal">
+                        {{'Cancel' | translate}}
+                    </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script *ngIf="eventDetails.gaEnabled">
+    {
+        {
+            eventDetails.gaScript
+        }
+    }
+</script>
+
+<script *ngIf="eventDetails.thirdPartyAnalyticsEnabled">
+    {
+        {
+            eventDetails.thirdPartyAnalyticsScript
+        }
+    }
+</script>
+<ngx-spinner type="ball-clip-rotate-multiple" size="medium" style="z-index: 10000;"></ngx-spinner>

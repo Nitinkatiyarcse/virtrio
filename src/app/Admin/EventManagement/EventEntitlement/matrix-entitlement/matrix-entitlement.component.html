@@ -1,0 +1,38 @@
+<div class="pageHeader bg-white" style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'EntitlementMatrix'| translate}}</label>
+        <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+
+    </div>
+
+
+
+</div>
+
+<form class="form-control needs-validation mt-4 p-4 h-100" #matrixEntitlementForm="ngForm">
+
+    <div *ngFor="let item of eventEntitlements" class="col-sm-12">
+        <div class="mb-3 row">
+            <label for="entitlement" class="col-sm-12 col-form-label Poppins-Bold">{{item.entitlement}}
+            </label>
+
+            <div class="col-sm-2 mt-8px" *ngFor="let groupItems of item.groups">
+                <div *ngIf="groupItems.isSelected" class="form-check-inline">
+                    <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="{{groupItems.groupName}}" checked id="{{groupItems.groupName}}" (change)="selectUnselectGroup($event,item,groupItems)">
+                </div>
+                <div *ngIf="!groupItems.isSelected" class="form-check-inline">
+                    <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="{{groupItems.groupName}}" id="{{groupItems.groupName}}" (change)="selectUnselectGroup($event,item,groupItems)">
+                </div>
+                <label class="form-check-label  Poppins-Regular" for="{{groupItems.groupName}}">{{groupItems.groupName}}
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <button type="button" class="btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12" (click)="saveData()">{{'Save' | translate}}</button>
+        <a href="../../admin/events/entitlementlist/{{eventId}}" class="btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 ml-20px text-white">{{'Cancel' | translate}}</a>
+
+    </div>
+
+</form>

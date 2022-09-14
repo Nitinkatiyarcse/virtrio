@@ -1,0 +1,88 @@
+<!-- <p>group-entitlement works!</p> -->
+<div class="pageHeader bg-white" style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'EntitlementGroupName'| translate}}</label>
+        <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+        <a style="float: right;text-align: right;margin-top:-15px;" class="col-sm-2" (click)="addGroup()" data-toggle="modal" data-target="#addGroup">
+            <i class="fa fa-plus text-primary" type="button" tooltip="{{'AddGroup' | translate}}" style=" -webkit-transform: scaleX(-1);  transform: scaleX(-1);"></i>
+        </a>
+
+    </div>
+</div>
+
+<div class="flex-container bg-white" id="entitlementGroupItems" style="margin-top: 25px;padding: 20px;">
+    <div *ngIf='NoRecordFoundMessage' class="text-danger text-center">
+        {{ 'NoRecordFound' | translate}}
+    </div>
+    <div *ngIf="!NoRecordFoundMessage">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>
+                        <a style="cursor: pointer;"> {{'GroupName' | translate}}</a>
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let item of groupTableData'>
+                    <td style="border: none;">{{item.groupName}}</td>
+
+                    <td style="border: none;">
+                        <div class="dropdown">
+                            <a href="#" data-bs-toggle="dropdown" class="text-muted"><i class="fa fa-gear"></i></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+
+                                <a class="dropdown-item Poppins-Regular" id="btnUpdate" data-toggle="modal" data-target="#addGroup" (click)="updateGroup(item)">{{'GroupDetails'| translate}}</a>
+                                <a class="dropdown-item Poppins-Regular" id="btnDetails" (click)='deleteGroup(item)' translate>{{'Delete'}}</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Modal Add Admin User -->
+    <div class="modal fade" id="addGroup" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="Post" class="form-group" #AddGroupForm="ngForm">
+
+                    <div class="text-center pageHeader" translate *ngIf="isAdd">
+                        {{'AddEntitlementGroup'}}
+                        <i class="fa fa-times" type="button" data-dismiss="modal" style="cursor:pointer;float:right;"></i>
+                    </div>
+
+                    <div class="text-center pageHeader" translate *ngIf="!isAdd">
+                        {{ 'UpdateEntitlementGroup' | translate}}
+                        <i class="fa fa-times" type="button" data-dismiss="modal" style="cursor:pointer;float:right;"></i>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="GroupName" class="col-sm-3 col-form-label Poppins-Regular">{{'GroupName' | translate}} </label>
+                        <div class="col-sm-9">
+                            <input type="text" #GroupName="ngModel" [(ngModel)]="inputEntitlementGroupModel.groupName" name="GroupName" class="form-control Poppins-Regular" placeholder="{{'EnterGroupName' | translate}}" required maxlength="50">
+                            <span *ngIf="GroupName.invalid && GroupName.touched" class="error">{{'EntitlementGroupNameRequired'| translate}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <input type="hidden" [(ngModel)]="inputEntitlementGroupModel.createdBy" name="CreatedBy" #CreatedBy />
+                    <input type="hidden" [(ngModel)]="inputEntitlementGroupModel.modifiedBy" name="ModifiedBy" #ModifiedBy />
+                    <input type="hidden" [(ngModel)]="inputEntitlementGroupModel.groupId" name="GroupId" #GroupId>
+                    <div class="" style="text-align: center;">
+                        <button type="submit" id="btnaddeventadmin" (click)="upsertEventEntitlementGroup()" class="btn btn-primary col-sm-5" data-dismiss="modal">
+                            {{'Save'|translate }}
+                        </button>
+                        <button type="button" class="btn  btn-primary  text-white  col-sm-5" style="margin-left: 20px;" data-dismiss="modal">
+                            {{'Cancel' | translate}}
+                        </button>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>

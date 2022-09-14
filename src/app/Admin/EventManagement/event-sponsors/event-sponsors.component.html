@@ -1,0 +1,67 @@
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'EventSponsors'| translate}}</label>
+
+        <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+    </div>
+</div>
+
+
+<div class="flex-container bg-white" id="representativeItems" style="margin-top: 25px;padding: 20px;">
+
+    <div *ngIf='noRecordFound' class="text-danger text-center">
+        {{ 'NoRecordFound' | translate}}
+    </div>
+    <div *ngIf='!noRecordFound'>
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+            <thead>
+                <tr>
+                    <th style="border: none;">
+                        {{'Logo' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'Name' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'Email' | translate}}
+                    </th>
+                    <!-- <th style="border: none;">
+                        {{'Organization' | translate}}
+                    </th> -->
+                    <th style="border: none;">
+                        {{'Status' | translate}}
+                    </th>
+
+                    <th style="border: none;">
+
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let item of sponsorsData'>
+                    <td style="border: none;vertical-align: middle;"><img [src]="item.profileImage?item.profileImage:'https://vemsimageblobstorage.blob.core.windows.net/profileimage/NoImage.png'" style="height: 50px; width: 50px;border-radius: 50px;" /></td>
+                    <td style="border: none;vertical-align: middle;">{{item.firstName}} {{item.lastName}}</td>
+                    <td style="border: none;vertical-align: middle;"> {{item.emailAddress}}</td>
+                    <td style="border: none;vertical-align: middle;" [ngClass]="item.isActive?'text-success':'text-danger'"> {{item.isActive?'Approved':'Pending'}}
+                    </td>
+                    <td style="border: none;vertical-align: middle;text-align: center;">
+                        <div class="dropdown">
+                            <a href="#" data-bs-toggle="dropdown" class="text-muted"><i class="fa fa-gear"></i></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item Poppins-Regular" (click)="getDetailsOfSposors(item)" id="btnDetails">{{'Details'|translate}}</a>
+
+                                <a *ngIf="item.isActive" class="dropdown-item Poppins-Regular" (click)="rejectSponsorRequest(item)" id="btnReject" style="cursor:pointer">{{'Reject' | translate}}</a>
+                                <a *ngIf="!item.isActive" class="dropdown-item Poppins-Regular" (click)="approveSponsorRequest(item)" id="btnReject" style="cursor:pointer">{{'Approve' | translate}}</a>
+
+                            </div>
+                        </div>
+                        <!-- <i *ngIf="item.isActive" class="fa fa-2x fa-thumbs-down" style="cursor: pointer;" tooltip="{{'Reject' | translate}}" (click)="rejectSponsorRequest(item)"></i>
+                        <i *ngIf="!item.isActive" class="fa fa-2x fa-thumbs-up" style="cursor: pointer;" tooltip="{{'Approve' | translate}}" (click)="approveSponsorRequest(item)"></i> -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

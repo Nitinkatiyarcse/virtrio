@@ -1,0 +1,34 @@
+export class UserRolesViewModel {
+    UserId: string;
+    Name: string;
+    Email: string;
+    Password: string;
+    IsActive: boolean;
+    CreatedBy: string;
+    CreatedDate: Date;
+    ModifiedBy: string;
+    ModifiedDate: Date;
+    UserRoleId: string;
+    EmailVerified: boolean;
+    UserVerificationEmailLink: string;
+    UserRoleName: string;
+    UserRoleVisibleName: string;
+    UserImage: string;
+    SearchString: string;
+    SortString: string;
+    FilterString: string;
+    PageNo: string;
+    totalRecordCount: string;
+    totalPage: string;
+    pageSize: string;
+    EventIds: [];
+    LastName: string;
+    OrgName: string;
+    OrgWebsite: string;
+    MobileNo: string;
+    IsProfileUpdated: boolean;
+    Message: string;
+    StatusCode: string;
+    IsSuccess: boolean;
+    Errors: [];
+}

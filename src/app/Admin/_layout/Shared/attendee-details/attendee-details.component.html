@@ -1,0 +1,245 @@
+<div class="modal-dialog modal-lg" role="document" style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">{{'AttendeeDetails'|translate}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="FirstName" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;">{{'Name' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="col-form-label fs-14px Poppins-Regular text-capitalize">{{attendee.firstName}}
+                        {{attendee.lastName}}</label>
+                </div>
+            </div>
+
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="Email" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;">{{'Email' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+
+                    <label class="col-form-label fs-14px Poppins-Regular ">{{attendee.emailAddress}}</label>
+                </div>
+
+            </div>
+
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="Email" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;">{{'Status' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+
+                    <label class="col-form-label fs-14px Poppins-Regular text-capitalize" [ngClass]="attendee.isActive?'text-success':'text-danger'">{{attendee.isActive?'Active':'Inactive'}}</label>
+                </div>
+
+            </div>
+
+
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="MobileNo" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;">
+                        {{'FacebookProfile' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="col-form-label fs-14px Poppins-Regular ">{{attendee.facebookProfileUrl?'attendee.facebookProfileUrl':'-'}}</label>
+
+
+
+                </div>
+            </div>
+
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="MobileNo" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;">
+                        {{'LinkedInProfile' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="col-form-label fs-14px Poppins-Regular ">{{attendee.linkedInProfileUrl?attendee.linkedInProfileUrl:'-'}}</label>
+
+
+
+                </div>
+            </div>
+
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="attendeeshipItem" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;"> {{'EmailVerified' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="col-form-label fs-14px Poppins-Regular text-capitalize" [ngClass]="attendee.isEmailVerified?'text-success':'text-danger'">{{attendee.isEmailVerified?'Yes':'No'}}</label>
+                </div>
+            </div>
+
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="attendeeshipItem" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;"> {{'EmailVerifyDate' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="col-form-label fs-14px Poppins-Regular ">{{(attendee.emailVerifyDate?(attendee.emailVerifyDate
+                        | date:'dd MMMM, yyyy'):'-') }}</label>
+                </div>
+            </div>
+
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="attendeeshipItem" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;"> {{'RegisterDate' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="col-form-label fs-14px Poppins-Regular ">{{attendee.registerDate| date:'dd MMMM,
+                        yyyy'}}</label>
+                </div>
+            </div>
+
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="attendeeshipItem" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;"> {{'RegistrationSet' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="col-form-label fs-14px Poppins-Regular text-capitalize">{{attendee.registrationSetName}}</label>
+                </div>
+            </div>
+
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="WhyDoYouWantAattendee" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;"> {{'Contact' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="col-form-label fs-14px Poppins-Regular">{{attendee.mobile?attendee.mobile:'-'}}</label>
+
+                </div>
+
+            </div>
+
+            <!-- <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label *ngIf="attendee.isActive" for="WhyDoYouWantAattendee" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;">
+                        {{'ApprovedBy' | translate}} </label>
+                    <label *ngIf="!attendee.isActive" for="WhyDoYouWantAattendee" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;">
+                        {{'RejectedBy' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <label [ngClass]="attendee.isActive?'text-success':'text-danger'" class="col-form-label fs-14px Poppins-Regular text-capitalize">{{attendee.ApprovedByUser?attendee.ApprovedByUser:'-'}}</label>
+                </div>
+
+            </div> -->
+
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="WhyDoYouWantAattendee" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;"> {{'Company Name' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="col-form-label fs-14px Poppins-Regular">{{companyName}}</label>
+
+                </div>
+
+            </div>
+
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="WhyDoYouWantAattendee" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;"> {{'Designation' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="col-form-label fs-14px Poppins-Regular">{{designation}}</label>
+
+                </div>
+
+            </div>
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="WhyDoYouWantAattendee" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;"> {{'Address' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="col-form-label fs-14px Poppins-Regular">{{address}}</label>
+
+                </div>
+
+            </div>
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="WhyDoYouWantAattendee" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;"> {{'City' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="col-form-label fs-14px Poppins-Regular">{{city}}</label>
+
+                </div>
+
+            </div>
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="WhyDoYouWantAattendee" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;"> {{'State' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="col-form-label fs-14px Poppins-Regular">{{state}}</label>
+
+                </div>
+
+            </div>
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="WhyDoYouWantAattendee" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;"> {{'Country' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="col-form-label fs-14px Poppins-Regular">{{country}}</label>
+
+                </div>
+
+            </div>
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="WhyDoYouWantAattendee" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;"> {{'Zip Code' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="col-form-label fs-14px Poppins-Regular">{{zip}}</label>
+
+                </div>
+
+            </div>
+
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="WhyDoYouWantAattendee" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;"> {{'DateOfBirth' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="col-form-label fs-14px Poppins-Regular">{{dateOfBirth | date:'dd MMMM, yyyy'}}</label>
+
+                </div>
+
+            </div>
+
+            <!-- <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label for="WhyDoYouWantAattendee" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;"> {{'Resume' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <a href="{{attendee.resumeLink}}" *ngIf="attendee.resumeLink" target="_blank">{{'DownloadFile' | translate}}</a>
+
+                </div>
+
+            </div> -->
+
+
+            <div class="mb-1 row">
+                <div class="col-sm-4">
+                    <label *ngIf="attendee.isActive" for="WhyDoYouWantAattendee" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;">
+                        {{'ApprovedDate' | translate}} </label>
+                    <label *ngIf="!attendee.isActive" for="WhyDoYouWantAattendee" class="col-form-label fs-14px Poppins-SemiBold" style="margin-bottom: -5px;">
+                        {{'RejectedDate' | translate}} </label>
+                </div>
+                <div class="col-sm-8">
+                    <label [ngClass]="attendee.isActive?'text-success':'text-danger'" class="col-form-label fs-14px Poppins-Regular">{{(attendee.approvedDisapprovedDate?(attendee.approvedDisapprovedDate
+                        | date:'dd MMMM, yyyy'):'-')}}</label>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary  commonbtn ml-10px text-white Poppins-Regular" (click)="closeModal()">{{'Cancel' | translate}}</button>
+        </div>
+    </div>
+</div>

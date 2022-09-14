@@ -1,0 +1,87 @@
+<!-- <p>representative works!</p> -->
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'AddRepresentative'| translate}}</label>
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2" *ngIf="isEventRepresentativeExists">
+            <i class="fa fa-user-plus text-primary" type="button" tooltip="{{'AddRepresentative' | translate}}" data-toggle="modal" data-target="#addEventAdmin" (click)="updateRepresentative('')" style=" -webkit-transform: scaleX(-1);  transform: scaleX(-1);"></i>
+        </a>
+        <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+    </div>
+</div>
+
+
+<div class="flex-container bg-white" id="representativeItems" style="margin-top: 25px;padding: 20px;">
+    <div *ngIf='noRecordFound' class="text-danger text-center">
+        {{ 'NoRecordFound' | translate}}
+    </div>
+    <div *ngIf='!noRecordFound'>
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>
+                    </th>
+                    <th>
+                        {{'Name' | translate}}
+                    </th>
+                    <th>
+                        {{'Email' | translate}}
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let item of inputRepresentativeViewModel'>
+                    <td style="border: none;"><img [src]="item.eventRepresentatives.profileImage===null?noImagePath:item.eventRepresentatives.profileImage" height="48" width="48"></td>
+                    <td style="border: none;">{{item.eventRepresentatives.firstName}} {{item.eventRepresentatives.lastName}}</td>
+                    <td style="border: none;"> {{item.eventRepresentatives.emailAddress}}</td>
+                    <td style="border: none;">
+                        <i class="fa fa-trash" tooltip="{{'Delete' | translate}}" (click)="deleteRepresentative(item.representativeId)"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <!-- Modal Add representative -->
+    <div class="modal fade" id="addEventAdmin" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{'AddRepresentative'|translate}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="Post" class="form-group" #AddEventAdminForm="ngForm">
+
+                        <!-- <div class="text-center pageHeader">{{'AddRepresentative'|translate}}
+                        <i class="fa fa-times" type="button" data-dismiss="modal" style="cursor:pointer;float:right;"></i>
+                    </div> -->
+                        <div class="mb-3 row">
+                            <label class="col-sm-3 col-form-label Poppins-Regular" for="Represetative">{{'SelectRepresetative'| translate}}</label>
+                            <div class="col-sm-9">
+                                <ng-multiselect-dropdown name="Represetative" #Represetative [placeholder]="" [settings]="dropdownSettings" [placeholder]="'SelectRepresetative'| translate" style="background-color: #fff;" [data]="represetativeDropDownList" (onSelect)="onItemSelect($event)"
+                                    (onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)" [ngClass]='setClass()'>
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                        <!-- <div class="" style="text-align: right;">
+                        
+                    </div> -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnaddeventadmin" [disabled]="AddEventAdminForm.invalid" class="commonbtn btn btn-primary col-sm-5" (click)="addRepresentative()" data-dismiss="modal">
+                    {{'Save'|translate }}
+                </button>
+                    <button type="button" class="commonbtn btn  btn-primary  text-white  col-sm-5" style="margin-left: 20px;" data-dismiss="modal">
+                    {{'Cancel' | translate}}
+                </button>
+                </div>
+            </div>
+        </div>
+    </div>

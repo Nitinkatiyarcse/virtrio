@@ -1,0 +1,100 @@
+<div class="modal-header">
+    <h5 class="modal-title">{{partialHeader}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+
+    <!-- <div class="text-center pageHeader">
+    <i class="fa fa-times" type="button" data-dismiss="modal" style="cursor:pointer;float:right;"
+        (click)="closeModal()"></i>
+</div> -->
+
+    <form method="Post" class="form-group" #AddUserForm="ngForm">
+        <div class="Poppins-Regular text-danger text-center" *ngIf='isThereAnyError'>
+            <ul class="list-style-none">
+
+                <li *ngFor="let error of user.errors">
+                    <p translate> {{error}} </p>
+                </li>
+            </ul>
+        </div>
+        <!-- 
+    <div class="form-group mb-2">
+        <div class="form-group">
+            <label class="form-lable Poppins-Regular">{{'Client'| translate}}</label>
+
+            <select class="form-select Poppins-Regular" [(ngModel)]="selectedClient" required data-val="true"
+                name="ClientId"  (change)='getSearEventList($event)'>
+                <option value="00000000-0000-0000-0000-000000000000">{{'AllClients'| translate}}</option>
+                <option *ngFor="let item of usersClient" value="{{item.clientId}}" >{{item.firstName}} {{item.lastName}}({{item.email}})</option> 
+            </select>
+
+
+        </div>
+
+    </div> -->
+
+        <div class="form-group mb-2" *ngIf="isLoggedInUserSuperAdmin">
+            <div class="form-group">
+                <label class="form-lable Poppins-Regular">{{'UserRoles'| translate}}</label>
+
+                <select class="form-select Poppins-Regular" [(ngModel)]="selectedRole" required data-val="true" name="UserRoleId" (change)='changeUser($event.target.value)'>
+                    <option *ngFor="let item of userRoles" value="{{item.roleId}}">{{item.roleName| translate}}
+                    </option>
+                </select>
+
+
+            </div>
+
+        </div>
+
+        <div class="form-group  mb-2">
+            <label class="form-lable Poppins-Regular">{{'FirstName'| translate}}</label>
+            <input type="text" name="FirstName" #FirstName="ngModel" [(ngModel)]="user.name" class="form-control Poppins-Regular" value="" required maxlength="30" />
+            <span *ngIf="FirstName.invalid && FirstName.touched" class="error">{{'FirstNameRequired'| translate}}</span>
+        </div>
+
+        <div class="form-group  mb-2">
+            <label class="form-lable Poppins-Regular">{{'LastName'| translate}}</label>
+            <input type="text" name="LastName" #LastName="ngModel" [(ngModel)]="user.lastName" class="form-control Poppins-Regular" value="" required maxlength="30" />
+            <span *ngIf="LastName.invalid && LastName.touched" class="error">{{'LastNameRequired'| translate}}</span>
+        </div>
+
+
+        <div class="form-group  mb-2">
+            <label class="form-lable Poppins-Regular">{{'Email'| translate}}</label>
+            <input email name="email" #Email="ngModel" [(ngModel)]="user.email" class="form-control Poppins-Regular" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" type="email" required maxlength="70" />
+            <span *ngIf="Email.invalid && Email.touched" class="error">{{'InvalidEmail'| translate}}</span>
+        </div>
+
+        <div class="form-group  mb-2" *ngIf='isUserSuperAdmin'>
+            <label class="form-lable Poppins-Regular">{{'SelectEvents'| translate}}</label>
+            <ng-multiselect-dropdown name="SelectedItemsddl" #SelectedItemsddl [placeholder]="'SelectEvents'| translate" [settings]="dropdownSettings" [data]="dropdownList" [(ngModel)]="selectedItems" (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)"
+                (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)" [required]='requiredField' [ngClass]='setClass()'>
+            </ng-multiselect-dropdown>
+            <span *ngIf="requiredField && selectedEventsArr.length==0" class="error">{{'PleaseSelectEvents'|
+                translate}}</span>
+
+        </div>
+
+
+
+
+        <!-- <div class="form-group">
+        
+    </div> -->
+
+
+    </form>
+
+</div>
+<div class="modal-footer">
+    <button type="submit" id="btnUserUpsert" [disabled]="AddUserForm.invalid" class="commonbtn btn btn-block form-control bold btn-primary Poppins-Regular" (click)="upsertUser()">
+        {{SubmitButtonText }}
+    </button>
+    <button type="button" class="commonbtn btn btn-primary  btn-block form-control bold btn-link text-white" data-dismiss="modal" (click)="closeModal()">
+        {{'Cancel' | translate}}
+    </button>
+</div>

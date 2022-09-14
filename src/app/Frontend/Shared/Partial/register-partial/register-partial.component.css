@@ -1,0 +1,17 @@
+.div-1 {
+    color: #F06449;
+}
+
+.Reg-div {
+    color: #04030F;
+}
+
+.text-BColor {
+    color: #555555;
+}
+
+::ng-deep .popover-body {
+    /* padding: 1rem 1rem; */
+    padding: 0 !important;
+    color: #212837;
+}

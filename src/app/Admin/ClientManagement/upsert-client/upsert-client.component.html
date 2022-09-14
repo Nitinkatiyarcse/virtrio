@@ -1,0 +1,153 @@
+<div>
+    <div class="bg-white pageHeader " style="border:none;text-align: left;padding:10px">
+        <label *ngIf='IsAdd' class="col-sm-12 text-Medium" style="text-align: left;">{{'AddClient'| translate}}</label>
+        <label *ngIf='!IsAdd' class="col-sm-12 text-Medium" style="text-align: left;">{{'UpdateClient'| translate}}</label>
+    </div>
+    <div class="flex-container row bg-white" id="usrListItems" style="margin-top: 25px;padding: 20px;margin-left: 0px;margin-right: 0px;">
+
+        <form method="Post" class="form-group" #UpsertClient="ngForm">
+            <div class="mb-3 row">
+                <div class="col-sm-2">
+                    <label class=" Poppins-Regular" for="FirstName">{{'CompanyName'| translate}} </label>
+                </div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control Poppins-Regular" placeholder="{{'CompanyName' | translate}}" required #FirstName="ngModel" [(ngModel)]="inputClientModel.firstName" name="FirstName" value="" maxlength="80">
+                    <span *ngIf="FirstName.invalid && FirstName.touched" class="error">{{'Companynamerequired'| translate}}</span>
+                </div>
+            </div>
+
+
+            <!-- <div class="mb-3 row">
+                <div class="col-sm-2">      
+                    <label class=" Poppins-Regular" for="LastName">{{'LastName'| translate}} </label>
+                </div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control Poppins-Regular" placeholder="{{'LastName' | translate}}"
+                        required #LastName="ngModel" [(ngModel)]="inputClientModel.lastName" name="LastName" value=""
+                        maxlength="80">
+                    <span *ngIf="LastName.invalid && LastName.touched" class="error">{{'Lastnamerequireds'| translate}}</span>
+                </div>
+            </div> -->
+
+            <div class="mb-3 row">
+                <div class="col-sm-2">
+                    <label class=" Poppins-Regular" for="Email">{{'Email'| translate}} </label>
+                </div>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control Poppins-Regular" placeholder="{{'Email' | translate}}" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required #Email="ngModel" [(ngModel)]="inputClientModel.email" name="Email" value="" maxlength="120">
+                    <span *ngIf="Email.invalid && Email.touched" class="error">{{'Emailrequired'| translate}}</span>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-sm-2">
+                    <label class=" Poppins-Regular" for="ContactNumber">{{'ContactNumber'| translate}} </label>
+                </div>
+                <div class="col-sm-10">
+                    <select [(ngModel)]="inputClientModel.countryCode" name="countryCode" #countryCode="ngModel" class="form-select float-left col-sm-2 mr-20px" required>
+                <option value="">{{'SelectCountryCode' | translate}}</option>
+                <option *ngFor="let item of countryList" value="{{item.phonecode}}">{{item.name+' (+'+item.phonecode+')'}}</option>
+            </select>
+                    <input type="text" pattern="\d*" #contact1="ngModel" [(ngModel)]="inputClientModel.contact1" name="contact1" class="form-control Poppins-Regular col-sm-6" placeholder="{{'EnterContactNumber' | translate}}" required maxlength="10">
+
+                </div>
+                <!-- <div class="col-sm-10">
+                    <input type="text" pattern="\d*" mask="+00 000 000 0000" class="form-control Poppins-Regular" placeholder="{{'ContactNumber' | translate}}" required #ContactNumber="ngModel" [(ngModel)]="inputClientModel.contact" name="ContactNumber" value="" maxlength="18">
+                    <span *ngIf="ContactNumber.invalid && ContactNumber.touched" class="error">{{'ContactNumberrequired'| translate}}</span>
+                </div> -->
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-sm-2">
+                    <label class=" Poppins-Regular" for="URLSlug">{{'URLSlug'| translate}} </label>
+                </div>
+                <div class="col-sm-10">
+                    <input type="text" pattern="^[A-Za-z0-9]+$" class="form-control Poppins-Regular" placeholder="{{'URLSlug' | translate}}" required #URLSlug="ngModel" [(ngModel)]="inputClientModel.urlSlug" name="URLSlug" value="" maxlength="15">
+                    <span class="Poppins-Regular fs-12px ml-5px">url look like :-
+                        {{domainUrl+"/"+(inputClientModel.urlSlug?inputClientModel.urlSlug:'')}}
+                    </span><br>
+                    <span *ngIf="URLSlug.invalid && URLSlug.touched" class="error">{{'UrlSlugrequired'| translate}}</span>
+                </div>
+            </div>
+
+
+
+
+            <!-- <div class="mb-3 row">
+                <label for="OrgName" class="col-sm-2 col-form-label Poppins-Regular">{{'OrganizationName' | translate}} </label>
+                <div class="col-sm-10">
+                    <input type="text" name="OrgName" #OrgName="ngModel" [(ngModel)]="inputClientModel.organizationName"
+                        class="form-control Poppins-Regular" placeholder="{{'EnterOrganizationName' | translate}}" required maxlength="100">
+                    <span *ngIf="OrgName.invalid && OrgName.touched" class="error">{{'Organizationnamerequired'| translate}}
+                    </span>
+                </div>
+            </div> -->
+
+            <div class="mb-3 row">
+                <label for="OrgWebsite" class="col-sm-2 col-form-label Poppins-Regular">{{'OrganizationWebsite' | translate}}
+                </label>
+                <div class="col-sm-10">
+                    <input type="text" pattern="https?://.+" name="OrgWebsite" #OrgWebsite="ngModel" [(ngModel)]="inputClientModel.organizationWebsite" class="form-control Poppins-Regular" placeholder="{{'EnterOrganizationWebsite' | translate}}" maxlength="180">
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <label for="inputEmail3" class="col-sm-2 col-form-label Poppins-Regular">
+                    {{'OrganizationLogo' | translate}}
+                </label>
+                <!-- <div class="col-sm-10">
+                    <div *ngIf='isOrganizationLogoExists'>
+
+                        <div *ngIf="isOrganizationLogoAvailable">
+                            <img src='{{inputClientModel.organizationLogo}}' style="width:200px;height:auto" />
+                            <i class="fa fa-times" (click)="deleteImage()" tooltip="{{'Delete' | translate}}" style="cursor: pointer;vertical-align: top;margin-left:10px"></i>
+                        </div>
+                    </div>
+
+                    <a (click)="FileUploadControl.click()" *ngIf="!isOrganizationLogoAvailable">
+                        <div class="text-center form-control" style="height:144px;width:144px;background-color:white; border-radius:4px;margin-top: 10px;">
+                            <label class="form-lable text-black Poppins-Regular" style="font-size: 12px;font-weight: 400;text-decoration-color:#0C0C0D;margin-top:40px;">{{'ClickToUploadFile' | translate}}
+                        </label>
+                        </div>
+                        <input type="file" style="display: none;" />
+                    </a>
+
+                </div> -->
+                <div class="" style="width: 236px;">
+                    <div *ngIf='isOrganizationLogoAvailable'>
+
+                        <div *ngIf="isOrganizationLogoAvailable">
+                            <img src='{{inputClientModel.organizationLogo}}' style="width:200px;height:auto" />
+                            <i class="fa fa-times" (click)="deleteImage()" tooltip="{{'Delete' | translate}}" style="cursor: pointer;vertical-align: top;margin-left:10px"></i>
+                        </div>
+
+                    </div>
+
+
+                    <input type="file" *ngIf="!isOrganizationLogoAvailable" #FileUploadControl style="visibility:visible" (change)="onFileChange($event)" />
+                    <span class="fs-10px Poppins-Regular">{{'MaxSizeTwoHunderd' | translate}}</span>
+                </div>
+
+            </div>
+
+
+
+            <div class="mb-3 row">
+
+
+                <div class="col-sm-12 text-right">
+                    <button type="submit" (click)="upsertClient()" [disabled]="UpsertClient.invalid" class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 Poppins-Regular">{{'Save' | translate}}</button> &nbsp;
+                    <a type="button" [routerLink]="['/admin/clients']" class="commonbtn btn btn-primary text-white btn-lg col-lg-3 col-xl-2 col-md-2 col-sl-12 ml-20px">{{'Cancel' | translate}}</a>
+
+                </div>
+            </div>
+            <input type="file" #FileUploadControl style="visibility:hidden" (change)="onFileChange($event)" />
+            <input type="hidden" [(ngModel)]="inputClientModel.createdBy" name="CreatedBy" #CreatedBy />
+            <input type="hidden" [(ngModel)]="inputClientModel.modifiedBy" name="ModifiedBy" #ModifiedBy />
+            <input type="hidden" [(ngModel)]="inputClientModel.clientId" name="ClientId" #ClientId />
+
+        </form>
+    </div>
+
+</div>

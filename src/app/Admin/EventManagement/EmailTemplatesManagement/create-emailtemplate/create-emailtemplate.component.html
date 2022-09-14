@@ -1,0 +1,536 @@
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium Poppins-Regular" *ngIf="isAdd"
+            style="text-align: left;">{{'NewEmailTemplates'| translate}}</label>
+
+        <label class="col-sm-10 text-Medium Poppins-Regular" *ngIf="!isAdd"
+            style="text-align: left;">{{'UpdateEmailTemplates'| translate}}</label>
+        <label class="col-sm-10 Poppins-Regular text-small"
+            style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+
+        <label *ngIf="!isAdd && !inputEmailTemplateModel.isInLogger" class="switch"
+            style="float: right;margin-top: -15px;">
+            <input type="checkbox" [checked]="inputEmailTemplateModel.isActive"
+                (change)="ActiveInactveTemplate($event)">
+            <span class="slider round"></span>
+        </label>
+
+    </div>
+</div>
+<div class="flex-container bg-white" id="surveyListItems" style="margin-top: 25px;padding: 20px;">
+
+
+    <form method="Post" class="form-group" #AddNewEmailTemplates="ngForm">
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="EmailType">{{'EmailType' | translate}}</label>
+            <div class="col-sm-10">
+
+                <select id="EmailType" (change)="showhideEventReminder()" required #EmailType="ngModel" name="EmailType"
+                    class="form-select" [(ngModel)]="inputEmailTemplateModel.emailTemplateTypesId">
+                    <option value="">{{'Select' | translate}}</option>
+                    <option *ngFor="let item of allEmailTemplatesTypes" value="{{item.emailTemplateTypesId}}" translate>
+                        {{item.emailTemplateType}}
+                    </option>
+
+                </select>
+                <span *ngIf="EmailType.invalid && EmailType.touched" class="error">{{'EmailTyperequired'|
+                    translate}}</span>
+
+            </div>
+        </div>
+
+        <div class="mb-3 row" *ngIf="inputEmailTemplateModel.emailTemplateTypesId!='e63ec1b6-5d90-4da5-8d02-02c1e601479f' 
+        && inputEmailTemplateModel.emailTemplateTypesId!='71869983-0bf8-4b88-9039-c18f38a72425'
+        && inputEmailTemplateModel.emailTemplateTypesId!='a0241252-c107-41dd-8fdd-41409347a548'
+        && inputEmailTemplateModel.emailTemplateTypesId!='cd67b252-5bdd-4553-9ff1-38197b825094'
+        && inputEmailTemplateModel.emailTemplateTypesId!='d8a708df-c718-4dcf-9973-2a2e1a8df21d'">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="EmailType">{{'RegistrationSet' |
+                translate}}</label>
+            <div class="col-sm-10">
+
+                <select id="RegistrationSet" required #RegistrationSet="ngModel" name="RegistrationSet"
+                    class="form-select" [(ngModel)]="inputEmailTemplateModel.registrationSetId"
+                    (change)="getCustomAndStandardFields()">
+                    <option value="">{{'Select' | translate}}</option>
+                    <option *ngFor="let item of registrationSets" value="{{item.registrationSetId}}" translate>
+                        {{item.name}}
+                    </option>
+
+                </select>
+                <span *ngIf="RegistrationSet.invalid && RegistrationSet.touched"
+                    class="error">{{'SelectRegistrationSet'|
+                    translate}}</span>
+
+            </div>
+        </div>
+
+        <div *ngIf="inputEmailTemplateModel.emailTemplateTypesId == 'abea082d-ecbb-49d4-9541-be6a088c011b'">
+            <div class="mb-3 row" *ngFor="let item of customAndStandardFieldsData; let i=index">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="EmailType">{{item.key}}</label>
+                <div class="col-sm-10">
+                    <ng-multiselect-dropdown name="SelectedItemsddl_{{i}}" [(ngModel)]="selectedCustomValue[item.key]"
+                        id="SelectedItemsddl_{{i}}" [placeholder]="'Select'| translate" [settings]="dropdownSettings"
+                        [data]="item.values" [required]='requiredField' [ngClass]='setClass()'>
+                    </ng-multiselect-dropdown>
+                    <span *ngIf="requiredField && selectedEventsArr.length==0" class="error">{{'PleaseSelect'|
+                        translate}}</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div *ngIf="isTemplateName">
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="TemplateName">{{'TemplateName' |
+                    translate}}</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control Poppins-Regular" placeholder="{{'TemplateName' | translate}}"
+                        required #TemplateName="ngModel" [(ngModel)]="inputEmailTemplateModel.templateName"
+                        name="TemplateName" value="" maxlength="120">
+                    <span *ngIf="TemplateName.invalid && TemplateName.touched" class="error">{{'TemplateNamerequired'|
+                        translate}}</span>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="TemplateName">{{'TemplateTrigger' |
+                    translate}}</label>
+                <div class="col-sm-10">
+                    <select class="form-select" name="TemplateTrigger" [(ngModel)]="templateTrigger" #TemplateTrigger
+                        (change)="selectTemplateTrigger($event)">
+                        <option value="">{{'SelectTemplateTrigger' | translate}}</option>
+                        <option value="AdminInvite">{{'AdminInvite' | translate}}</option>
+                        <option value="AttendeeInviteEmail">{{'AttendeeInviteEmail' | translate}}</option>
+                        <option value="ProfileCompletion">{{'ProfileCompletion' | translate}}</option>
+                        <option value="BoothRepresentativeInvite">{{'BoothRepresentativeInvite' | translate}}</option>
+                        <option value="EventReminder">{{'EventReminder' | translate}}</option>
+                        <option value="All">{{'All' | translate}}</option>
+                        <option value="Others">{{'Others' | translate}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row" *ngIf="templateTrigger !=='' && templateTrigger!=='Others' ">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="TemplateName">{{'EmailList' |
+                    translate}}</label>
+                <div class="col-sm-10">
+                    <ng-multiselect-dropdown name="EmailList" #EmailList [placeholder]="'SelectEmail'| translate"
+                        [settings]="dropdownSettings" [data]="emailList" [(ngModel)]="selectedEmails"
+                        [ngClass]='setClass()'>
+                    </ng-multiselect-dropdown>
+
+                </div>
+            </div>
+
+            <div class="mb-3 row" *ngIf="templateTrigger !=='' && templateTrigger==='Others' ">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="TemplateName">{{'Input Email' |
+                    translate}}</label>
+                <div class="col-sm-10">
+                    <input type="text" class="Poppins-Regular form-control" name="otherEmails" id="otherEmails"
+                        [(ngModel)]="otherEmails"
+                        placeholder="{{'PleaseInputEmilsSeperatedByCommaInCaseOfMoreThanOne' | translate}}" />
+                </div>
+            </div>
+
+
+
+
+            <!-- <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="TemplateName">{{'Designation' |
+                    translate}}</label>
+                <div class="col-sm-10">
+                    <ng-multiselect-dropdown>
+                    </ng-multiselect-dropdown>
+                </div>
+            </div> -->
+
+            <!--<div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="TemplateName">{{'Entitlement' |
+                    translate}}</label>
+                <div class="col-sm-10">
+                    <ng-multiselect-dropdown>
+                    </ng-multiselect-dropdown>
+                </div>
+            </div>-->
+
+
+            <!-- <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="TemplateName">{{'Country' |
+                    translate}}</label>
+                <div class="col-sm-10">
+
+                    <select id="CountryList" class="form-select" required #CountryList="ngModel" name="CountryList" [(ngModel)]="inputEmailTemplateModel.selectedCountry" (change)="bindItemValue(item,$event)">
+                        <option value="">{{'Select' | translate}}</option>
+                        <option *ngFor="let countryItem of countryList" value="{{countryItem.name}}">
+                            {{countryItem.name}}
+                        </option>
+                    </select>
+
+
+                  
+                </div>
+            </div> -->
+
+
+
+
+            <!--<div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="TemplateName">{{'RegistrationSource' |
+                    translate}}</label>
+                <div class="col-sm-10">
+                    <ng-multiselect-dropdown>
+                    </ng-multiselect-dropdown>
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="TemplateName">{{'CustomDomain' |
+                    translate}}</label>
+                <div class="col-sm-10">
+                    <ng-multiselect-dropdown>
+                    </ng-multiselect-dropdown>
+                </div>
+            </div> -->
+
+
+
+        </div>
+
+
+
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="SubjectLine">{{'SubjectLine' |
+                translate}}</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control Poppins-Regular" placeholder="{{'SubjectLine' | translate}}"
+                    required #SubjectLine="ngModel" [(ngModel)]="inputEmailTemplateModel.subjectLine" name="SubjectLine"
+                    value="" maxlength="120">
+                <span *ngIf="SubjectLine.invalid && SubjectLine.touched" class="error">{{'SubjectLinerequired'|
+                    translate}}</span>
+            </div>
+        </div>
+
+        <!-- <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="CC">{{'CC' | translate}}</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control Poppins-Regular" placeholder="{{'CC' | translate}}" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #CC="ngModel" [(ngModel)]="inputEmailTemplateModel.cC" name="CC" value="" maxlength="120">
+
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="BCC">{{'BCC' | translate}}</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control Poppins-Regular" placeholder="{{'BCC' | translate}}" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #BCC="ngModel" [(ngModel)]="inputEmailTemplateModel.bCC" name="BCC" value="">
+
+            </div>
+        </div> 
+
+
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="ReplyTo">{{'ReplyTo' | translate}}</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control Poppins-Regular" placeholder="{{'ReplyTo' | translate}}" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #ReplyTo="ngModel" [(ngModel)]="inputEmailTemplateModel.replyTo" name="ReplyTo" value="">
+                <span *ngIf="ReplyTo.invalid && ReplyTo.touched" class="error">{{'Replytorequired'| translate}}</span>
+            </div>
+        </div> -->
+
+
+        <div class="mb-3 row" *ngIf="isEventReminder">
+            <label class="col-sm-2 col-form-label Poppins-Regular" for="Reminderfrequencyfirst">{{'Reminderfrequency'|
+                translate}}</label>
+            <div class="col-sm-6" style="margin-top: 7px;padding: 0px;">
+                <!-- <a style="margin-left: 7px;" (click)='addreminderFrequency()'>
+                    <i class="fa fa-plus fa-lg text-primary" type="button"
+                        tooltip="{{'AddMoreReminder' | translate}}"></i>
+                </a> -->
+                <!-- <input type="checkbox" (click)="addreminderFrequency($event)" style="margin-left: 0px;margin-top:10px;"
+                    class="form-check-inline " /> -->
+                <input type="radio" style="margin-left: 0px;" class="form-radio-inline mr-20px" name="frequency"
+                    value="frequency" (change)="checkFrequencyOrTime($event)"
+                    [checked]="inputEmailTemplateModel.reminderFrequency[0].targetType=='frequency'?true:false">
+                <label class="form-radio-label  Poppins-Regular" for="English">{{'Frequency' | translate}}</label>
+
+                <input type="radio" style="margin-left:20px;" class="form-radio-inline mr-20px" name="frequency"
+                    value="time" (change)="checkFrequencyOrTime($event)"
+                    [checked]="inputEmailTemplateModel.reminderFrequency[0].targetType=='time'?true:false">
+                <label class="form-radio-label  Poppins-Regular" for="English">{{'Time' | translate}}</label>
+
+
+                <div *ngIf="inputEmailTemplateModel.reminderFrequency[0].targetType=='frequency'">
+                    <div *ngFor="let item of inputEmailTemplateModel.reminderFrequency" style="margin-top: 15px;;">
+                        <input type="number" min="1" max="30" required name="number_{{item.index}}"
+                            [(ngModel)]="item.number" class="form-control col-sm-4" style="float: left;" />
+                        <select id="type_{{item.index}}" required name="type_{{item.index}}" [(ngModel)]="item.type"
+                            class="form-select col-sm-4" style="float: left;margin-left:10px;">
+                            <option value="">{{'Select'|translate}}</option>
+                            <option value="Minutes">{{'Minutes Before' | translate}}</option>
+                            <option value="Hours">{{'Hours Before' | translate}}</option>
+                            <option value="Days">{{'Days Before' | translate}}</option>
+                            <option value="Week">{{'Week Before' | translate}}</option>
+                            <option value="Months">{{'Months Before' | translate}}</option>
+
+                        </select>
+
+                    </div>
+                </div>
+
+                <div *ngIf="inputEmailTemplateModel.reminderFrequency[0].targetType=='time'">
+                    <div *ngFor="let item of inputEmailTemplateModel.reminderFrequency" style="margin-top: 15px;;">
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label Poppins-Regular"
+                                for="FrequencyStartDate">{{'StartDate' |
+                                translate}}
+                            </label>
+                            <div class="col-sm-10">
+                                <div class="input-group bootstrap-timepicker timepicker">
+                                    <app-date-picker [minDate]="roomStartMinDate" [(ngModel)]="item.startDate"
+                                        #FrequencyStartDate="ngModel" required="" name="FrequencyStartDate">
+                                    </app-date-picker>
+                                </div>
+                                <span *ngIf="FrequencyStartDate.invalid && FrequencyStartDate.touched"
+                                    class="error">{{'StartDaterequired'|
+                                    translate}}</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label Poppins-Regular"
+                                for="FrequencyStartTime">{{'StartTime' |
+                                translate}}
+                            </label>
+                            <div class="col-sm-10">
+                                <div class="input-group bootstrap-timepicker timepicker">
+                                    <app-time-picker #FrequencyStartTime="ngModel" [(ngModel)]="item.startTime"
+                                        name="FrequencyStartTime" required="" value="" name="FrequencyStartTime">
+                                    </app-time-picker>
+                                </div>
+                                <span *ngIf="FrequencyStartTime.invalid && FrequencyStartTime.touched"
+                                    class="error">{{'StartTimerequired'|
+                                    translate}}</span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="mb-3 row" *ngIf="inputEmailTemplateModel.emailTemplateManually">
+            <label class="col-sm-2  Poppins-Regular" for="AddReminder">{{'AddReminder'|translate}}</label>
+            <div class="col-sm-5">
+                <select id="Number" required #Number="ngModel" name="Number" class="form-select"
+                    [(ngModel)]="inputEmailTemplateModel.number">
+                    <option value="">{{'Number' | translate}}</option>
+                    <option>1</option>
+                </select><br><br>
+
+                <select id="Days" required #Days="ngModel" name="Days" class="form-select"
+                    [(ngModel)]="inputEmailTemplateModel.days">
+                    <option value="">{{'Days' | translate}}</option>
+                    <option>1</option>
+                </select>
+                <br><br>
+
+                <a class="btn btn-primary col-sm-4 Poppins-Regular">{{'Save' | translate}}</a>
+                <button class="btn btn-primary col-sm-4 Poppins-Regular" style="margin-left: 20px;;">{{'Cancel' |
+                    translate}}</button>
+
+            </div>
+        </div>
+
+
+        <div class="mb-3 row">
+            <label class="form-check-label col-sm-2 Poppins-Regular" for="BodyTemplateText">{{'BodyTemplate' |
+                translate}}
+                <i role="button" style="margin-left: 10px;" class="fa fa-info-circle" title="{{'ClickForTemplateRules' | translate}}" data-toggle="modal"
+                    data-target="#EmailTemplateRulesModal"></i>
+
+            </label>
+
+            <div class="col-sm-10  Poppins-Regular">
+                <div>
+                    <div class="NgxEditor__Wrapper">
+                        <ckeditor [config]="config" [(data)]="inputEmailTemplateModel.bodyTemplate"></ckeditor>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="mb-3 row" *ngIf="showHideTimeBracket">
+
+            <label class="col-sm-2 col-form-label Poppins-Bold" for="EnableTimeBracket">{{'TimeBracket'|translate}}
+
+            </label>
+
+            <div class="col-sm-10">
+                <input type="checkbox" style="margin-left: 0px;margin-top:10px;" class="form-check-inline "
+                    [(ngModel)]="inputEmailTemplateModel.enableTimeBracket" name="EnableTimeBracket" #EnableTimeBracket
+                    (change)="timeBracketChangedChanged()" [checked]="timeBracketEnabled">
+            </div>
+
+        </div>
+
+
+        <div *ngIf="inputEmailTemplateModel.enableTimeBracket && showHideTimeBracket">
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="RoomStartDate">{{'StartDate' |
+                    translate}}
+                </label>
+                <div class="col-sm-10">
+                    <div class="input-group bootstrap-timepicker timepicker">
+                        <app-date-picker [minDate]="roomStartMinDate" [maxDate]=""
+                            [(ngModel)]="inputEmailTemplateModel.startDate" #RoomStartDate="ngModel" required=""
+                            name="RoomStartDate">
+                        </app-date-picker>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="RoomStartTime">{{'StartTime' |
+                    translate}}
+                </label>
+                <div class="col-sm-10">
+                    <div class="input-group bootstrap-timepicker timepicker">
+                        <app-time-picker #RoomStartTime="ngModel" [(ngModel)]="inputEmailTemplateModel.startTime"
+                            name="RoomStartTime" required="" value="" name="RoomStartTime">
+                        </app-time-picker>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <input type="hidden" [(ngModel)]="inputEmailTemplateModel.createdBy" name="CreatedBy" #CreatedBy />
+        <input type="hidden" [(ngModel)]="inputEmailTemplateModel.modifiedBy" name="ModifiedBy" #ModifiedBy />
+        <input type="hidden" [(ngModel)]="inputEmailTemplateModel.eventEmailTemplatesId" name="EventTemplateId"
+            #EventTemplateId />
+
+
+        <div class="mb-3 row" id="ThirdPartyAnalyticsScripts">
+            <div class="col-sm-12 text-muted text-right Poppins-Regular" style="font-size:15px; margin-top:20px;">
+                <button
+                    *ngIf="inputEmailTemplateModel.isActive && inputEmailTemplateModel.templateTrigger!==null && isTemplateName"
+                    class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 Poppins-Regular"
+                    type="button" (click)="sendEmails()">{{'SendEmail'|translate}}</button>
+
+
+                <button *ngIf="!inputEmailTemplateModel.isInLogger"
+                    class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 ml-20px Poppins-Regular"
+                    type="button" [disabled]="AddNewEmailTemplates.invalid"
+                    (click)="upsertEmailTemplate()">{{'Save'|translate}}</button>
+                <a class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 ml-20px text-white"
+                    [routerLink]="['/admin/events/emailtemplate/',inputEmailTemplateModel.eventId]">{{'Cancel'|
+                    translate}}</a>
+            </div>
+        </div>
+
+
+
+    </form>
+</div>
+
+<!-- Email Template Ruless Modal Popup -->
+<div id="EmailTemplateRulesModal" class="modal fade" role="document"
+    style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{'EmailTemplateRules' | translate}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-content">
+                    <div class="modal-body mb-0 p-0 ml-50px">
+                        <span style="margin:10px"  ngNonBindable> {{firstname}} </span><span style="margin:10px" > ==> {{'FirstName' | translate}}
+                        </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{lastname}}</span><span style="margin:10px" > ==> {{'LastName' | translate}}
+                        </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{eventname}}</span><span style="margin:10px" > ==> {{'EventName' | translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{eventurl}}</span><span style="margin:10px" > ==> {{'EventURL' | translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{clientname}}</span><span style="margin:10px" > ==> {{'ClientName' | translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{eventDesc}}</span><span style="margin:10px" > ==> {{'EventDescription' | translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{projectStartDate}}</span><span style="margin:10px" > ==> {{'ProjectStartDate' | translate}}
+                        </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{projectEndDate}}</span><span style="margin:10px" > ==> {{'ProjectEndDate' | translate}}
+                        </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{eventStartDate}} </span><span style="margin:10px" > ==> {{'EventStartDate' | translate}}
+                        </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{eventEndDate}} </span><span style="margin:10px" > ==> {{'EventEndDate' | translate}}
+                        </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{eventStartTime}}</span><span style="margin:10px" > ==> {{'EventStartTime' | translate}}
+                        </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{eventEndTime}} </span><span style="margin:10px" > ==> {{'EventEndTime' | translate}}
+                        </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{registrationStartDate}}</span><span style="margin:10px" > ==> {{'RegistrationStartDate' |
+                            translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{registrationEndDate}}</span><span style="margin:10px" > ==> {{'RegistrationEndDate' |
+                            translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{registrationStartTime}}</span><span style="margin:10px" > ==> {{'RegistrationStartTime' |
+                            translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{registrationEndTime}} </span><span style="margin:10px" > ==> {{'RegistrationEndTime' |
+                            translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{previewStartDate}} </span><span style="margin:10px" > ==> {{'PreviewStartDate' | translate}}
+                        </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{previewEndDate}}</span><span style="margin:10px" > ==> {{'PreviewEndDate' | translate}}
+                        </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{previewStartTime}} </span><span style="margin:10px" > ==> {{'PreviewStartTime' | translate}}
+                        </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{previewEndTime}}</span><span style="margin:10px" > ==> {{'PreviewEndTime' | translate}}
+                        </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{afterEventAccessStartDate}}</span><span style="margin:10px" > ==>
+                            {{'AfterEventAccessStartDate' | translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{afterEventAccessEndDate}} </span><span style="margin:10px" > ==> {{'AfterEventAccessEndDate' |
+                            translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{afterEventAccessStartTime}}</span><span style="margin:10px" > ==>
+                            {{'AfterEventAccessStartTime' | translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{afterEventAccessEndTime}} </span><span style="margin:10px" > ==> {{'AfterEventAccessEndTime' |
+                            translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{reportAccessStartDate}} </span><span style="margin:10px" > ==> {{'ReportAccessStartDate' |
+                            translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{reportAccessEndDate}} </span><span style="margin:10px" > ==> {{'ReportAccessEndDate' |
+                            translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{reportAccessStartTime}}</span><span style="margin:10px" > ==> {{'ReportAccessStartTime' |
+                            translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{reportAccessEndTime}} </span><span style="margin:10px" > ==> {{'ReportAccessEndTime' |
+                            translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{timeZone}} </span><span style="margin:10px" > ==> {{'TimeZone' | translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{language}} </span><span style="margin:10px" > ==> {{'Language' | translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{eventLogo}} </span><span style="margin:10px" > ==> {{'EventLogo' | translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{mainPageBannerImage}} </span><span style="margin:10px" > ==> {{'MainPageBannerImage' |
+                            translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{eventBrochure}} </span><span style="margin:10px" > ==> {{'EventBrochure' | translate}}
+                        </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{termsAndConditions}} </span><span style="margin:10px" > ==> {{'TermsAndConditions' |
+                            translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{privacyPolicy}} </span><span style="margin:10px" > ==> {{'PrivacyPolicy' | translate}}
+                        </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{firstTimeLoginWelcomeMessage}}</span><span style="margin:10px" > ==>
+                            {{'FirstTimeLoginWelcomeMessage' | translate}}
+                        </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{videoType}} </span><span style="margin:10px" > ==> {{'VideoType' | translate}} </span><br>
+                        <span  style="margin:10px" ngNonBindable> {{videoUrl}} </span><span style="margin:10px" > ==> {{'VideoUrl' | translate}} </span><br>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="commonbtn btn  btn-primary  text-white  col-sm-5" type="button"
+                        data-dismiss="modal">{{'Close' | translate}}</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

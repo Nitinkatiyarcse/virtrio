@@ -1,0 +1,71 @@
+<!-- <p>all-attendee-partial works!</p> -->
+<!-- <div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px"> -->
+
+<div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'" [style.color]="eventDetails.headerTextColor">
+    <h5 class="modal-title">{{'All Attendees'|translate}}</h5>
+    <button type="button" [style.color]="eventDetails.headerTextColor" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+</div>
+<div class="modal-body">
+    <table [style.color]="eventDetails.sectionHeaderTextColor" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+        <thead>
+            <tr>
+                <!-- <th style="border: none;">
+                                    
+                                </th> -->
+                <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                    {{'ProfilePicture' | translate}}
+                </th>
+                <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                    {{'Name' | translate}}
+                </th>
+                <!--<th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                    {{'Email' | translate}}
+                </th>
+                 <th style="border: none;">
+                                    {{'RegistrationSet' | translate}}
+                                </th>
+                                <th style="border: none;">
+                                    {{'Status' | translate}}
+                                </th> -->
+
+                <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let item of attendeeData'>
+                <!-- <td style="border: none;vertical-align: middle;"><input type="checkbox" id="{{item.attendeeId}}" [checked]="item.isChecked" (change)=deselect($event)></td> -->
+
+                <td [style.color]="eventDetails.sectionHeaderTextColor" style="border: none;vertical-align: middle;"><img [src]="item.profileImage?item.profileImage:'https://vemsimageblobstorage.blob.core.windows.net/profileimage/NoImage.png'" style="height: 50px; width: 50px;border-radius: 50px;" /></td>
+                <td [style.color]="eventDetails.sectionHeaderTextColor" style="border: none;vertical-align: middle;">{{item.firstName}} {{item.lastName}}</td>
+                <!--<td [style.color]="eventDetails.sectionHeaderTextColor" style="border: none;vertical-align: middle;"> {{item.emailAddress}}</td>
+                 <td style="border: none;vertical-align: middle;"> {{item.registrationSetName}}</td> -->
+                <!-- <td style="border: none;vertical-align: middle;" [ngClass]="item.isActive?'text-success':'text-danger'" translate> {{item.isActive?'Approved' :'Pending' }}</td> -->
+                <td [style.color]="eventDetails.sectionHeaderTextColor" style="border: none;vertical-align: middle;text-align: center;">
+                    <div class="dropdown">
+                        <a href="#" data-bs-toggle="dropdown" class="text-muted"><i
+                                            class="fa fa-gear"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item Poppins-Regular" (click)="getAttendeeProfile(item)" id="btnDetails">{{'View Profile'|translate}}</a>
+                            <!-- <a *ngIf="item.isActive" class="dropdown-item Poppins-Regular"
+                                            (click)="approveDisapproveAttendee(item,0)" id="btnReject"
+                                            style="cursor:pointer">{{'Reject' | translate}}</a>
+                                        <a *ngIf="!item.isActive" class="dropdown-item Poppins-Regular"
+                                            (click)="approveDisapproveAttendee(item,1)" id="btnReject"
+                                            style="cursor:pointer">{{'Approve' | translate}}</a> -->
+                            <!-- <a *ngIf="!item.isEmailVerified" class="dropdown-item Poppins-Regular"
+                                            (click)="resendEmail(item)">{{'ResendInviteEmail' | translate}}</a> -->
+                            <!-- <a  class="dropdown-item Poppins-Regular" (click)="getLeaderboard(item)">{{'Leaderboard' | translate}}</a> -->
+                        </div>
+                    </div>
+                    <!-- <i *ngIf="item.isActive" class="fa fa-2x fa-thumbs-down" style="cursor: pointer;" tooltip="{{'Reject' | translate}}" (click)="rejectSponsorRequest(item)"></i>
+                                    <i *ngIf="!item.isActive" class="fa fa-2x fa-thumbs-up" style="cursor: pointer;" tooltip="{{'Approve' | translate}}" (click)="approveSponsorRequest(item)"></i> -->
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

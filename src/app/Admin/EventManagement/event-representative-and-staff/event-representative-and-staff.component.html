@@ -1,0 +1,130 @@
+<!-- <p>representative works!</p> -->
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'AddRepresentative'| translate}}</label>
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2">
+            <i class="fa fa-user-plus text-primary" type="button" tooltip="{{'AddRepresentative' | translate}}" data-toggle="modal" data-target="#addEventAdmin" (click)="updateRepresentative('')" style=" -webkit-transform: scaleX(-1);  transform: scaleX(-1);"></i>
+        </a>
+        <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+    </div>
+</div>
+
+
+<div class="flex-container bg-white" id="representativeItems" style="margin-top: 25px;padding: 20px;">
+
+    <div *ngIf='noRecordFound' class="text-danger text-center">
+        {{ 'NoRecordFound' | translate}}
+    </div>
+    <div *ngIf='!noRecordFound'>
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+            <thead>
+                <tr>
+                    <th style="border: none;">
+                        {{'ProfilePicture' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'Name' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'Email' | translate}}
+                    </th>
+                    <th>
+
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let item of inputRepresentativeViewModel'>
+                    <td style="border: none;vertical-align: middle;"><img [src]="item.profileImage?item.profileImage:'https://vemsimageblobstorage.blob.core.windows.net/profileimage/NoImage.png'" style="height: 50px; width: 50px;border-radius: 50px;" /></td>
+                    <td style="border: none;vertical-align: middle;">{{item.firstName}} {{item.lastName}}</td>
+                    <td style="border: none;vertical-align: middle;"> {{item.emailAddress}}</td>
+                    <td style="border: none;vertical-align: middle;">
+                        <div class="dropdown">
+                            <a href="#" data-bs-toggle="dropdown" class="text-muted"><i class="fa fa-gear"></i></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item Poppins-Regular" (click)="updateRepresentative(item.eventRepresentativeId)" id="btnupdateRepresentative" data-toggle="modal" data-target="#addEventAdmin">{{'Update'|translate}}</a>
+                                <a class="dropdown-item Poppins-Regular" (click)="deleteRepresentative(item.eventRepresentativeId)" id="btndeleteRepresentative">{{'Delete'|translate}}</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <!-- Modal Add Admin User -->
+
+    <div class="modal fade" id="addEventAdmin" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{'AddRepresentative'|translate}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="Post" class="form-group" #AddEventAdminForm="ngForm">
+
+                        <!-- <div class="text-center pageHeader">{{'AddRepresentative'|translate}}
+                        <i class="fa fa-times" type="button" data-dismiss="modal" style="cursor:pointer;float:right;"></i>
+                    </div> -->
+
+                        <div class="form-group  mb-2">
+                            <label class="form-lable Poppins-Regular">{{'Email'| translate}}</label>
+                            <input email name="email" #Email="ngModel" [(ngModel)]="inputModel.emailAddress" (keyup)="searchClient(inputModel.emailAddress)" class="form-control Poppins-Regular" type="email" required maxlength="70" />
+
+                            <div class="search-result" *ngIf="flag">
+                                <ul class="search-result-list">
+                                    <li *ngFor="let evRep of searchedEventReps">
+                                        <a (click)="onselectsearchedEventAdmin(evRep)">{{evRep.firstName}}
+                                        {{evRep.lastName}}
+                                        ({{evRep.emailAddress}})</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group  mb-2">
+                            <label class="form-lable Poppins-Regular">{{'FirstName'| translate}}</label>
+                            <input type="text" name="FirstName" #FirstName="ngModel" [(ngModel)]="inputModel.firstName" class="form-control Poppins-Regular" value="" required maxlength="30" />
+                            <!-- <span *ngIf="FirstName.invalid && FirstName.touched" class="error">{{'FirstNameRequired'| translate}}</span> -->
+                        </div>
+
+                        <div class="form-group  mb-2">
+                            <label class="form-lable Poppins-Regular">{{'LastName'| translate}}</label>
+                            <input type="text" name="LastName" #LastName="ngModel" [(ngModel)]="inputModel.lastName" class="form-control Poppins-Regular" value="" required maxlength="30" />
+                            <!-- <span *ngIf="LastName.invalid && LastName.touched" class="error">{{'LastNameRequired'| translate}}</span> -->
+                        </div>
+
+
+                        <!-- <div class="form-group  mb-2">
+                        <label class="form-lable Poppins-Regular">{{'Email'| translate}}</label>
+                        <input email name="email" #Email="ngModel" [(ngModel)]="inputModel.representativeEmail"
+                        pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"  class="form-control Poppins-Regular" type="email" required maxlength="70" />
+                    </div> -->
+
+
+                        <!-- <div class="" style="text-align: right;">
+                        
+                    </div> -->
+
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnaddeventadmin" [disabled]="AddEventAdminForm.invalid" class="commonbtn btn btn-primary col-sm-5" (click)="addRepresentative()" data-dismiss="modal">
+                        {{'Save'|translate }}
+                    </button>
+                    <button type="button" class="commonbtn btn  btn-primary  text-white  col-sm-5" style="margin-left: 20px;" data-dismiss="modal">
+                        {{'Cancel' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>

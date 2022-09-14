@@ -1,0 +1,196 @@
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'Registration Report'| translate}}</label>
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2"
+            [routerLink]="['/admin/events/reports',eventId]" routerLinkActive="router-link-active">
+            <i class="fa fa-arrow-right text-primary" type="button" tooltip="{{'Back to reports' | translate}}"
+                style=" -webkit-transform: scaleX(-1);  transform: scaleX(-1);"></i>
+        </a>
+        <label class="col-sm-10 Poppins-Regular text-small"
+            style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+
+        <!-- <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/Overviewreports/{{eventId}}">
+            <button type="button" tooltip="{{'Overview reports' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">Overviw Reports</button>
+        </a> -->
+        <!-- <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/MessagingMarqueereport/{{eventId}}">
+            <button type="button" tooltip="{{'Overview reports' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">Marquee Reports</button>
+        </a> -->
+        <!-- <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/Sponsorloginreport/{{eventId}}">
+            <button type="button" tooltip="{{'Overview reports' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">Sponsorlogin Reports</button>
+        </a> -->
+        <!-- <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/BoothEntryreport/{{eventId}}">
+            <button type="button" tooltip="{{'Add BoothEntry report' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">BoothEntry Report</button>
+        </a>
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/WabinarAccessreport/{{eventId}}">
+            <button type="button" tooltip="{{'Add WabinarAccess report' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">Wabinar Report</button>
+        </a>
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/RoomEntryreport/{{eventId}}">
+            <button type="button" tooltip="{{'Add RoomEntry report' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">RoomEntry Report</button>
+        </a> -->
+        <!-- <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/WallMessagereports/{{eventId}}">
+            <button type="button" tooltip="{{'WallMessage reports' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">WallMessage Reports</button>
+        </a> -->
+        <!-- <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/ContentConsumptionreport/{{eventId}}">
+            <button type="button" tooltip="{{'ContentConsumption report' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">Content Reports</button>
+        </a> -->
+        <!-- <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/BannerClickedreport/{{eventId}}">
+            <button type="button" tooltip="{{'Add Banner clicked report' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">Banner Report</button>
+        </a>  -->
+        <!-- <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/QuickSummaryreport/{{eventId}}">
+            <button type="button" tooltip="{{'Quick Summary report' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">Summary Report</button>
+        </a>
+
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/SocialSharingreport/{{eventId}}">
+            <button type="button" tooltip="{{'Add Social Sharing report' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">SocialSharing Report</button>
+        </a>
+
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/MessagingAnnouncementreport/{{eventId}}">
+            <button type="button" tooltip="{{'Add Messaging Announcement report' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">Messaging Report</button>
+        </a>
+
+
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/VideoWatchedreport/{{eventId}}">
+            <button type="button" tooltip="{{'Add Videowatched report' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">Videowatched Report</button>
+        </a>
+
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/Clickactionsreport/{{eventId}}">
+            <button type="button" tooltip="{{'Add Clickactions report' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">Clickactions Report</button>
+        </a>
+
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/broadcastreport/{{eventId}}">
+            <button type="button" tooltip="{{' Add Broadcast message report' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">Broadcast Report</button>
+        </a>
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/Pollreport/{{eventId}}">
+            <button type="button" tooltip="{{'Add Poll report' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">Poll Report</button>
+        </a>
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/Quizreport/{{eventId}}">
+            <button type="button" tooltip="{{'Add Quiz report' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">Quiz Report</button>
+        </a>
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/Overallattendedreport/{{eventId}}">
+            <button type="button" tooltip="{{'Add Overallattended report' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">OverallAttended Report</button>
+        </a>
+
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/AttendedLivereport/{{eventId}}">
+            <button type="button" tooltip="{{'Add AttendedLive report' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">AttendedLive Report</button>
+        </a>
+
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/Invitefriendreport/{{eventId}}">
+            <button type="button" tooltip="{{'Add Invite a friend report' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">Invitefriend Report</button>
+        </a>
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2 col-form-label"
+            href="admin/events/Invitationreport/{{eventId}}">
+            <button type="button" tooltip="{{'Add Invitaion report' | translate}}"
+                class="btn btn-outline-primary btn-rounded btn-sm float-right">Invitation Report</button>
+        </a> -->
+
+
+
+
+    </div>
+</div>
+
+<!-- <div class="bg-white" style="padding:20px">
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="ProjectStartDate">{{'StartDate' | translate}}
+        </label>
+        <div class="col-sm-2 col-form-label Poppins-Regular">
+
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-date-picker required="" name="fromDate" [(ngModel)]="fromDate" (ngModelChange)="getValues()">
+                </app-date-picker>
+            </div>
+
+        </div>
+
+        <label class="col-sm-2 col-form-label Poppins-Regular mt-2" for="ProjectEndDate">{{'EndDate' | translate}}
+        </label>
+        <div class="col-sm-3 col-form-label Poppins-Regular">
+
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-date-picker required="" name="toDate" [(ngModel)]="toDate" (ngModalChange)="getToDateValues()">
+                </app-date-picker>
+
+            </div>
+
+        </div>
+
+        <div class=" col-sm-3 mt-2">
+            <input type="hidden" value='cefd899c-b035-4cc2-9008-7a169639aa0b' name="LanguageId" />
+
+            <ng-multiselect-dropdown name="registration" [placeholder]="'Registration'| translate"
+                [settings]="dropdownSettings" [data]="dropdownList" [(ngModel)]="registration">
+            </ng-multiselect-dropdown>
+
+        </div>
+    </div>
+
+</div> -->
+
+
+<div class="flex-container bg-white" id="representativeItems" style="margin-top: 25px;padding: 20px;">
+
+
+    <div *ngIf='noRecordFound' class="text-danger text-center">
+        {{ 'NoRecordFound' | translate}}
+    </div>
+    <div *ngIf='!noRecordFound'>
+        <div style="display: flex; flex-direction: column; height: 100%;">
+            <div style="margin-bottom: 5px; font-weight: bold; margin-right:auto">
+                <button (click)="onBtnExport()" style="font-weight: bold;">Export to Excel</button>
+
+            </div>
+            <div style="flex: 1 1 0; position: relative;">
+                <div id="gridContainer">
+                    <ag-grid-angular style="width: 100%; height: 500px;" class="ag-theme-alpine" [rowData]="rowData"
+                        [columnDefs]="columnDefs" [pagination]="true"
+                        [defaultExcelExportParams]="defaultExcelExportParams" [addImageToCell]="true"
+                        [rowDragManaged]="true" [rowHeight]="45" [paginationPageSize]=10 row-selection="multiple"
+                        [isFullWidthRow]="isFullWidthRow" [fullWidthCellRenderer]="fullWidthCellRenderer"
+                        (gridReady)="onGridReady($event)">
+                    </ag-grid-angular>
+
+                </div>
+            </div>
+        </div>

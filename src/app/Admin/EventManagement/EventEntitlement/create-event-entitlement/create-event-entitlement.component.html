@@ -1,0 +1,73 @@
+<!-- <p>create-event-entitlement works!</p> -->
+<div class="pageHeader bg-white" style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;" *ngIf="isAdd">{{'NewEntitlement'| translate}}</label>
+        <label class="col-sm-10 text-Medium" style="text-align: left;" *ngIf="!isAdd">{{'UpdateEntitlement'| translate}}</label>
+        <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+    </div>
+</div>
+
+
+<form class="form-control needs-validation mt-4 p-4 h-100" enctype="multipart/form-data" #entitlementForm="ngForm">
+
+    <div class="mb-3 row">
+        <label for="EntitlementName" class="col-sm-2 col-form-label Poppins-Regular">{{'EntitlementName' | translate}}
+        </label>
+        <div class="col-sm-10">
+            <input type="text" #EntitlementName="ngModel" [(ngModel)]="inputEventEntitlementModel.entitlement" name="EntitlementName" class="form-control Poppins-Regular" placeholder="{{'EnterEntitlementName' | translate}}" required maxlength="50">
+            <span *ngIf="EntitlementName.invalid && EntitlementName.touched" class="error">{{'EntitlementNameRequired'| translate}}
+            </span>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="AutoDomainAssignment" class="col-sm-2 col-form-label Poppins-Regular">{{'AutoDomainAssignment' | translate}} </label>
+        <div class="col-sm-10">
+            <input type="text" #AutoDomainAssignment="ngModel" [(ngModel)]="inputEventEntitlementModel.domainAssignment" name="AutoDomainAssignment" class="form-control Poppins-Regular" placeholder="{{'EnterAutoDomainAssignment' | translate}}" required maxlength="50">
+            <span *ngIf="AutoDomainAssignment.invalid && AutoDomainAssignment.touched" class="error">{{'AutoDomainAssignmentRequired'| translate}}
+            </span>
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label for="AutoDomainAssignment" class="col-sm-2 col-form-label Poppins-Regular">{{'AccessMatrix' | translate}}
+        </label>
+
+        <div class="col-sm-2 mt-8px" *ngFor="let item of allGroups">
+
+            <div *ngIf="item.isSelected" class="form-check-inline">
+                <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="{{item.groupName}}" checked id="{{item.groupName}}" (change)="selectUnselectGroup($event,item)">
+            </div>
+            <div *ngIf="!item.isSelected" class="form-check-inline">
+                <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="{{item.groupName}}" id="{{item.groupName}}" (change)="selectUnselectGroup($event,item)">
+            </div>
+
+            <label class="form-check-label  Poppins-Regular" for="{{item.groupName}}">{{item.groupName}}
+            </label>
+        </div>
+
+    </div>
+
+
+    <!-- <div class="mb-3 row">
+        <label for="OtherCriteria" class="col-sm-2 col-form-label Poppins-Regular">{{'OtherCriteria' | translate}}
+        </label>
+        <div class="col-sm-10" style="margin-top: 8px;">
+            <a class="form-btn-link text-danger" (click)="openAddCriteriamodel()"> {{'AddCriteria' | translate}}</a>
+
+        </div>
+    </div> -->
+
+    <div class="mb-3 row">
+
+        <button type="save" (click)="saveEventEntitlement()" class="btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12">{{'Save' | translate}}</button>
+
+        <a href="../../admin/events/entitlementlist/{{eventId}}" class="btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 ml-20px text-white">{{'Cancel' | translate}}</a>
+
+    </div>
+
+
+
+
+</form>

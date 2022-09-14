@@ -1,0 +1,532 @@
+<div class="pageHeader bg-white" style="margin-bottom: 0px;;">
+    <div class="text-center pageHeader " style="border:none;text-align: left;padding:10px">
+        <label class="col-sm-12 text-Medium" style="text-align: left;">{{'CreateLoginPage'| translate}}</label>
+        <label class="col-sm-12 Poppins-Regular text-small"
+            style="word-break: break-all;text-align: left;">{{eventName}}</label>
+    </div>
+</div>
+
+<div class="flex-container row bg-white" id="usrListItems"
+    style="margin-top: 25px;padding: 20px;margin-left: 0px;margin-right: 0px;">
+    <form method="Post" class="form-group" #loginPageForm="ngForm">
+        <div class="mb-3 row" style="display: none;">
+            <div class="col-sm-2">
+                <label class=" Poppins-Regular" for="LanguageVersion">{{'LanguageVersion'| translate}} <sup> <i
+                            class="fa fa-info-circle p-1" data-placement="bottom"
+                            tooltip="{{'PleaseSelectWhichLanguageVersion' | translate}}"></i></sup></label>
+            </div>
+
+
+            <div class="col-sm-10">
+                <select class="form-select Poppins-Regular" [(ngModel)]="inputLoginPageModel.languageId" data-val="true"
+                    name="LanguageVersion" #LanguageVersion>
+                    <option *ngFor="let item of languageDropdownList" value="{{item.languageId}}">{{item.language}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-3 row" *ngIf="showLangSelector">
+            <label class="form-check-label col-sm-2 Poppins-Regular"
+                for="IncludeLanguageSelector">{{'IncludeLanguageSelector'|translate}}<sup> <i
+                        class="fa fa-info-circle p-1" data-placement="bottom"
+                        tooltip="{{'IfThisBoxIsChecked' | translate}}"></i></sup></label>
+            <div class="col-sm-10  Poppins-Regular">
+                <input type="checkbox" #IncludeLanguageSelector style="margin-left: 0px;" class="form-check-input"
+                    id="IncludeLanguageSelector" (change)="includeLanguageSelectorCheckChanged()"
+                    [checked]="inputLoginPageModel.includeLanguageSelector">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2  Poppins-Regular" for="Videospokesperson">{{'VideoSpokesperson'| translate}}<sup>
+                    <i class="fa fa-info-circle p-1" data-placement="bottom"
+                        tooltip="{{'PleaseContactYourClientSuccessManager' | translate}}"></i></sup>
+            </label>
+
+            <div class="col-sm-10">
+                <textarea #Videospokesperson class="form-control Poppins-Regular"
+                    placeholder="{{'VideoSpokesperson' | translate}}" name="Videospokesperson"
+                    [(ngModel)]="inputLoginPageModel.videoSpokesPerson"> </textarea>
+            </div>
+        </div>
+
+
+
+        <!-- <div class="mb-3 row">
+            <label class="col-sm-2  Poppins-Regular">{{'Loginpageheadergraphic' | translate}}<sup> <i
+                        class="fa fa-info-circle p-1" data-placement="bottom"
+                        tooltip="{{'ThisImageWillBePlaced' | translate}}"></i></sup>
+                <br> <span class="fs-10px Poppins-Regular">{{'MaxSizeTwoHunderd' | translate}}</span></label>
+            <div class="col-sm-10">
+                <div class="row" style="margin:5px 0px 0px 0px;">
+                    <div class="col-sm-6">
+                        <input class="custom-file-input" type="file" name="LoginPageHeaderGraphics" #LoginPageHeaderGraphics style="margin-left: 0px;" (change)="loginPageHeaderGraphicsFileChange($event)">
+                        <label class="custom-file-label" for="customFile" text="Choose"></label>
+                    </div>
+                    <div class="col-sm-6" *ngIf="inputLoginPageModel.loginPageHeaderGraphics">
+                        <img height="35px" width="100px" src="{{inputLoginPageModel.loginPageHeaderGraphics}}" />
+                        <i class="fa fa-window-close ml-2" tooltip="{{'Delete' | translate}}" (click)='deleteloginPageHeaderImage()'></i>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="mb-3 row">
+            <label class="form-check-label col-sm-2 Poppins-Regular"
+                for="IncludeSplashImages">{{'IncludeSplashImages'|translate}}<sup> <i class="fa fa-info-circle p-1"
+                        data-placement="bottom"
+                        tooltip="{{'CheckThisBoxToIncludeSplashImages' | translate}}"></i></sup></label>
+            <div class="col-sm-10  Poppins-Regular">
+                <input type="checkbox" style="margin-left: 0px;" class="form-check-input" name="IncludeSplashImages"
+                    (change)="includeSplashImagesCheckChanged()" [checked]="inputLoginPageModel.includeSplashImage"
+                    #IncludeSplashImages>
+            </div>
+        </div>
+        <div *ngIf="inputLoginPageModel.includeSplashImage" class="mb-3 row">
+            <label class="col-sm-2  Poppins-Regular" for="Splashimages">{{'SplashImages' | translate}}
+                <br> <span class="fs-10px Poppins-Regular">{{'MaxSizeSevenhundred' | translate}}</span></label>
+            <div class="col-sm-10">
+                <div class=" form-check-inline">
+                    <input class="form-check-input" type="radio" id="LoginSplashimages" [checked]="isImagesOrVideo"
+                        style="margin-top: 5px;" name="IncludeSplashImage"
+                        (change)="changeSplashType($event,'splashImange')">
+                    <label class="form-check-label" for="LoginSplashimages">{{'Images' | translate}}</label>
+                </div>
+                <div class=" form-check-inline">
+                    <input class="form-check-input" type="radio" id="LoginSplashMovies" style="margin-top: 5px;"
+                        [checked]="!isImagesOrVideo" (change)="changeSplashType($event,'splashMovie')"
+                        name="IncludeSplashImage">
+                    <label class="form-check-label" for="LoginSplashMovies">{{'Movie' | translate}}</label>
+                </div>
+                <div class="row" style="margin:5px 0px 0px 0px;">
+                    <div class="col-sm-6">
+                        <input class="custom-file-input" type="file" name="LoginSplashimages1" #LoginSplashimages1
+                            (change)="loginSplashimagesFileChange($event,0)">
+                        <label class="custom-file-label" for="LoginSplashimages1" text="Choose"></label>
+                    </div>
+                    <div class="col-sm-6" *ngIf="splashScreenImages[0].filePath!=''">
+                        <img height="35px" width="100px" src="{{splashScreenImages[0].filePath}}" />
+                        <i class="fa fa-window-close ml-2" tooltip="{{'Delete' | translate}}"
+                            (click)='deleteSplashImage(0)'></i>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px 0px 0px 0px;">
+                    <div class="col-sm-6">
+                        <input class="custom-file-input" type="file" name="LoginSplashimages2" #LoginSplashimages2
+                            (change)="loginSplashimagesFileChange($event,1)">
+                        <label class="custom-file-label" for="LoginSplashimages2" text="Choose"></label>
+                    </div>
+                    <div class="col-sm-6" *ngIf="splashScreenImages[1].filePath!=''">
+                        <img height="35px" width="100px" src="{{splashScreenImages[1].filePath}}" />
+                        <i class="fa fa-window-close ml-2" tooltip="{{'Delete' | translate}}"
+                            (click)='deleteSplashImage(1)'></i>
+
+                    </div>
+                </div>
+                <div class="row" style="margin:5px 0px 0px 0px;">
+                    <div class="col-sm-6">
+                        <input class="custom-file-input" type="file" name="LoginSplashimages3" #LoginSplashimages3
+                            (change)="loginSplashimagesFileChange($event,2)">
+                        <label class="custom-file-label" for="LoginSplashimages3" text="Choose"></label>
+                    </div>
+                    <div class="col-sm-6" *ngIf="splashScreenImages[2].filePath!=''">
+                        <img height="35px" width="100px" src="{{splashScreenImages[2].filePath}}" />
+                        <i class="fa fa-window-close ml-2" tooltip="{{'Delete' | translate}}"
+                            (click)='deleteSplashImage(2)'></i>
+
+                    </div>
+                </div>
+                <div class="row" style="margin:5px 0px 0px 0px;">
+                    <div class="col-sm-6">
+                        <input class="custom-file-input" type="file" name="LoginSplashimages4" #LoginSplashimages4
+                            (change)="loginSplashimagesFileChange($event,3)">
+                        <label class="custom-file-label" for="LoginSplashimages4" text="Choose"></label>
+                    </div>
+                    <div class="col-sm-6" *ngIf="splashScreenImages[3].filePath!=''">
+                        <img height="35px" width="100px" src="{{splashScreenImages[3].filePath}}" />
+                        <i class="fa fa-window-close ml-2" tooltip="{{'Delete' | translate}}"
+                            (click)='deleteSplashImage(3)'></i>
+
+
+                    </div>
+                </div>
+                <div class="row" style="margin:5px 0px 0px 0px;">
+                    <div class="col-sm-6">
+                        <input class="custom-file-input" type="file" name="LoginSplashimages5" #LoginSplashimages5
+                            (change)="loginSplashimagesFileChange($event,4)">
+                        <label class="custom-file-label" for="LoginSplashimages5" text="Choose"></label>
+                    </div>
+                    <div class="col-sm-6" *ngIf="splashScreenImages[4].filePath!=''">
+                        <img height="35px" width="100px" src="{{splashScreenImages[4].filePath}}" />
+                        <i class="fa fa-window-close ml-2" tooltip="{{'Delete' | translate}}"
+                            (click)='deleteSplashImage(4)'></i>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label class="col-sm-2  Poppins-Regular" for="RegisterHeadingText">{{'AboutTheEventText'|
+                translate}}</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control Poppins-Regular"
+                    placeholder="{{'AboutTheEventText' | translate}}" #AboutTheEventText="ngModel"
+                    [(ngModel)]="inputLoginPageModel.aboutTheEventText" name="AboutTheEventText">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2  Poppins-Regular" for="AgendaDocument">{{'AgendaDocument'| translate}}<sup> <i
+                        class="fa fa-info-circle p-1" data-placement="bottom"
+                        tooltip="{{'SelectThisOptionToIncludeAnAgenda' | translate}}"></i></sup></label>
+            <div class="col-sm-10">
+                <input type="checkbox" style="margin-left: 0px;" class="form-check-input" #AgendaDocument
+                    name="AgendaDocument" (change)="agendaDocumentCheckChanged()"
+                    [checked]="inputLoginPageModel.hasAgendaDocuments">
+            </div>
+        </div>
+        <div class="mb-3 row" *ngIf="inputLoginPageModel.hasAgendaDocuments">
+            <label class="col-sm-2  Poppins-Regular" for="AgendaDocument"></label>
+            <div class="col-sm-10">
+                <div class="row" style="margin:5px 0px 0px 0px;">
+                    <div class="col-sm-6" *ngIf='!inputLoginPageModel.agendaDocumentUrl'>
+                        <input class="custom-file-input" type="file" name="agendaDocumentUrl"
+                            (change)="agendaDocumentFileChange($event)" #AgendaDocumentUrl>
+                        <label class="custom-file-label" for="agendaDocumentUrl" text="Choose"></label>
+                    </div>
+                    <div class="col-sm-6" *ngIf='inputLoginPageModel.agendaDocumentUrl'>
+                        <a href='{{inputLoginPageModel.agendaDocumentUrl}}' target='_blank'>Agenda File</a>
+                        <i class="fa fa-times" role="button" style="margin-left:10px;"
+                            tooltip="{{'Delete' | translate}}" (click)="deleteAgendaDocument()"></i>
+                    </div>
+                </div><br>
+                <!-- <textarea class="form-control Poppins-Regular col-sm-6" maxlength="100" placeholder="{{'AgendaDocumentText' | translate}}" name="AgendaDocumentText" #AgendaDocumentText [(ngModel)]="inputLoginPageModel.agendaDocumentText"> </textarea> -->
+            </div>
+
+        </div>
+        <div class="mb-3 row" *ngIf="inputLoginPageModel.hasAgendaDocuments">
+            <label class="col-sm-2  Poppins-Regular" for="AgendaDocumentHeadingText">{{'AgendaDocumentText'|
+                translate}}</label>
+            <div class="col-sm-6">
+                <input type="text" required class="form-control Poppins-Regular"
+                    placeholder="{{'AgendaDocumentText' | translate}}" #AgendaDocumentHeadingText="ngModel"
+                    [(ngModel)]="inputLoginPageModel.agendaDocumentHeadingText" name="AgendaDocumentHeadingText">
+            </div>
+        </div>
+
+
+        <div class="mb-3 row">
+            <label class="form-check-label col-sm-2 Poppins-Regular"
+                for="IncludeRegisterBox">{{'IncludeRegisterBox'|translate}}<sup> <i class="fa fa-info-circle p-1"
+                        data-placement="bottom"
+                        tooltip="{{'CheckThisBoxToIncludeTheRegisterBox' | translate}}"></i></sup></label>
+            <div class="col-sm-10  Poppins-Regular">
+                <input type="checkbox" style="margin-left: 0px;" required class="form-check-input"
+                    name="IncludeRegisterBox" (change)="includeRegisterBoxCheckChanged()"
+                    [checked]="inputLoginPageModel.includeRegisterBox" #IncludeRegisterBox>
+            </div>
+        </div>
+        <div class="mb-3 row" *ngIf="inputLoginPageModel.includeRegisterBox">
+            <label class="col-sm-2  Poppins-Regular" for="RegisterHeadingText">{{'Register'| translate}}</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control Poppins-Regular" required
+                    placeholder="{{'Register' | translate}}" #RegisterHeadingText="ngModel"
+                    [(ngModel)]="inputLoginPageModel.registerHeadingText" name="RegisterHeadingText">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label class="form-check-label col-sm-2 Poppins-Regular"
+                for="IncludeLoginBox">{{'IncludeLoginBox'|translate}}<sup> <i class="fa fa-info-circle p-1"
+                        data-placement="bottom"
+                        tooltip="{{'CheckThisBoxToIncludeTheLoginBox' | translate}}"></i></sup></label>
+            <div class="col-sm-10  Poppins-Regular">
+                <input type="checkbox" style="margin-left: 0px;" class="form-check-input" name="IncludeLoginBox"
+                    (change)="includeLoginBoxCheckChanged()" [checked]="inputLoginPageModel.includeLoginBox"
+                    #IncludeLoginBox>
+            </div>
+        </div>
+        <div class="mb-3 row" *ngIf="inputLoginPageModel.includeLoginBox">
+            <label class="col-sm-2  Poppins-Regular" for="LoginHeadingText">{{'Login'| translate}}</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control Poppins-Regular" placeholder="{{'Login' | translate}}"
+                    #LoginHeadingText="ngModel" [(ngModel)]="inputLoginPageModel.loginHeadingText"
+                    name="LoginHeadingText">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label class="form-check-label col-sm-2 Poppins-Regular"
+                for="IncludeWelcomeText">{{'IncludeWelcomeText'|translate}}<sup> <i class="fa fa-info-circle p-1"
+                        data-placement="bottom"
+                        tooltip="{{'CheckThisBoxToIncludeTheWelcomeText' | translate}}"></i></sup></label>
+            <div class="col-sm-10  Poppins-Regular">
+                <input type="checkbox" style="margin-left: 0px;" class="form-check-input" name="IncludeWelcomeText"
+                    (change)="includeWelcomeTextCheckChanged()" [checked]="inputLoginPageModel.includeWelcomeText"
+                    #IncludeWelcomeText>
+            </div>
+        </div>
+        <div class="mb-3 row" *ngIf="inputLoginPageModel.includeWelcomeText">
+            <label class="form-check-label col-sm-2 Poppins-Regular" for="IncludeWelcomeText"></label>
+            <div class="col-sm-10  Poppins-Regular">
+                <div>
+                    <div class="NgxEditor__Wrapper">
+                        <ckeditor [config]="config" [(data)]="inputLoginPageModel.welcomeText"></ckeditor>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="form-check-label col-sm-2 Poppins-Regular"
+                for="IncludeFooterGraphics">{{'IncludeFooterGraphics'|translate}}<sup> <i class="fa fa-info-circle p-1"
+                        data-placement="bottom"
+                        tooltip="{{'CheckThisBoxToIncludeTheFooterGraphics' | translate}}"></i></sup>
+                <br><span class="fs-10px Poppins-Regular">{{'MaxSizeSevenhundred' | translate}}</span></label>
+            <div class="col-sm-10  Poppins-Regular">
+                <input type="checkbox" style="margin-left: 0px;" class="form-check-input" name="IncludeFooterGraphics"
+                    (change)="includeFooterGraphicsCheckChanged()" [checked]="inputLoginPageModel.includeFooterGraphics"
+                    #IncludeFooterGraphics>
+            </div>
+        </div>
+        <div class="mb-3 row" *ngIf="inputLoginPageModel.includeFooterGraphics">
+            <label class="form-check-label col-sm-2 Poppins-Regular" for="IncludeWelcomeText"></label>
+            <div class="col-sm-10  Poppins-Regular">
+
+
+
+
+                <div class="row" style="margin:5px 0px 0px 0px;">
+                    <div class="col-sm-6"> <input class="custom-file-input" type="file" name="IncludeFooterGraphics1"
+                            #IncludeFooterGraphics1 (change)="IncludeFooterGraphicFileChange($event,0)">
+                        <label class="custom-file-label" for="IncludeFooterGraphics1" text="Choose"></label>
+                    </div>
+                    <div class="col-sm-6" *ngIf="footerGraphics[0].filePath!=''">
+                        <img height="35px" width="100px" src="{{footerGraphics[0].filePath}}" />
+                        <i class="fa fa-window-close ml-2" tooltip="{{'Delete' | translate}}"
+                            (click)='deleteFooterImage(0)'></i>
+                    </div>
+                </div>
+
+                <div class="row" style="margin:5px 0px 0px 0px;">
+                    <div class="col-sm-6"> <input class="custom-file-input" type="file" name="IncludeFooterGraphics2"
+                            #IncludeFooterGraphics2 (change)="IncludeFooterGraphicFileChange($event,1)">
+                        <label class="custom-file-label" for="IncludeFooterGraphics2" text="Choose"></label>
+                    </div>
+                    <div class="col-sm-6" *ngIf="footerGraphics[1].filePath!=''">
+                        <img height="35px" width="100px" src="{{footerGraphics[1].filePath}}" />
+                        <i class="fa fa-window-close ml-2" tooltip="{{'Delete' | translate}}"
+                            (click)='deleteFooterImage(1)'></i>
+                    </div>
+                </div>
+
+                <div class="row" style="margin:5px 0px 0px 0px;">
+                    <div class="col-sm-6"> <input class="custom-file-input" type="file" name="IncludeFooterGraphics3"
+                            #IncludeFooterGraphics3 (change)="IncludeFooterGraphicFileChange($event,2)">
+                        <label class="custom-file-label" for="IncludeFooterGraphics3" text="Choose"></label>
+                    </div>
+                    <div class="col-sm-6" *ngIf="footerGraphics[2].filePath!=''">
+                        <img height="35px" width="100px" src="{{footerGraphics[2].filePath}}" />
+                        <i class="fa fa-window-close ml-2" tooltip="{{'Delete' | translate}}"
+                            (click)='deleteFooterImage(2)'></i>
+                    </div>
+                </div>
+
+                <div class="row" style="margin:5px 0px 0px 0px;">
+                    <div class="col-sm-6"> <input class="custom-file-input" type="file" name="IncludeFooterGraphics4"
+                            #IncludeFooterGraphics4 (change)="IncludeFooterGraphicFileChange($event,3)">
+                        <label class="custom-file-label" for="IncludeFooterGraphics4" text="Choose"></label>
+                    </div>
+                    <div class="col-sm-6" *ngIf="footerGraphics[3].filePath!=''">
+                        <img height="35px" width="100px" src="{{footerGraphics[3].filePath}}" />
+                        <i class="fa fa-window-close ml-2" tooltip="{{'Delete' | translate}}"
+                            (click)='deleteFooterImage(3)'></i>
+                    </div>
+                </div>
+
+                <div class="row" style="margin:5px 0px 0px 0px;">
+                    <div class="col-sm-6"> <input class="custom-file-input" type="file" name="IncludeFooterGraphics5"
+                            #IncludeFooterGraphics5 (change)="IncludeFooterGraphicFileChange($event,4)">
+                        <label class="custom-file-label" for="IncludeFooterGraphics5" text="Choose"></label>
+                    </div>
+                    <div class="col-sm-6" *ngIf="footerGraphics[4].filePath!=''">
+                        <img height="35px" width="100px" src="{{footerGraphics[4].filePath}}" />
+                        <i class="fa fa-window-close ml-2" tooltip="{{'Delete' | translate}}"
+                            (click)='deleteFooterImage(4)'></i>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+
+
+
+        <!-- <div class="mb-3 row">
+            <label class="col-sm-2  Poppins-Regular" for="Backgroundcolor">{{'Backgroundcolor'| translate}}<sup> <i
+                        class="fa fa-info-circle p-1" data-placement="bottom"
+                        tooltip="{{'ChooseBackgroundColor' | translate}}"></i></sup></label>
+            <div class="col-sm-6 ">
+                <input [(colorPicker)]="inputLoginPageModel.backgroundColor" [style.background]="inputLoginPageModel.backgroundColor" />
+            </div>
+
+
+
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2  Poppins-Regular" for="Backgroundcolor">{{'SectionHeadercolor'| translate}}<sup>
+                    <i class="fa fa-info-circle p-1" data-placement="bottom"
+                        tooltip="{{'ChooseHeaderColor' | translate}}"></i></sup></label>
+            <div class="col-sm-6">
+                <input [(colorPicker)]="inputLoginPageModel.sectionHeaderColor" [style.background]="inputLoginPageModel.sectionHeaderColor" />
+            </div>
+
+
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-4  Poppins-Bold" for="Backgroundcolor">{{'HeadingAndIcons'| translate}}</label>
+        </div> -->
+
+        <!-- <div class="mb-3 row">
+            <label class="col-sm-2  Poppins-Regular" for="Backgroundcolor">{{'DisplayIcons'| translate}}</label>
+            <div class="col-sm-6">
+                <select class="form-select Poppins-Regular" [(ngModel)]="inputLoginPageModel.displayHeadingAndIcons"
+                    data-val="true" name="DisplayHeadingAndIcons" #DisplayHeadingAndIcons>
+                    <option value="true">{{'Yes'| translate}}</option>
+                    <option value="false">{{'No'| translate}}</option>
+
+                </select>
+            </div>
+
+
+        </div> -->
+
+
+
+
+        <div class="mb-3 row">
+            <label class="col-sm-2  Poppins-Regular" for="WelcomeHeadingText">{{'Welcome'| translate}}</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control Poppins-Regular" placeholder="{{'Welcome' | translate}}"
+                    #WelcomeHeadingText="ngModel" [(ngModel)]="inputLoginPageModel.welcomeHeadingText"
+                    name="WelcomeHeadingText">
+            </div>
+        </div>
+
+
+
+        <div class="mb-3 row">
+            <label class="col-sm-2  Poppins-Regular" for="CalendarReminderHeadingText">{{'CalendarReminder'|
+                translate}}</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control Poppins-Regular" placeholder="{{'CalendarReminder' | translate}}"
+                    #CalendarReminderHeadingText="ngModel" [(ngModel)]="inputLoginPageModel.calendarReminderHeadingText"
+                    name="CalendarReminderHeadingText">
+            </div>
+        </div>
+
+
+
+        <div class="mb-3 row">
+            <label class="form-check-label col-sm-2 Poppins-Regular" for="CustomFooterText">{{'CustomFooter' |
+                translate}}</label>
+            <div class="col-sm-10  Poppins-Regular">
+                <div>
+                    <div class="NgxEditor__Wrapper">
+                        <ckeditor [config]="config" [(data)]="inputLoginPageModel.customFooterText"></ckeditor>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="mb-3 row">
+            <label class="col-sm-4  Poppins-Bold" for="">{{'PrivacyPolicyNameURL'| translate}}</label>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2  Poppins-Regular" for="PrivacyPolicyName">{{'PrivacyPolicyName' | translate}}</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control Poppins-Regular" required
+                    placeholder="{{'PrivacyPolicyName' | translate}}" #PrivacyPolicyName="ngModel"
+                    [(ngModel)]="inputLoginPageModel.privacyPolicyName" name="PrivacyPolicyName">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2  Poppins-Regular" for="PrivacyPolicyUrl">{{'PrivacyPolicyURL' | translate}}</label>
+            <div class="col-sm-10">
+                <input type="text" pattern="https?://.+" class="form-control Poppins-Regular" required
+                    placeholder="{{'PrivacyPolicyURL' | translate}}" #PrivacyPolicyUrl="ngModel"
+                    [(ngModel)]="inputLoginPageModel.privacyPolicyUrl" name="PrivacyPolicyUrl">
+            </div>
+        </div>
+
+
+
+        <div class="mb-3 row">
+            <label class="col-sm-4  Poppins-Bold" for="">{{'CustomerSupportLinkNameURL'| translate}}</label>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2  Poppins-Regular" for="CustomSupportLinkName">{{'CustomerSupportLinkName' |
+                translate}}</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control Poppins-Regular" required
+                    placeholder="{{'CustomerSupportLinkName' | translate}}" #CustomSupportLinkName="ngModel"
+                    [(ngModel)]="inputLoginPageModel.customSupportLinkName" name="CustomSupportLinkName">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2  Poppins-Regular" for="CustomSupportLinkUrl">{{'CustomerSupportLinkURL' |
+                translate}}</label>
+            <div class="col-sm-10">
+                <input type="text" pattern="https?://.+" class="form-control Poppins-Regular" required
+                    placeholder="{{'CustomerSupportLinkURL' | translate}}" #CustomSupportLinkUrl="ngModel"
+                    [(ngModel)]="inputLoginPageModel.customSupportLinkUrl" name="CustomSupportLinkUrl">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2  Poppins-Regular" for="LogoutUrl">{{'LogoutRedirectURL' | translate}}</label>
+            <div class="col-sm-10">
+                <input type="text" pattern="https?://.+" class="form-control Poppins-Regular" name="LogoutUrl"
+                    #LogoutUrl="ngModel" [(ngModel)]="inputLoginPageModel.logoutUrl"
+                    placeholder="{{'SocialMediaURL' | translate}}">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2  Poppins-Regular" for="LandingPageId">{{'LandingPage'| translate}}</label>
+            <div class="col-sm-10">
+                <select class="form-select" required #landingPageRoomId="ngModel"
+                    [(ngModel)]="inputLoginPageModel.landingPageRoomId" name="landingPageRoomId">
+                    <option value="">{{'Select' | translate}}</option>
+                    <option *ngFor="let item of landingPageDropdownList" value="{{item.roomId}}">
+                        {{item.name}}
+                    </option>
+                </select>
+
+            </div>
+        </div>
+
+
+        <div class="mb-3 row">
+
+            <div class="col-sm-12 text-right">
+                <button [disabled]="loginPageForm.invalid"
+                    class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 Poppins-Regular"
+                    type="button" (click)=submitForm()>{{'Save'|translate}}</button>
+                <a class="commonbtn col-sm-2 btn btn-primary text-white btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 ml-20px"
+                    (click)='goBack()'>{{'Cancel'|translate}}</a>
+            </div>
+        </div>
+
+    </form>
+</div>

@@ -1,0 +1,398 @@
+<!-- Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Poppins:wght@400;500&family=Quicksand:wght@300;400;500;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<!--<link rel="stylesheet" href="../../../../../assets/fontawesome/css/all.min.css"> -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Banner starts here -->
+<div class="banner">
+    <div class="header">
+        <div class="container">
+            <div class="logo">
+                <!-- <a class="logo-image" href="index.html"><img src="../../../../../assets/Images/northern-trust-logo.png" /></a> -->
+                <img class="logo-image" height="100" width="100" src="https://vemsstorageaccount.blob.core.windows.net/eventlogo/imsec-ghaziabad_2001280b0a4-8544-4373-8df1-6089e986e203.png">
+            </div>
+        </div>
+    </div>
+
+
+    <div id="bannerCarousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="d-block w-100" src="{{eventDetails.mainPageBannerImage}}" alt="First slide">
+            </div>
+            <!-- <div class="carousel-item">
+                <img class="d-block w-100" src="../../../../../assets/Images/banner-bg.png" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100" src="../../../../../assets/Images/banner-bg.png" alt="Third slide">
+            </div> -->
+        </div>
+        <a class="carousel-control-prev" href="#bannerCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#bannerCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+    <div class="event-details">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm venue-details">
+                    <div class="date-info"><span><b>{{eventStartDate | date:'d'}}</b> {{eventStartDate | date:'MMM, y'}}
+                            -
+                            <b>{{eventEndDate | date:'d'}}</b> {{eventEndDate | date:'MMM, y'}}</span></div>
+                    <!-- <div class="venu-info">Venue : Waterfront Hotel, Mumbai</div> -->
+                </div>
+                <div class="col-sm time-to-go-details">
+                    <div class="row">
+                        <div class="col-sm ttg-content">
+                            <div class="count"><span id="timer"> {{timerData}}</span></div>
+                            <div class="label">Days</div>
+                        </div>
+                        <div class="col-sm ttg-content">
+                            <div class="count">{{timerDataH}}</div>
+                            <div class="label">Hours</div>
+                        </div>
+                        <div class="col-sm ttg-content">
+                            <div class="count">{{timerDataM}}</div>
+                            <div class="label">Minutes</div>
+                        </div>
+                        <div class="col-sm ttg-content">
+                            <div class="count">{{timerDataS}}</div>
+                            <div class="label">Seconds</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm login-register" *ngIf="!isUserLoggedIn">
+                    <button type="button" class="login-register-button" (click)="openLoginPopup()">Login</button>
+                    <button type="button" class="login-register-button" data-toggle="modal" data-target="#register">Register</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<!-- Banner Ends here -->
+
+<!-- About Event starts here -->
+<div class="about-event">
+    <div class="container">
+        <h2 class="section-title">About the Event</h2>
+        <div class="row about-event-content">
+            <!-- <div class="col-sm about-event-img-container">
+                <img src="../../../../../assets/Images/about-img.png" />
+            </div> -->
+            <div class="col-sm about-event-desc-container">
+                <!-- <p>Dolorum veniam torquent feugiat, ab cupidatat! Aperiam ut ullamco, nibh netus quidem? Tempora incididunt sociosqu etiam exercitation sociis, enim do, pharetra cras esse sollicitudin luctus molestie dignissimos laudantium sagittis dolor,
+                    cursus veritatis quam, fuga, lectus similique, libero quae rutrum laboriosam mollitia accusamus, dignissim omnis perspiciatis. Dolorum voluptatem eveniet iste urna exercitation nisl laudantium magnis! Sint litora quisque luctus. Tempora
+                    donec.
+                </p> -->
+                <p [innerHTML]="eventDetails.eventDesc | safeHtml">
+                </p>
+                <a href="#" class="external-link">Read More</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- About Event Ends here -->
+
+<!-- Booth Info starts here -->
+<div class="booths" *ngIf="booths?.length>0">
+    <div class="container">
+        <h2 class="section-title">Booths</h2>
+        <p>Click on a logo to view booth details</p>
+    </div>
+    <div id="boothCarousel" class="carousel slide five-items-slider" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="container">
+                    <div class="row booth-containers">
+                        <div class="col-2" *ngFor="let item of booths | slice:0:6;">
+                            <div class="booth-info">
+                                <div class="booth-logo"><img style="cursor: pointer; height: 160px;" [src]="item.rooms.boothLogo?item.rooms.boothLogo:'https://vemsimageblobstorage.blob.core.windows.net/profileimage/NoImage.png'" (click)="getBoothDetails(item)" /></div>
+                                <div class="booth-name">{{item.rooms.name}}</div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-2">
+                            <div class="booth-info">
+                                <div class="booth-logo"><img src="../../../../../assets/Images/northern-Trust-booth-logo.png" /></div>
+                                <div class="booth-name">Booth B</div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="booth-info">
+                                <div class="booth-logo"><img src="../../../../../assets/Images/northern-Trust-booth-logo.png" /></div>
+                                <div class="booth-name">Booth C</div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="booth-info">
+                                <div class="booth-logo"><img src="../../../../../assets/Images/northern-Trust-booth-logo.png" /></div>
+                                <div class="booth-name">Booth D</div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="booth-info">
+                                <div class="booth-logo"><img src="../../../../../assets/Images/northern-Trust-booth-logo.png" /></div>
+                                <div class="booth-name">Booth E</div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="booth-info">
+                                <div class="booth-logo"><img src="../../../../../assets/Images/northern-Trust-booth-logo.png" /></div>
+                                <div class="booth-name">Booth F</div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="carousel-item">
+                <div class="container">
+                    <div class="row booth-containers">
+                        <div class="col-2">
+                            <div class="booth-info">
+                                <div class="booth-logo"><img src="../../../../../assets/Images/northern-Trust-booth-logo.png" /></div>
+                                <div class="booth-name">Booth G</div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="booth-info">
+                                <div class="booth-logo"><img src="../../../../../assets/Images/northern-Trust-booth-logo.png" /></div>
+                                <div class="booth-name">Booth H</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+        <a class="carousel-control-prev" href="#boothCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#boothCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="view-all-button-container">
+            <button>View all</button>
+        </div>
+    </div>
+</div>
+<!-- Booth Info Ends here -->
+
+<!-- Attendies starts here -->
+<div *ngIf="((!isUserLoggedIn && manageRegistrationPage.viewotherattendeesboothrepresentativesbeforeregistration) ||((isUserLoggedIn && manageRegistrationPage.viewotherattendeesboothrepresentativesafterregistration)))">
+
+    <div class="attendees" *ngIf="attedees?.length>0">
+        <div class="container">
+            <h2 class="section-title">Who is attending</h2>
+
+        </div>
+
+        <div id="attendeesCarousel" class="carousel slide five-items-slider" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="container">
+                        <div class="row attendees-containers">
+                            <div *ngFor="let item of attedees | slice:0:6; " class="col-2">
+                                <div class="attendee-info">
+                                    <div class="attendee-logo"><img [src]="item.profileImage?item.profileImage:'https://vemsimageblobstorage.blob.core.windows.net/profileimage/NoImage.png' " /><br>
+                                        <span class="attendee-name">{{item.firstName}} {{item.lastName}}</span><br>
+                                    </div>
+                                    <!-- <div class="attendee-name">Akansha</div> -->
+                                </div>
+                            </div>
+                            <!-- <div class="col-2">
+                            <div class="attendee-info">
+                                <div class="attendee-logo"><img src="../../../../../assets/Images/attendee.png" /></div>
+                                <div class="attendee-name">Akansha</div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="attendee-info">
+                                <div class="attendee-logo"><img src="../../../../../assets/Images/attendee.png" /></div>
+                                <div class="attendee-name">Akansha</div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="attendee-info">
+                                <div class="attendee-logo"><img src="../../../../../assets/Images/attendee.png" /></div>
+                                <div class="attendee-name">Akansha</div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="attendee-info">
+                                <div class="attendee-logo"><img src="../../../../../assets/Images/attendee.png" /></div>
+                                <div class="attendee-name">Akansha</div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="attendee-info">
+                                <div class="attendee-logo"><img src="../../../../../assets/Images/attendee.png" /></div>
+                                <div class="attendee-name">Akansha</div>
+                            </div>
+                        </div> -->
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="carousel-item">
+                    <div class="container">
+                        <div class="row attendees-containers">
+                            <div class="col-2">
+                                <div class="attendee-info">
+                                    <div class="attendee-logo"><img src="../../../../../assets/Images/attendee.png" /></div>
+                                    <div class="attendee-name">Akansha</div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="attendee-info">
+                                    <div class="attendee-logo"><img src="../../../../../assets/Images/attendee.png" /></div>
+                                    <div class="attendee-name">Akansha</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+            <a class="carousel-control-prev" href="#attendeesCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#attendeesCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- attendees Info Ends here -->
+
+<!-- Sponsers starts here -->
+<div class="sponsers">
+    <div class="container">
+        <h2 class="section-title">Event Sponsors</h2>
+        <div class="row justify-content-center sponsers-containers" *ngIf="eventSponsors?.length>0">
+            <div *ngFor="let item of eventSponsors | slice:0:6;" class="col-sm-2">
+                <div class="sponser-info">
+                    <div class="sponser-img"><img [src]="item.profileImage?item.profileImage:'https://vemsimageblobstorage.blob.core.windows.net/profileimage/NoImage.png'" />
+                    </div>
+                    <div class="sponser-name">{{item.orgName}}</div>
+                </div>
+            </div>
+            <!-- <div class="col-sm-2">
+                <div class="sponser-info">
+                    <div class="sponser-img"><img src="../../../../../assets/Images/attendee.png" /></div>
+                    <div class="sponser-name">Lucy Marry</div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- Sponsers Ends here -->
+
+<!-- Footer starts here -->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <div class="footer-logo">
+                    <img class="logo-image" height="100" width="100" src="https://vemsstorageaccount.blob.core.windows.net/eventlogo/imsec-ghaziabad_2001280b0a4-8544-4373-8df1-6089e986e203.png">
+                </div>
+            </div>
+            <div class="offset-sm-1 col-sm">
+                <div class="footer-info">
+                    <p>Get in touch to become an event or a booth sponsor and get featured on walls and video events</p>
+                    <button class="become-sponcer">Become a Sponser</button>
+                    <br />
+                    <div class="terms-privacy">
+                        <a href="">Terms of Service</a> | <a href="">Privacy Policy</a>
+                    </div>
+                </div>
+            </div>
+            <div class="offset-sm-1  col-sm">
+                <div class="social-icons">
+                    <h4>Get in touch </h4>
+                    <div class="social-icons-container">
+                        <a href="https://www.facebook.com/IMSEC143/">
+                            <img style="width: 24px; height: auto; margin: 10px;" src="assets/Images/facebook_social.png">
+                        </a>
+                        <a href="https://www.instagram.com/imsecghaziabad143/">
+                            <img style="width: 24px; height: auto; margin: 10px;" src="assets/Images/Instagram_social.png">
+                        </a>
+                        <a href="https://www.linkedin.com/in/imsecghaziabad">
+                            <img style="width: 24px; height: auto; margin: 10px;" src="assets/Images/linkedIn_social.png">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer ends here -->
+
+<!--Register Model Popup-->
+<div class="modal fade" id="register" tabindex="-1">
+    <!-- <div class="modal fade register-modal" id="register" tabindex="-1"> -->
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Registration</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label for="validationServer01">First name</label>
+                        <input type="text" class="form-control" id="validationServer01" value="Mark" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="validationServer02">Last name</label>
+                        <input type="text" class="form-control" id="validationServer02" value="Otto" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label for="validationServer01">Gender</label>
+                        <div class="radio-options">
+                            <div class="form-check">
+                                <input class="form-check-input custom-control-input" type="radio" name="gender" id="male" value="male" checked>
+                                <label class="form-check-label" for="male">
+                                    Male
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gender" id="female" value="female">
+                                <label class="form-check-label" for="female">
+                                    Female
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="validationServer02">Last name</label>
+                        <input type="text" class="form-control" id="validationServer02" value="Otto" required>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Register</button>
+            </div>
+        </div>
+    </div>
+</div>

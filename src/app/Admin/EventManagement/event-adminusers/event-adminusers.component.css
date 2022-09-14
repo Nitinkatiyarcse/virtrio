@@ -1,0 +1,19 @@
+ .validField {
+     border-left: 5px solid green;
+     border-radius: 8px;
+     display: block;
+ }
+ 
+ .invalidField {
+     border-left: 5px solid red;
+     border-radius: 8px;
+     display: block;
+ }
+ 
+ ::ng-deep .multiselect-dropdown .dropdown-btn {
+     width: -webkit-fill-available !important
+ }
+ 
+ ::ng-deep .multiselect-dropdown .dropdown-btn:focus {
+     outline: none !important
+ }

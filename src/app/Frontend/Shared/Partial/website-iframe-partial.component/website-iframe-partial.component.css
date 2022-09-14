@@ -1,0 +1,21 @@
+.modal-dialog,
+.modal-content {
+    /* 80% of window height */
+    height: 95%;
+}
+
+.modal-body {
+    /* 100% = dialog height, 120px = header + footer */
+    /* max-height: calc(100% - 120px);
+    overflow-y: scroll; */
+}
+
+div#linkContentModal {
+    padding-right: 0px !important;
+}
+
+@media (min-width: 1200px) {
+    .modal-xl {
+        max-width: 95%;
+    }
+}

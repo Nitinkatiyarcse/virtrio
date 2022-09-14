@@ -1,0 +1,24 @@
+<div #myModal data-backdrop="static" data-keyboard="false">
+    <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'" [style.color]="eventDetails.headerTextColor">
+        <div class="row col-sm-12">
+            <div class="col-sm-8">
+                <h5>{{title}}</h5>
+            </div>
+            <div class="col-sm-4 text-right">
+                <i class="fa fa-expand col-sm-1" *ngIf="!isFullScreen" aria-hidden="true" (click)="fullscreen()"></i>
+                <i class="fa fa-arrows-alt col-sm-1" *ngIf="isFullScreen" aria-hidden="true" (click)="smallScreen()"></i>
+                <i class="fa fa-times col-sm-1" data-dismiss="modal" aria-label="Close" (click)="closeModal()"></i>
+            </div>
+        </div>
+
+
+
+
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button> -->
+    </div>
+    <div class="modal-body" style="overflow: auto;height: 90vh;">
+        <iframe style="height: 80vh;" [src]="documentUrl | safe" allowfullscreen></iframe>
+    </div>
+</div>

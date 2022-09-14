@@ -1,0 +1,346 @@
+<div>
+
+
+    <div class="text-center pageHeader bg-white" style="border:none;text-align: left;padding:10px">
+        <label class="col-sm-12 text-Medium" style="text-align: left;">{{'ManageThankyouPage'| translate}}</label>
+        <label class="col-sm-12 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+    </div>
+
+    <div class="flex-container row bg-white" id="ThankyouItems" style="margin-top: 25px;padding: 20px;margin-left: 0px;margin-right: 0px;">
+        <form method="Post" class="form-group" [formGroup]="thankyouPageForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3 row" style="display: none;">
+                <div class="col-sm-2">
+                    <label class=" Poppins-Regular" for="LanguageVersion">{{'LanguageVersion'| translate}} <sup> <i
+                                class="fa fa-info-circle p-1" data-placement="bottom"
+                                tooltip="{{'PleaseSelectWhichLanguageVersion' | translate}}"></i></sup></label>
+                </div>
+
+
+                <div class="col-sm-10">
+                    <select class="form-select Poppins-Regular" formControlName="languageId" data-val="true" name="LanguageVersion" #LanguageVersion [(ngModel)]="defaultLanguageId">
+                        <option *ngFor="let item of languageDropdownList" value="{{item.languageId}}">{{item.language}}
+                        </option>
+                    </select>
+
+
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2  Poppins-Regular" for="ThankyouforRegistering">{{'ThankyouforRegistering'|
+                    translate}}</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control Poppins-Regular" placeholder="{{'ThankyouforRegistering' | translate}}" formControlName="thankyouforRegistering" name="ThankyouforRegistering">
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <label class="col-sm-2  Poppins-Regular" for="Videospokesperson">{{'VideoSpokesperson'| translate}}<sup>
+                        <i class="fa fa-info-circle p-1" data-placement="bottom"
+                            tooltip="{{'PleaseContactYourClientSuccessManager' | translate}}"></i></sup></label>
+
+                <div class="col-sm-6">
+                    <textarea #Videospokesperson class="form-control Poppins-Regular" placeholder="{{'VideoSpokesperson' | translate}}" name="Videospokesperson" formControlName="videoSpokesPerson"> </textarea>
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <label class="form-check-label col-sm-2 Poppins-Regular" for="IncludeSplashImages">{{'IncludeSplashImages'|translate}}<sup> <i class="fa fa-info-circle p-1"
+                            data-placement="bottom"
+                            tooltip="{{'CheckThisBoxToIncludeSplashImagesthanku' | translate}}"></i></sup></label>
+                <div class="col-sm-10  Poppins-Regular">
+                    <input type="checkbox" style="margin-left: 0px;" class="" name="IncludeSplashImages" (change)="includeSplashImagesCheckChanged()" formControlName="includeSplashImage" [checked]="includeSplashImage" #IncludeSplashImages>
+                </div>
+            </div>
+
+
+            <div *ngIf="includeSplashImage" class="mb-3 row">
+                <label class="col-sm-2  Poppins-Regular" for="Splashimages">{{'SplashImages' | translate}}
+               <br><span class="fs-10px Poppins-Regular">{{'MaxSizeSevenhundred' | translate}}</span></label>
+                <div class="col-sm-10">
+                    <div class=" form-check-inline">
+                        <input class="" type="radio" id="ThankuSplashimages" [checked]="isImagesOrVideo" style="margin-top: 5px;" name="IncludeSplashImage" (change)="changeSplashType($event,'thankyoupagesplashimage')">
+                        <label class="form-check-label" for="ThankuSplashimages">{{'Images' | translate}}</label>
+                    </div>
+                    <div class=" form-check-inline">
+                        <input class="" type="radio" id="ThankuSplashMovies" [checked]="!isImagesOrVideo" style="margin-top: 5px;" name="IncludeSplashImage" (change)="changeSplashType($event,'thankyoupagesplashmovie')">
+                        <label class="form-check-label" for="ThankuSplashMovies">{{'Movie' | translate}}</label>
+                    </div>
+
+                    <div class="row" style="margin:5px 0px 0px 0px;">
+                        <div class="col-sm-6">
+                            <input id="fileupload" class="custom-file-input" type="file" name="ThankuSplashimages1" #ThankuSplashimages1 (change)="thankuSplashimagesFileChange($event,0)">
+                            <label class="custom-file-label" for="ThankuSplashimages1" text="Choose"></label>
+                        </div>
+                        <div class="col-sm-6" *ngIf="splashScreenImages[0].filePath!=''">
+                            <img height="35px" width="100px" src="{{splashScreenImages[0].filePath}}" />
+                            <i class="fa fa-window-close ml-2" tooltip="{{'Delete' | translate}}" (click)='deleteSplashImage(0)'></i>
+                        </div>
+                    </div>
+                    <div class="row" style="margin:5px 0px 0px 0px;">
+                        <div class="col-sm-6">
+                            <input id="fileupload" class="custom-file-input" type="file" name="ThankuSplashimages2" #ThankuSplashimages2 (change)="thankuSplashimagesFileChange($event,1)">
+                            <label class="custom-file-label" for="ThankuSplashimages2" text="Choose"></label>
+                        </div>
+                        <div class="col-sm-6" *ngIf="splashScreenImages[1].filePath!=''">
+                            <img height="35px" width="100px" src="{{splashScreenImages[1].filePath}}" />
+                            <i class="fa fa-window-close ml-2" tooltip="{{'Delete' | translate}}" (click)='deleteSplashImage(1)'></i>
+                        </div>
+                    </div>
+                    <div class="row" style="margin:5px 0px 0px 0px;">
+                        <div class="col-sm-6">
+                            <input id="fileupload" class="custom-file-input" type="file" name="ThankuSplashimages3" #ThankuSplashimages3 (change)="thankuSplashimagesFileChange($event,2)">
+                            <label class="custom-file-label" for="ThankuSplashimages3" text="Choose"></label>
+                        </div>
+                        <div class="col-sm-6" *ngIf="splashScreenImages[2].filePath!=''">
+                            <img height="35px" width="100px" src="{{splashScreenImages[2].filePath}}" />
+                            <i class="fa fa-window-close ml-2" tooltip="{{'Delete' | translate}}" (click)='deleteSplashImage(2)'></i>
+                        </div>
+                    </div>
+                    <div class="row" style="margin:5px 0px 0px 0px;">
+                        <div class="col-sm-6">
+                            <input id="fileupload" class="custom-file-input" type="file" name="ThankuSplashimages4" #ThankuSplashimages4 (change)="thankuSplashimagesFileChange($event,3)">
+                            <label class="custom-file-label" for="ThankuSplashimages4" text="Choose"></label>
+                        </div>
+                        <div class="col-sm-6" *ngIf="splashScreenImages[3].filePath!=''">
+                            <img height="35px" width="100px" src="{{splashScreenImages[3].filePath}}" />
+                            <i class="fa fa-window-close ml-2" tooltip="{{'Delete' | translate}}" (click)='deleteSplashImage(3)'></i>
+                        </div>
+                    </div>
+                    <div class="row" style="margin:5px 0px 0px 0px;">
+                        <div class="col-sm-6">
+                            <input id="fileupload" class="custom-file-input" type="file" name="ThankuSplashimages5" #ThankuSplashimages5 (change)="thankuSplashimagesFileChange($event,4)">
+                            <label class="custom-file-label" for="ThankuSplashimages5" text="Choose"></label>
+                        </div>
+                        <div class="col-sm-6" *ngIf="splashScreenImages[4].filePath!=''">
+                            <img height="35px" width="100px" src="{{splashScreenImages[4].filePath}}" />
+                            <i class="fa fa-window-close ml-2" tooltip="{{'Delete' | translate}}" (click)='deleteSplashImage(4)'></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="form-check-label col-sm-2 Poppins-Regular" for="IncludeThankyouText">{{'IncludeThankyouText'|translate}}<sup> <i class="fa fa-info-circle p-1"
+                            data-placement="bottom"
+                            tooltip="{{'CheckThisBoxToIncludeThankyouText' | translate}}"></i></sup></label>
+                <div class="col-sm-10  Poppins-Regular">
+                    <input type="checkbox" style="margin-left: 0px;" class="" name="IncludeThankyouText" (change)="includeThankyouTextCheckChanged()" formControlName="includeThankyouText" [checked]="includeThankyouText" #IncludeThankyouText>
+                </div>
+            </div>
+            <div class="mb-3 row" *ngIf="includeThankyouText">
+                <label class="form-check-label col-sm-2 Poppins-Regular" for=""></label>
+                <div class="col-sm-6  Poppins-Regular">
+                    <div>
+                        <div class="NgxEditor__Wrapper">
+                            <ckeditor [config]="config" [(data)]="thankyouText" formControlName="thankyouText">
+                            </ckeditor>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <label class="form-check-label col-sm-2 Poppins-Regular" for="EnableDefaultCalendarReminder">{{'DefaultCalendarReminder'|translate}}<sup> <i
+                            class="fa fa-info-circle p-1" data-placement="bottom"
+                            tooltip="{{'CheckThisBoxToEnablecalenderReminder' | translate}}"></i></sup></label>
+                <div class="col-sm-10 Poppins-Regular">
+                    <input type="checkbox" style="margin-left: 0px;" class="" formControlName="enableDefaultCalendarReminder" name="EnableDefaultCalendarReminder" (change)="enableDefaultCalendarReminderCheckChanged()" [checked]="enableDefaultCalendarReminder" #EnableDefaultCalendarReminder>
+                </div>
+            </div>
+
+            <!-- <div class="mb-3 row">
+                <label class="col-sm-2  Poppins-Bold" for="Backgroundcolor">{{'AddCalenderReminder'| translate}}</label>
+                <div class="col-sm-10">
+                    <button type="button" (click)="addCalendarReminder()" class="btn btn-primary">Add More</button>
+                </div>
+            </div> -->
+            <div class="mb-3 row">
+                <label class="form-check-label col-sm-2 Poppins-Regular" for="IncludeCalendarReminder">{{'CustomCalendarReminder'|translate}}<sup> <i
+                            class="fa fa-info-circle p-1" data-placement="bottom"
+                            tooltip="{{'CheckThisBoxToIncludecalenderReminder' | translate}}"></i></sup></label>
+                <div class="col-sm-10 Poppins-Regular">
+                    <input type="checkbox" style="margin-left: 0px;" class="" name="IncludeCalendarReminder" (change)="includeCalendarReminderTextCheckChanged()" formControlName="includeCalendarReminder" [checked]="includeCalendarReminder" #IncludeCalenderReminder>
+                </div>
+            </div>
+            <div class="mb-3 row" *ngIf="includeCalendarReminder">
+                <label class="form-check-label col-sm-2 Poppins-Regular" for="CalendarReminderText"></label>
+                <div class="col-sm-6 Poppins-Regular">
+                    <textarea #CalendarReminderText class="form-control Poppins-Regular" placeholder="{{'IncludeCalendarReminder' | translate}}" name="CalendarReminderText" formControlName="includeCalendarReminderText"> </textarea>
+                </div>
+            </div>
+
+            <div formArrayName="calendarReminders">
+
+                <div *ngFor="let quantity of calendarReminders().controls  | slice:0:5; let i=index;" [formGroupName]="i">
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-2  Poppins-Regular">{{'CalendarReminderName'| translate}}</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control Poppins-Regular" placeholder="{{'CalendarReminderName' | translate}}" formControlName="calendarReminderName">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-2  Poppins-Regular">{{'CalendarRemindertext'| translate}}</label>
+                        <div class="col-sm-6">
+                            <textarea class="form-control Poppins-Regular" maxlength="100" placeholder="{{'CalendarRemindertext' | translate}}" formControlName="calendarReminderText"> </textarea>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label Poppins-Regular">{{'StartDateandtime' | translate}}
+                        </label>
+                        <div class="col-sm-10">
+                            <div class="input-group bootstrap-timepicker timepicker">
+                                <app-date-time-picker required="" formControlName="calendarReminderStartDate">
+                                </app-date-time-picker>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label Poppins-Regular">{{'EndDateandtime' | translate}}
+                        </label>
+                        <div class="col-sm-10">
+                            <div class="input-group bootstrap-timepicker timepicker">
+                                <app-date-time-picker formControlName="calendarReminderEndDate">
+                                </app-date-time-picker>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label Poppins-Regular">
+                        </label>
+                        <div class="col-sm-10">
+                            <button (click)="removeCalendarReminder(i)" class="btn btn-danger">Remove</button>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+            <div class="mb-3 row">
+                <label class="form-check-label col-sm-2 Poppins-Regular" for="ThankYouEmail">{{'ThankYouEmail'|translate}}<sup> <i class="fa fa-info-circle p-1"
+                            data-placement="bottom"
+                            tooltip="{{'CheckThisBoxToIncludeThankyouTexts' | translate}}"></i></sup></label>
+                <div class="col-sm-10 Poppins-Regular">
+                    <input type="checkbox" style="margin-left: 0px;" class="" name="ThankYouEmail" formControlName="includeThankYouEmail" (change)="includeThankYouEmailCheckChanged()" [checked]="includeThankYouEmail" #IncludeCalenderReminder>
+                </div>
+            </div>
+
+            <div class="mb-3 row" *ngIf="includeThankYouEmail">
+                <label class="form-check-label col-sm-2 Poppins-Regular" for="EmailSubject"></label>
+                <div class="mb-3 row">
+                    <label class="col-sm-2  Poppins-Regular" for="EmailSubject">{{'EmailSubject'| translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control Poppins-Regular" placeholder="{{'EmailSubject' | translate}}" formControlName="emailSubject" name="EmailSubject">
+                    </div>
+                </div>
+
+            </div>
+            <div class="mb-3 row" *ngIf="includeThankYouEmail">
+                <label class="form-check-label col-sm-2 Poppins-Regular"></label>
+                <div class="mb-3 row">
+                    <label class="col-sm-2  Poppins-Regular" for="EmailText">{{'Email Text'| translate}}</label>
+                    <div class="col-sm-6  Poppins-Regular">
+                        <div>
+                            <div class="NgxEditor__Wrapper">
+                                <ckeditor [config]="config" [(data)]="emailBody" formControlName="emailBody"></ckeditor>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2  Poppins-Regular">{{'ThankyouEmailHeaderImage' | translate}}<sup> <i
+                            class="fa fa-info-circle p-1" data-placement="bottom"
+                            tooltip="{{'Thankyouemailheader' | translate}}"></i></sup>
+                            <br /><span class="fs-10px Poppins-Regular">{{'MaxSizeSevenhundred' | translate}}</span></label>
+                <div class="col-sm-10">
+                    <div class="row" style="margin:5px 0px 0px 0px;">
+                        <div class="col-sm-6">
+                            <input id="fileupload" class="custom-file-input" type="file" name="ThankyouEmailHeaderImage" #ThankyouEmailHeaderImage style="margin-left: 0px;" (change)="headerImagesFileChange($event)">
+                            <label class="custom-file-label" for="customFile" text="Choose"></label>
+                        </div>
+                        <div class="col-sm-6" *ngIf="thankyouEmailHeaderImage">
+                            <img height="35px" width="100px" src="{{thankyouEmailHeaderImage}}" />
+                            <i class="fa fa-window-close ml-2" tooltip="{{'Delete' | translate}}" (click)='deletethankyouEmailHeaderImage()'></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--  <div class="mb-3 row">
+                <label class="col-sm-4  Poppins-Bold" for="Backgroundcolor">{{'HeadingAndIcons'| translate}}</label>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2  Poppins-Regular" for="Backgroundcolor">{{'DisplayIcons'| translate}}</label>
+                <div class="col-sm-6">
+                    <select class="form-select Poppins-Regular" formControlName="displayHeadingAndIcons" data-val="true" name="DisplayHeadingAndIcons" #DisplayHeadingAndIcons>
+                        <option value="true">{{'Yes'| translate}}</option>
+                        <option value="false">{{'No'| translate}}</option>
+
+                    </select>
+                </div>
+
+
+            </div> -->
+
+            <!-- <div class="mb-3 row">
+                <label class="col-sm-2  Poppins-Regular"
+                    for="AgendaDocumentHeadingText">{{'AgendaDocument'| translate}}</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control Poppins-Regular"
+                        placeholder="{{'AgendaDocument' | translate}}" formControlName="agendaDocumentHeadingText"
+                        name="AgendaDocumentHeadingText">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2  Poppins-Regular"
+                    for="CalendarReminderHeadingText">{{'CalendarReminder'| translate}}</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control Poppins-Regular"
+                        placeholder="{{'CalendarReminder' | translate}}" formControlName="calendarReminderHeadingText"
+                        name="CalendarReminderHeadingText">
+                </div>
+            </div> -->
+
+
+            <div formContrconolName="splashScreenImages">
+
+            </div>
+            <input type="hidden" formControlName="userId" />
+            <input type="hidden" formControlName="registrationSetId" />
+            <input type="hidden" formControlName="thankyouPageRegistrationSetId" />
+            <input type="hidden" formControlName="thankyouEmailHeaderImage" />
+            <div class="mb-3 row">
+                <div class="col-sm-12 text-right">
+                    <button class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 Poppins-Regular" type="submit">{{'Save'|translate}}</button>
+                    <button class="commonbtn col-sm-2 btn btn-primary text-white btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 ml-20px" type="button" (click)='goBack()'>{{'Cancel'|translate}}</button>
+                </div>
+            </div>
+
+        </form>
+
+
+    </div>
+</div>

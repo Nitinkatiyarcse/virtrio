@@ -1,0 +1,1085 @@
+<div class=" bg-white" style="height: 100vh !important;">
+
+
+    <div style="width: 400px;background-color: #000000;opacity: 0.8; border-radius: 5px;position: fixed;margin-left: 40%;width: 400px;z-index: 1;height: 70px;"
+        [ngStyle]="{
+            'top': isTopMenuOpen  ? '0px' : '-70px'
+          }">
+        <div style="border-radius: 5px;">
+            <div class="row  text-center">
+                <div class="col-sm-4" style="margin-top: 15px;text-align: center;">
+                    <div class="text-center" data-toggle="modal" data-target="#attendeeModal" style="cursor: pointer;">
+                        <img style="margin-left: 10px;" src="../assets/Images/attendees.png" class="menuIcon" /><span
+                            class="badge badge-primary"
+                            style="vertical-align: top !important;">{{totalAttendeesCount}}</span><br>
+                    </div>
+                    <label class="Poppins-Regular fs-12px text-white"> {{'Attendee' | translate}}</label>
+                </div>
+                <div class="col-sm-4" style="margin-top: 15px;text-align: center;cursor: pointer;" data-toggle="modal"
+                    data-target="#leaderboardModal">
+                    <img style="margin-left: 10px;" src="../assets/Images/leaderboard.png" class="menuIcon" /><br>
+                    <label class="Poppins-Regular fs-12px text-white"> {{'Leaderboard' | translate}}</label>
+                </div>
+                <!-- <div class="col-sm-3" style="margin-top: 15px;text-align: center">
+                    <a onclick="window.open(this.href,'targetWindow',`toolbar=no,
+                                    location=no,
+                                    status=no,
+                                    menubar=no,
+                                    scrollbars=yes,
+                                    resizable=yes,
+                                    width=600,
+                                    height=600`); return false;"
+                        href="{{eventId}}/{{roomId}}/{{representativeId}}/chat">
+                        <img style="margin-left: 10px;" src="../assets/Images/chat.png" class="menuIcon" /><br>
+                        <label class="Poppins-Regular fs-12px text-white"> {{'Chat' | translate}}</label></a>
+                </div> -->
+                <div class="col-sm-4" style="margin-top: 15px;text-align: center;cursor: pointer;"
+                    (click)="inviteFromAttendee()">
+                    <img style="margin-left: 10px;" src="../assets/Images/invite.png" class="menuIcon" /><br>
+                    <label class="Poppins-Regular fs-12px text-white"> {{'Invite' | translate}}</label>
+                </div>
+
+            </div>
+            <i [ngClass]="isTopMenuOpen? 'fa fa-chevron-up fa-2x' : 'fa fa-chevron-down fa-2x'" class="topMenuSlider"
+                [ngStyle]="{
+                    'margin-top': isTopMenuOpen  ? '0px' : '-2px'
+                  }" (click)="showHideTopMenu()"></i>
+        </div>
+    </div>
+
+    <div class="position-absolute top-0 start-0" style="z-index: 1000;position:fixed !important"
+        [ngStyle]="openCloseMenuStyle(IsOpen)">
+        <i class="fa fa-navicon text-white fa-2x "
+            style="cursor: pointer;background: #000000 !important;color: #ffffff !important;padding: 10px;"
+            (click)="openNav()" [ngStyle]="{
+            'display': IsOpen  ? 'none' : 'block'
+          }"></i>
+        <div id="mySidenav" class="sidenav" [ngStyle]="{
+            'width': IsOpen  ? '225px' : '0px'
+          }" style="overflow: hidden;">
+            <div class="row col-sm-12">
+                <div class="text-center Poppins-SemiBold fs-16px">
+                    <label>{{'EventMenu' | translate}}</label>
+                </div>
+                <a class="closebtn" style="cursor: pointer;z-index: 10000;text-align: right;margin-top: -20px;"
+                    (click)="closeNav()">
+                    <i class="fa fa-times" style="color: #ffffff;"></i>
+                </a>
+            </div>
+            <div style="overflow: scroll;height: 100vh;padding-bottom: 50px;">
+
+                <label class="Poppins-SemiBold navigationMenuHeaderItem">
+                    {{'Navigation' | translate}}
+                </label>
+                <hr style="margin-top:0px;height: 3px;color: #4E74BC;">
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item" *ngFor="let item of sideMenuItems; let i=index;">
+                        <h2 class="accordion-header" id="headingOne_{{i}}">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                [attr.data-bs-target]="'#collapseOne_'+i" aria-expanded="true"
+                                [attr.aria-controls]="'collapseOne_'+i">
+                                <!-- <img src="../assets/Images/{{item.roomType.roomTypeIcon}}" class="menuIcon"
+                                tooltip="{{item.roomType.roomType}}" /> -->
+                                {{item.roomType.roomType | translate}}
+                            </button>
+                        </h2>
+                        <div id="collapseOne_{{i}}" class="accordion-collapse collapse show"
+                            [attr.aria-labelledby]="'headingOne_'+i" data-bs-parent="#accordionExample">
+
+                            <div class="accordion-body" *ngFor="let roomItem of item.rooms">
+                                <a class="fs-14px" href="/room/{{roomItem.roomId}}/{{roomItem.eventId}}"
+                                    routerLinkActive="router-link-active"> {{roomItem.name}}</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <label *ngIf="isEventAdmin" class="Poppins-SemiBold navigationMenuHeaderItem">{{'EventAdminActions' |
+                    translate}}</label>
+
+                <hr *ngIf="isEventAdmin" style="margin-top:0px;height: 3px;color: #4E74BC;">
+
+                <button *ngIf="isEventAdmin" class="sideMenuButton" type="button" (click)="openBroadcastMessage()">
+                    <img src="../assets/Images/antenna.png" class="menuIcon" />
+                    {{'BroadcastMessage' | translate}}
+                </button>
+
+
+
+
+                <label class="Poppins-SemiBold navigationMenuHeaderItem">{{'Shortcuts' | translate}}</label>
+
+                <hr style="margin-top:0px;height: 3px;color: #4E74BC;">
+
+                <button *ngIf="isRepresentative" class="sideMenuButton" type="button" (click)="goToDashboard()">
+                    <img src="../assets/Images/monitor.png" class="menuIcon" />
+                    {{'Dashboard' | translate}}
+                </button>
+                <button class="sideMenuButton" type="button" (click)="goToDetailsPage()">
+                    <img src="../assets/Images/bell.png" class="menuIcon" />
+                    {{'EventDetails' | translate}}
+                </button>
+
+                <!-- <button class="sideMenuButton" type="button">
+                    <img src="../assets/Images/bell.png" class="menuIcon" />
+                    {{'Alerts' | translate}}
+                </button> -->
+                <button class="sideMenuButton" type="button" data-toggle="modal" data-target="#briefcaseModal">
+                    <img src="../assets/Images/briefcase.png" class="menuIcon" />
+                    {{'Briefcase' | translate}}
+                </button>
+                <!-- <button class="sideMenuButton" type="button">
+                    <img src="../assets/Images/set-alarm.png" class="menuIcon" />
+                    {{'Reminders' | translate}}
+                </button>
+                <button class="sideMenuButton" type="button">
+                    <img src="../assets/Images/id-card.png" class="menuIcon" />
+                    {{'Cards' | translate}}
+                </button> -->
+
+                <!-- <label class="Poppins-SemiBold navigationMenuHeaderItem"> {{'Others' | translate}}</label>
+                <hr style="margin-top:0px;height: 3px;color: #4E74BC;"> -->
+                <!-- <button class="sideMenuButton" type="button">
+                    <img src="../assets/Images/attendees.png" class="menuIcon" />
+                    {{'Attendee' | translate}}<span class="badge badge-primary"
+                        style="vertical-align: top !important;">{{totalAttendeesCount}}</span>
+                </button>
+                <button class="sideMenuButton" type="button">
+                    <img src="../assets/Images/leaderboard.png" class="menuIcon" />
+                    {{'Leaderboard' | translate}}
+                </button> -->
+                <!-- <button class="sideMenuButton" type="button">
+                    <img src="../assets/Images/content.png" class="menuIcon" />
+                    {{'Content' | translate}}
+                </button> -->
+                <button class="sideMenuButton" type="button" (click)="openChatQueuePopup()">
+                    <img src="../assets/Images/queue.png" class="menuIcon" />
+                    {{'ChatQueue' | translate}}
+                </button>
+
+                <button class="sideMenuButton" type="button" (click)="openChatPopup()">
+                    <img src="../assets/Images/chat.png" class="menuIcon" />
+                    {{'Chat' | translate}}
+                </button>
+
+                <button class="sideMenuButton" type="button" *ngIf="!isRepresentative" (click)="inviteFromAttendee()">
+                    <img src="../assets/Images/invite.png" class="menuIcon" />
+                    {{'Invite' | translate}}
+                </button>
+
+                <div *ngIf="translate.getLangs().length>1">
+                    <button *ngFor="let item of translate.getLangs()" class="sideMenuButton" type="button"
+                        (click)="changeLanguage(item)">
+                        <img src="../assets/Images/translation.png" class="menuIcon" />
+                        {{item | translate}}
+                    </button>
+                </div>
+
+                <button *ngIf="roomDetails.isWallEnabled" class="sideMenuButton" type="button" data-toggle="modal"
+                    data-target="#wallModal">
+                    <img src="../assets/Images/user.png" class="menuIcon" />
+                    {{'Wall' | translate}}
+                </button>
+
+
+                <button class="sideMenuButton" type="button" data-toggle="modal" data-target="#myProfileModal">
+                    <img src="../assets/Images/user.png" class="menuIcon" />
+                    {{'MyProfile' | translate}}
+                </button>
+
+                <!-- <button class="sideMenuButton" type="button" data-toggle="modal" (click)="createMeetingForWhereby()">
+                    <img src="../assets/Images/chat.png" class="menuIcon" />
+                    {{'WhereBy Chat' | translate}}
+                </button> -->
+
+
+
+                <button class="sideMenuButton" type="button" (click)='logoutUser()'>
+                    <img src="../assets/Images/logout.png" class="menuIcon" />
+                    {{'Logout' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+    <!-- <div class="resposive">
+     
+        <app-chat-partial>   <div style="color: black;position: fixed;">
+            <h3>Chat with Us</h3>
+        </div></app-chat-partial>
+    </div> -->
+
+    <!-- <div>
+        <cometchat-user-list-with-messages></cometchat-user-list-with-messages>
+      </div> -->
+
+
+</div>
+
+<!-- Link To leaderboard popup window -->
+<div id="leaderboardModal" class="modal fade" role="document"
+    style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'"
+                [style.color]="eventDetails.headerTextColor">
+                <h5 style="width: 90%;" class="modal-title">
+                    {{attendeeLeaderboard?.length>0?attendeeLeaderboard[0].leaderboardName:"Leaderboard"}}</h5>
+                <button [style.color]="eventDetails.headerTextColor" data-toggle="modal" data-target="#howToEarnBadges"
+                    type="button" class="close" (click)="getLeaderboardInfo()" aria-label="Close">
+                    <span aria-hidden="true" style="font-size:22px;" tooltip="{{'HowToEarnBadges' | translate}}"><i
+                            class="fa fa-info-circle"></i></span>
+                </button>
+                <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <div class="modal-body" style="max-height:60vh;overflow: auto;">
+                <table class="table table-hover table-striped table-bordered" cellspacing="0"
+                    *ngIf="attendeeLeaderboard?.length>0">
+                    <thead>
+                        <tr>
+                            <th>
+                                {{'ProfilePicture' | translate}}
+                            </th>
+                            <th>
+                                {{'FirstName' | translate}}
+                            </th>
+                            <th>
+                                {{'LastName' | translate}}
+                            </th>
+                            <th>
+                                {{'Points' | translate}}
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of attendeeLeaderboard;let i=index">
+                            <td style="text-align: center;
+                            vertical-align: middle;
+                            display: table-cell;">
+                                <img src="{{item.profileImage?item.profileImage:'https://vemsimageblobstorage.blob.core.windows.net/profileimage/NoImage.png'}}"
+                                    style="width: 64px;height: 64px; border-radius: 64px;" title="{{item.firstName}}" />
+
+                            </td>
+                            <td>
+                                <label class="form-Lable Poppins-Regular">{{item.firstName}}</label>
+                            </td>
+                            <td>
+                                <label class="form-Lable Poppins-Regular">{{item.lastName}}</label>
+                            </td>
+                            <td>
+                                <label class="form-Lable Poppins-Regular">{{item.totalPointValue}}</label>
+                            </td>
+                            <td style="text-align: center;
+                            vertical-align: middle;
+                            display: table-cell;">
+                                <label class="form-Lable Poppins-Regular"><i class="fa fa-eye" data-toggle="modal"
+                                        data-target="#leaderboardAttendeeDetailsModal"
+                                        (click)="showBadgeDetails(item)"></i></label>
+                            </td>
+
+                        </tr>
+                    </tbody>
+
+                </table>
+                <div class="text-danger text-center" *ngIf="attendeeLeaderboard?.length===0">
+                    {{'No Record Found' | translate}}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button [style.background]="eventDetails.headerBackgroundColor"
+                    [style.color]="eventDetails.headerTextColor" type="button" class="btn btnOrangeFrontEnd"
+                    data-dismiss="modal">{{'Close' | translate}}</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<!-- leaderboard popup window -->
+<div id="leaderboardAttendeeDetailsModal" class="modal fade" role="document"
+    style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'"
+                [style.color]="eventDetails.headerTextColor">
+                <h5 class="modal-title">Leaderboard</h5>
+                <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="max-height:60vh;overflow: auto;">
+                <table class="table table-hover table-striped table-bordered" cellspacing="0"
+                    *ngIf="attendeeLeaderboard?.length>0">
+                    <thead>
+                        <tr>
+                            <th>
+                                {{'Picture' | translate}}
+                            </th>
+                            <th>
+                                {{'Title' | translate}}
+                            </th>
+                            <th>
+                                {{'Description' | translate}}
+                            </th>
+                            <th>
+                                {{'Points' | translate}}
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of attendeeLeaderboardBadges;let i=index">
+                            <td>
+                                <img src="{{item.largeImageUrl}}" style="width: 64px;height: 64px; border-radius: 64px;"
+                                    title="{{item.firstName}}" />
+
+                            </td>
+                            <td>
+                                <label name="item_name_{{i}}" id="item_name_{{i}}" [(ngModel)]="item.badgeTitle"
+                                    class="form-Lable Poppins-Regular">{{item.badgeTitle}}</label>
+                            </td>
+                            <td>
+                                <label name="item_name_{{i}}" id="item_name_{{i}}" [(ngModel)]="item.description"
+                                    class="form-Lable Poppins-Regular">{{item.description}}</label>
+                            </td>
+                            <td>
+                                <label name="item_name_{{i}}" id="item_name_{{i}}" [(ngModel)]="item.badgeValue"
+                                    class="form-Lable Poppins-Regular">{{item.badgeValue}}</label>
+                            </td>
+
+
+                        </tr>
+                    </tbody>
+
+                </table>
+                <div class="text-danger text-center" *ngIf="attendeeLeaderboard?.length===0">
+                    {{'No Record Found' | translate}}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button [style.background]="eventDetails.headerBackgroundColor"
+                    [style.color]="eventDetails.headerTextColor" type="button" class="btn btnOrangeFrontEnd"
+                    data-dismiss="modal">{{'Close' | translate}}</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- How to earn badges  window -->
+<div id="howToEarnBadges" class="modal fade" role="document"
+    style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'"
+                [style.color]="eventDetails.headerTextColor">
+                <h5 class="modal-title">{{'HowToEarnBadges' | translate}}</h5>
+                <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="max-height:65vh;overflow: auto;">
+                <table class="table table-hover table-striped table-bordered" cellspacing="0"
+                    *ngIf="howToEarnBadges?.length>0">
+                    <thead>
+                        <tr>
+                            <th>
+                                {{'Picture' | translate}}
+                            </th>
+                            <th>
+                                {{'Title' | translate}}
+                            </th>
+                            <th>
+                                {{'Description' | translate}}
+                            </th>
+                            <th>
+                                {{'Points' | translate}}
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of howToEarnBadges;let i=index">
+                            <td>
+                                <img src="{{item.largeImageUrl}}" style="width: 64px;height: 64px; border-radius: 64px;"
+                                    title="{{item.firstName}}" />
+
+                            </td>
+                            <td>
+                                <label name="item_name_{{i}}" id="item_name_{{i}}" [(ngModel)]="item.badgeTitle"
+                                    class="form-Lable Poppins-Regular">{{item.badgeTitle}}</label>
+                            </td>
+                            <td>
+                                <label name="item_name_{{i}}" id="item_name_{{i}}" [(ngModel)]="item.description"
+                                    class="form-Lable Poppins-Regular">{{item.description}}</label>
+                            </td>
+                            <td>
+                                <label name="item_name_{{i}}" id="item_name_{{i}}" [(ngModel)]="item.badgeValue"
+                                    class="form-Lable Poppins-Regular">{{item.badgeValue}}</label>
+                            </td>
+
+
+                        </tr>
+                    </tbody>
+
+                </table>
+                <div class="text-danger text-center" *ngIf="howToEarnBadges?.length===0">
+                    {{'No Record Found' | translate}}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button [style.background]="eventDetails.headerBackgroundColor"
+                    [style.color]="eventDetails.headerTextColor" type="button" class="btn btnOrangeFrontEnd"
+                    data-dismiss="modal">{{'Close' | translate}}</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+<!-- Attendee/Representative Profile View Model -->
+<div id="myProfileModal" class="modal fade" data-backdrop="" role="document"
+    style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'"
+                [style.color]="eventDetails.headerTextColor">
+                <h5 class="modal-title">{{'MyProfile' | translate}}</h5>
+                <button [style.color]="eventDetails.headerTextColor" type="button" class="close" aria-label="Close"
+                    (click)="closeProfileModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <div class="modal-body">
+                <form class="form-control needs-validation h-100 mt-2" style="border: none;"
+                    enctype="multipart/form-data" #profileForm="ngForm">
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label Poppins-Regular" for="EventUrl">{{'EmailAddress' |
+                            translate}}</label>
+                        <div class="col-sm-9 col-form-label Poppins-Regular" style="word-break: break-all;">
+                            {{profileData.emailAddress}}
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="FirstName" class="col-sm-3 col-form-label Poppins-Regular">{{'FirstName' |
+                            translate}} </label>
+                        <div class="col-sm-9">
+                            <input type="text" ng-dirty pattern="[a-zA-Z0-9 ]*" name="firstName" #firstName="ngModel"
+                                [(ngModel)]="profileData.firstName" class="form-control Poppins-Regular"
+                                placeholder="{{'EnterFirstName' | translate}}" required maxlength="50">
+                            <span *ngIf="firstName.invalid && firstName.touched" class="error">{{'FirstNameRequired'|
+                                translate}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="LastName" class="col-sm-3 col-form-label Poppins-Regular"> {{'LastName' |
+                            translate}} </label>
+                        <div class="col-sm-9">
+                            <input type="text" pattern="[a-zA-Z0-9  ]*" name="lastName"
+                                class="form-control Poppins-Regular" #lastName="ngModel"
+                                [(ngModel)]="profileData.lastName" placeholder="{{'EnterLastName' | translate}}"
+                                required maxlength="50">
+                            <span *ngIf="lastName.invalid && lastName.touched" class="error">{{'Lastnamerequired'|
+                                translate}} </span>
+                        </div>
+                    </div>
+
+                    <div *ngIf="!isRepresentative" class="mb-3 row">
+                        <label for="FacebookProfileURL"
+                            class="col-sm-3 col-form-label Poppins-Regular">{{'FacebookProfileURL' |
+                            translate}}
+                        </label>
+                        <div class="col-sm-9">
+                            <input type="text" pattern="https?://.+" name="facebookProfileUrl"
+                                class="form-control Poppins-Regular" #facebookProfileUrl="ngModel"
+                                [(ngModel)]="profileData.facebookProfileUrl"
+                                placeholder="{{'EnterFacebookProfileURL' | translate}}" maxlength="100">
+                        </div>
+                    </div>
+
+                    <div *ngIf="!isRepresentative" class="mb-3 row">
+                        <label for="LinkedInProfileURL"
+                            class="col-sm-3 col-form-label Poppins-Regular">{{'LinkedInProfileURL' |
+                            translate}}
+                        </label>
+                        <div class="col-sm-9">
+                            <input type="text" pattern="https?://.+" name="linkedInProfileUrl"
+                                class="form-control Poppins-Regular" #linkedInProfileUrl="ngModel"
+                                [(ngModel)]="profileData.linkedInProfileUrl"
+                                placeholder="{{'EnterLinkedInProfileURL' | translate}}" maxlength="100">
+                        </div>
+                    </div>
+
+                    <div *ngIf="!isRepresentative" class="mb-3 row">
+                        <label for="MobileNo" class="col-sm-3 col-form-label Poppins-Regular"> {{'ContactNumber' |
+                            translate}}
+                        </label>
+                        <div class="col-sm-9">
+                            <select name="countryCode" #countryCode="ngModel" [(ngModel)]="profileData.countryCode"
+                                class="form-select float-left col-sm-5 mr-30px" required>
+                                <option value="">{{'SelectCountryCode' | translate}}</option>
+                                <option *ngFor="let item of countryList" value="{{item.phonecode}}">{{item.name+'
+                                    (+'+item.phonecode+')'}}</option>
+                            </select>
+                            <input type="text" pattern="\d*" name="mobile" class="form-control Poppins-Regular col-sm-6"
+                                #mobile="ngModel" [(ngModel)]="profileData.mobile"
+                                placeholder="{{'EnterContactNumber' | translate}}" required maxlength="10">
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+                    <div *ngIf="!isRepresentative">
+                        <!-- Loading standard field -->
+                        <div class="mb-3 row" *ngFor="let sdField of standardFields;let i=index"
+                            [ngStyle]="{'display':sdField.selected==false?'none':'block'}">
+
+                            <label *ngIf="sdField.selected" for="{{sdField.label}}"
+                                class="col-sm-3 col-form-label Poppins-Regular">{{sdField.label | translate}}
+                            </label>
+                            <div *ngIf="sdField.selected" class="col-sm-9">
+                                <select *ngIf="sdField.selected && sdField.label=='Country'" [(ngModel)]="sdField.value"
+                                    [required]="'sdField.required'" name="{{sdField.label}}" id="{{sdField.label}}"
+                                    class="form-select Poppins-Regular">
+                                    <option value="">{{'SelectCountryCode' | translate}}</option>
+                                    <option *ngFor="let item of countryList" value="{{item.name}}">{{item.name}}
+                                    </option>
+                                </select>
+                                <input
+                                    *ngIf="sdField.selected && sdField.label!=='Country' && sdField.label!=='Date of Birth' && sdField.label!=='Upload Resume' && sdField.label!=='Upload Profile Pic'"
+                                    [required]="'sdField.required'" type="text" name="{{sdField.label}}"
+                                    class="form-control Poppins-Regular" [(ngModel)]="sdField.value"
+                                    id="{{sdField.label}}" placeholder="{{sdField.label | translate}}"
+                                    maxlength="100" />
+
+                                <app-date-picker *ngIf="sdField.selected && sdField.label=='Date of Birth'"
+                                    [(ngModel)]="sdField.value" id="{{sdField.label}}" name="{{sdField.label}}">
+                                </app-date-picker>
+
+                                <div *ngIf="sdField.label=='Upload Resume'">
+                                    <div class="input-group bootstrap-timepicker timepicker">
+                                        <input [style.color]="eventDetails.sectionHeaderTextColor"
+                                            *ngIf="!sdField.value" type="file" #FileUploadControl
+                                            (change)="onResumeFileChange($event,sdField)" style="margin-left: 20px;">
+                                        <a *ngIf="sdField.value" href="{{sdField.value}}" class="btn btn-link"
+                                            target="_blank">{{'File'| translate}}</a>
+                                        <i *ngIf="sdField.value" class="fa fa-times" tooltip="{{'Delete' | translate}}"
+                                            (click)="deleteResume(sdField)"></i>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="sdField.label=='Upload Profile Pic'">
+                                    <div class="input-group bootstrap-timepicker timepicker">
+                                        <input [style.color]="eventDetails.sectionHeaderTextColor"
+                                            *ngIf="!sdField.value" type="file" #FileUploadControl
+                                            (change)="onProfilePicFileChange($event,sdField)"
+                                            style="margin-left: 20px;">
+
+                                        <img *ngIf="sdField.value" src="{{sdField.value}}" height="64px" width="64px">
+
+                                        <i *ngIf="sdField.value" class="fa fa-times" tooltip="{{'Delete' | translate}}"
+                                            (click)="deleteProfilePic(sdField)"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- Loading custom fields -->
+                        <div lass="mb-3 row" *ngFor="let csField of customFields"
+                            [ngStyle]="{'display':csField.selected==false?'none':'block'}">
+                            {{csField.Name}}
+                            <label for="{{csField.Name}}" class="col-sm-3 col-form-label Poppins-Regular"
+                                style="float: left;">{{csField.Name
+                                | translate}}
+                            </label>
+                            <div class="col-sm-9" style="float: left;">
+                                <select *ngIf="csField.Type=='select'" [(ngModel)]="csField.Value"
+                                    [required]="'csField.required'" name="{{csField.Name}}" id="{{csField.Name}}"
+                                    class="form-select Poppins-Regular">
+                                    <option value="">{{'SelectOne' | translate}}</option>
+                                    <option *ngFor="let item of csField.Options" value="{{item}}">{{item}}
+                                    </option>
+                                </select>
+
+
+                                <input *ngIf="csField.Type=='text'" [required]="'csField.required'" type="text"
+                                    name="{{csField.Name}}" class="form-control Poppins-Regular"
+                                    [(ngModel)]="csField.Value" id="{{csField.Name}}"
+                                    placeholder="{{csField.Name | translate}}" maxlength="100" />
+
+
+
+                                <div *ngIf="csField.Type=='radio'">
+                                    <div *ngFor="let radioItem of csField.Options"
+                                        class="input-group mb-4 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6"
+                                        style="float: left;">
+                                        <div class="form-check">
+                                            <input type="radio" name="{{csField.Name}}" [value]="csField.Value"
+                                                [(ngModel)]="csField.Value">
+                                            <label class="form-check-label ml-10px" for="{{radioItem}}"
+                                                style="text-transform: capitalize;">
+                                                {{radioItem}}
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                                <div *ngIf="csField.Type=='check'">
+                                    <div *ngFor="let checkItem of csField.Options"
+                                        class="input-group mb-4 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6"
+                                        style="float: left;">
+                                        <div class="form-check">
+                                            <input type="checkbox" name="{{csField.Name}}" [value]="csField.Value"
+                                                [(ngModel)]="csField.Value">
+                                            <label class="form-check-label ml-10px" for="{{checkItem}}"
+                                                style="text-transform: capitalize;">
+                                                {{checkItem}}
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- <div class="mb-3 row">
+                        <label for="inputEmail3" class="col-sm-3 col-form-label Poppins-Regular"> {{'ProfilePicture' |
+                            translate}}
+                            <br> <span *ngIf="!isProfileImageAvailable"
+                                class="fs-10px Poppins-Regular">{{'MaxSizeTwoHunderd' | translate}}</span>
+                        </label>
+                        <div class="col-sm-9">
+                            <div *ngIf="profileData.profileImage!=null">
+                                <img src='{{profileData.profileImage}}' style="width:200px;height:auto" />
+                                <i class="fa fa-times" (click)="deleteImage()" tooltip="{{'Delete' | translate}}" style="cursor: pointer;vertical-align: top;margin-left:10px"></i>
+                            </div>
+                            <input type="file" *ngIf="profileData.profileImage==null" #FileUploadControl style="visibility:visible" (change)="onFileChange($event)" />
+
+                        </div>
+                    </div> -->
+
+
+
+                    <!-- <div *ngIf="!isRepresentative" class="mb-3 row">
+                        <label for="CompanyName" class="col-sm-3 col-form-label Poppins-Regular">{{'CompanyName' |
+                            translate}} </label>
+                        <div class="col-sm-9">
+                            <input type="text" ng-dirty pattern="[a-zA-Z0-9 ]*" name="companyName" #companyName="ngModel" [(ngModel)]="profileData.companyName" class="form-control Poppins-Regular" placeholder="{{'EntercompanyName' | translate}}" required maxlength="50">
+                            <span *ngIf="companyName.invalid && companyName.touched" class="error">{{'companyNameRequired'|
+                                translate}}
+                            </span>
+                        </div>
+                    </div>
+                    <div *ngIf="!isRepresentative" class="mb-3 row">
+                        <label for="Designation" class="col-sm-3 col-form-label Poppins-Regular">{{'Designation' |
+                            translate}} </label>
+                        <div class="col-sm-9">
+                            <input type="text" ng-dirty pattern="[a-zA-Z0-9 ]*" name="designation" #designation="ngModel" [(ngModel)]="profileData.designation" class="form-control Poppins-Regular" placeholder="{{'Enterdesignation' | translate}}" required maxlength="50">
+                            <span *ngIf="designation.invalid && designation.touched" class="error">{{'DesignationRequired'|
+                                translate}}
+                            </span>
+                        </div>
+                    </div>
+                    <div *ngIf="!isRepresentative" class="mb-3 row">
+                        <label for="Address" class="col-sm-3 col-form-label Poppins-Regular">{{'Address' |
+                            translate}} </label>
+                        <div class="col-sm-9">
+                            <input type="text" ng-dirty pattern="[a-zA-Z0-9 ]*" name="address" #address="ngModel" [(ngModel)]="profileData.address" class="form-control Poppins-Regular" placeholder="{{'EnterAddress' | translate}}" required maxlength="50">
+                            <span *ngIf="address.invalid && address.touched" class="error">{{'AddressRequired'|
+                                translate}}
+                            </span>
+                        </div>
+                    </div>
+                    <div *ngIf="!isRepresentative" class="mb-3 row">
+                        <label for="City" class="col-sm-3 col-form-label Poppins-Regular">{{'City' |
+                            translate}} </label>
+                        <div class="col-sm-9">
+                            <input type="text" ng-dirty pattern="[a-zA-Z0-9 ]*" name="city" #city="ngModel" [(ngModel)]="profileData.city" class="form-control Poppins-Regular" placeholder="{{'EnterCity' | translate}}" required maxlength="50">
+                            <span *ngIf="city.invalid && city.touched" class="error">{{'CityRequired'|
+                                translate}}
+                            </span>
+                        </div>
+                    </div>
+                    <div *ngIf="!isRepresentative" class="mb-3 row">
+                        <label for="State" class="col-sm-3 col-form-label Poppins-Regular">{{'State' |
+                            translate}} </label>
+                        <div class="col-sm-9">
+                            <input type="text" ng-dirty pattern="[a-zA-Z0-9 ]*" name="state" #state="ngModel" [(ngModel)]="profileData.state" class="form-control Poppins-Regular" placeholder="{{'EnterState' | translate}}" required maxlength="50">
+                            <span *ngIf="state.invalid && state.touched" class="error">{{'stateRequired'|
+                                translate}}
+                            </span>
+                        </div>
+                    </div>
+                    <div *ngIf="!isRepresentative" class="mb-3 row">
+                        <label for="Country" class="col-sm-3 col-form-label Poppins-Regular">{{'Country' |
+                            translate}} </label>
+                        <div class="col-sm-9">
+                            <input type="text" ng-dirty pattern="[a-zA-Z0-9 ]*" name="country" #country="ngModel" [(ngModel)]="profileData.country" class="form-control Poppins-Regular" placeholder="{{'EnterCountry' | translate}}" required maxlength="50">
+                            <span *ngIf="country.invalid && country.touched" class="error">{{'CountryRequired'|
+                                translate}}
+                            </span>
+                        </div>
+                    </div>
+                    <div *ngIf="!isRepresentative" class="mb-3 row">
+                        <label for="ZipCode" class="col-sm-3 col-form-label Poppins-Regular">{{'ZipCode' |
+                            translate}} </label>
+                        <div class="col-sm-9">
+                            <input type="text" ng-dirty pattern="[a-zA-Z0-9 ]*" name="zip" #zip="ngModel" [(ngModel)]="profileData.zip" class="form-control Poppins-Regular" placeholder="{{'EnterZipCode' | translate}}" required maxlength="50">
+                            <span *ngIf="zip.zip && zip.touched" class="error">{{'ZipCodeRequired'|
+                                translate}}
+                            </span>
+                        </div>
+                    </div> -->
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button [style.background]="eventDetails.headerBackgroundColor"
+                    [style.color]="eventDetails.headerTextColor" type="submit" (click)="updateUserProfile()"
+                    [disabled]="profileForm.invalid" class="btn btnOrangeFrontEnd">{{'Save' |
+                    translate}} </button>
+
+                <button (click)="closeProfileModal()" [style.background]="eventDetails.headerBackgroundColor"
+                    [style.color]="eventDetails.headerTextColor" type="button" class="btn btnOrangeFrontEnd">{{'Close' |
+                    translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Wall Modal -->
+<div id="wallModal" class="modal fade" role="document" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+    data-keyboard="false" data-backdrop="static">
+    style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'"
+                [style.color]="eventDetails.headerTextColor">
+                <h5 class="modal-title">{{'Wall' | translate}}</h5>
+                <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="overflow-x: hidden;max-height: 70vh;">
+                <form class="form-control needs-validation h-100 mt-2" style="border: none;"
+                    enctype="multipart/form-data" #wallForm="ngForm">
+                    <div class="row col-sm-12 mb-10px" *ngFor="let wall of allWallPostsOfRooms">
+                        <div class="col-sm-3">
+                            <img [src]="wall.profileImage" style="height: 64px;width:64px;border-radius: 64px;" />
+                        </div>
+                        <div class=" col-sm-9" id="spnWallDetails">
+                            <span class="Poppins-SemiBold"> {{wall.postedBy}}</span>
+                            <span [innerHTML]="wall.post | safeHtml"></span>
+                            <span class="Poppins-SemiBold">
+                                {{ wall.addedDate| date:'dd MMMM, yyyy'}}
+                            </span>
+                        </div>
+                        <div class="Poppins-Regular col-sm-12">
+
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <div class="col-sm-12">
+                            <div class="colinput">
+                                <ckeditor *ngIf="!isRepresentative" [config]="config" [(data)]="wallmessage"></ckeditor>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="!isRepresentative" [style.background]="eventDetails.headerBackgroundColor"
+                    [style.color]="eventDetails.headerTextColor" type="submit" (click)="saveWall()"
+                    class="btn btnOrangeFrontEnd">{{'Save' |
+                    translate}} </button>
+
+                <button [style.background]="eventDetails.headerBackgroundColor"
+                    [style.color]="eventDetails.headerTextColor" type="button" class="btn btnOrangeFrontEnd"
+                    data-dismiss="modal">{{'Close' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Link To Attendee popup window -->
+<div id="attendeeModal" class="modal fade" role="document"
+    style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'"
+                [style.color]="eventDetails.headerTextColor">
+                <h5 class="modal-title">Attendees</h5>
+                <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-sm-8" style="float: left;">
+                    <label class="col-sm-8 Poppins-Regular " style="text-align: left;">{{'Now Attending: '|
+                        translate}}<span style="vertical-align: top !important;"><a (click)="allAttendeelist()"
+                                data-dismiss="modal" class="Poppins-Regular">{{totalAttendeesCount}}</a></span></label>
+                    <label class="col-sm-8 Poppins-Regular " style="word-break: break-all;text-align: left;">{{'This
+                        Location: '|translate}}<span style="vertical-align: top !important;"><a
+                                (click)="allLocationWiseAttendeelist()" data-dismiss="modal"
+                                class="Poppins-Regular">{{thisLocationAttendeeCount}}</a></span></label>
+                </div>
+                <!-- 
+                <div class="col-sm-4" style="float: right;">
+                    <img height="100px" width="100px" src="../../../../assets/Images/guest.png" />
+                </div> -->
+            </div>
+            <div class="modal-footer">
+                <button [style.background]="eventDetails.headerBackgroundColor"
+                    [style.color]="eventDetails.headerTextColor" type="button" class="btn btnOrangeFrontEnd"
+                    data-dismiss="modal">{{'Close' | translate}}</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Briefcase Modal Popup -->
+<div id="briefcaseModal" class="modal fade" role="document"
+    style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'"
+                [style.color]="eventDetails.headerTextColor">
+                <h5 class="modal-title">Briefcase Items</h5>
+                <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" [style.color]="eventDetails.sectionHeaderTextColor">
+                <table [style.color]="eventDetails.sectionHeaderTextColor"
+                    class="table table-hover table-striped table-bordered" cellspacing="0"
+                    *ngIf="allBriefcaseItems.length>0">
+                    <thead>
+                        <tr>
+                            <th style="border: none;">#</th>
+                            <th style="border: none;">
+                                {{'Name' | translate}}
+                            </th>
+
+                            <th style="border: none;">
+                                {{'Link' | translate}}
+                            </th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor='let item of allBriefcaseItems;let i=index'>
+                            <td style="border: none;vertical-align: middle;"><span
+                                    [style.color]="eventDetails.sectionHeaderTextColor">{{i+1 }}.</span></td>
+                            <td style="border: none;vertical-align: middle;"><span
+                                    [style.color]="eventDetails.sectionHeaderTextColor">{{item.name }}</span> </td>
+                            <td style="border: none;vertical-align: middle;" (click)="openBriefcaseLink(item)">
+                                <a class=" linkBtnOrangeFrontEnd" role="button"
+                                    [style.color]="eventDetails.headerTextColor"> {{'ViewFile' | translate}}</a>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="text-center"
+                    *ngIf="allBriefcaseItems.length==0 || allBriefcaseItems===undefined  || allBriefcaseItems===null">
+                    <label class="Poppins-Regular">
+                        {{'NoRecordFound' | translate}}
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btnOrangeFrontEnd" [style.background]="eventDetails.headerBackgroundColor"
+                    [style.color]="eventDetails.headerTextColor+'!important'" type="button"
+                    data-dismiss="modal">{{'Close' | translate}}</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<!-- First Time LoggedIn Video Modal Popup -->
+<div id="firstTimeLoggedInVideoModal" class="modal fade" role="document"
+    style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'"
+                [style.color]="eventDetails.headerTextColor">
+                <h5 class="modal-title">Welcome Video</h5>
+                <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal"
+                    aria-label="Close" (click)="stopVideo()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" [style.color]="eventDetails.sectionHeaderTextColor">
+
+                <div class="modal-content">
+
+                    <div class="modal-body mb-0 p-0">
+                        <div id="welcomeVideoIFrame"
+                            *ngIf="eventDetails.videoType=='youtube' || eventDetails.videoType== 'vimeoUrl'"
+                            class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                            <iframe height="100%" width="100%" class="embed-responsive-item" allowfullscreen controls=""
+                                [src]="welcomeVideoSrc | safe">
+                            </iframe>
+
+
+                        </div>
+                        <div *ngIf="eventDetails.videoType=='uploadFile'">
+                            <video height="100%" width="100%" controls controlsList="nodownload"
+                                [src]="welcomeVideoSrc | safe"></video>
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btnOrangeFrontEnd" [style.background]="eventDetails.headerBackgroundColor"
+                        [style.color]="eventDetails.headerTextColor+'!important'" type="button" data-dismiss="modal"
+                        (click)="closeWelcomeVideo(eventDetails.videoUrl)">{{'Close' | translate}}</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Whereby Modal Popup -->
+<div id="WhereByChatModal" class="modal fade" role="document"
+    style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'"
+                [style.color]="eventDetails.headerTextColor">
+                <h5 class="modal-title">WhereBy Video Meeting link</h5>
+                <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" [style.color]="eventDetails.sectionHeaderTextColor">
+
+                <span>
+                    Share link to start a meeting <a href="{{wherebyChatLink}}" target="_blank"
+                        role="button">{{wherebyChatLink}}</a>
+                </span>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btnOrangeFrontEnd" [style.background]="eventDetails.headerBackgroundColor"
+                    [style.color]="eventDetails.headerTextColor+'!important'" type="button"
+                    data-dismiss="modal">{{'Close' | translate}}</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="cometchat"></div>
+<ngx-spinner type="ball-clip-rotate-multiple" size="medium" style="z-index: 10000;"></ngx-spinner>
+
+<!-- <div>
+    <h1>Stream chat</h1>
+
+    <input id="sendmessage" type="button"  value="Send!" />
+    <input id="messageTextInput" type="text" />
+
+    <ul id="chatMessages"></ul>
+
+    <script src="~/assets/js/chatstream.js"></script>
+</div>
+
+
+
+<style>
+    .flex-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-right: 5px;
+      margin-left: 5px;
+      padding: 5px;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+    }
+  
+    .flex-item {
+      height: 500px;
+      margin: 3px;
+    }
+  
+      .flex-item ul {
+        list-style: none;
+      }
+  
+      .flex-item li {
+        background-color: black;
+        color: white;
+        margin: 3px;
+        padding:3px;
+      }
+  </style>
+  <div class="flex-container">
+    <div>
+      Current Color:
+      <select [(ngModel)]="currentColor">
+        <option *ngFor="let color of colors" [value]="color">{{color}}</option>
+      </select>
+    </div>
+    <div class="flex-item">
+      <label>Your name:{{name}}</label>
+      <div *ngFor="let square of squares" [style.background-color]="square.Color" style="color:white;font-size:24px;width:50px;height:50px;margin:2px;" (click)="squareClick($event,square)">
+        {{square.Id}}
+      </div>
+    </div>
+  
+    <div class="flex-item">
+      <ul>
+        <li *ngFor="let message of messages">{{message}}</li>
+      </ul>
+    </div>
+  </div>
+   -->

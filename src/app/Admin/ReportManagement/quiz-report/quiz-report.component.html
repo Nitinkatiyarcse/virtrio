@@ -1,0 +1,94 @@
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'Quizreport'| translate}}</label>
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2"
+            [routerLink]="['/admin/events/reports',eventId]" routerLinkActive="router-link-active">
+
+            <i class="fa fa-arrow-right text-primary" type="button" tooltip="{{'Back to reports' | translate}}"
+                style=" -webkit-transform: scaleX(-1);  transform: scaleX(-1);"></i>
+        </a>
+        <label class="col-sm-10 Poppins-Regular text-small"
+            style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+    </div>
+</div>
+
+<div class="flex-container bg-white" id="representativeItems" style="margin-top: 25px;padding: 20px;">
+    <div *ngIf='noRecordFound' class="text-danger text-center">
+        {{ 'NoRecordFound' | translate}}
+    </div>
+    <div *ngIf='!noRecordFound'>
+        <!-- <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+            class="table table-hover table-striped table-bordered" cellspacing="0">
+            <thead>
+                <tr>
+                   
+                    <th style="border: none;">
+                        {{'Attendee' | translate}}
+                    </th>
+                    
+                    <th style="border: none;">
+                        {{'IsCompleted' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'IsPassed' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'QuizStartDateTime' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'QuizEndDateTime' | translate}}
+                    </th>
+                    
+                    <th style="border: none;">
+                        {{'QuizTitle' | translate}}
+                    </th>
+                    
+                    <th style="border: none;">
+                        {{'TotalMarks' | translate}}
+                    </th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let item of attendeeData'>
+                   
+                    <td style="border: none;vertical-align: middle;">{{item.attendee!==null ?item.attendee.firstName+' '+item.attendee.lastName:''}}</td>
+                    <td style="border: none;vertical-align: middle;"> {{item.isCompleted?'Yes' : 'No'}}</td>
+                    <td style="border: none;vertical-align: middle;"> {{item.IsPassed?'Yes': 'No'}}</td>
+                    <td style="border: none;vertical-align: middle;">{{item.quizStartDateTime | date: 'mediumDate'}} {{item.quizStartDateTime | date: 'shortTime'}}</td>
+                    <td style="border: none;vertical-align: middle;">{{item.quizEndDateTime | date: 'mediumDate'}} {{item.quizEndDateTime | date: 'shortTime'}}</td>
+                    <td style="border: none;vertical-align: middle;"> {{item.quiz.title}}</td>
+                    <td style="border: none;vertical-align: middle;"> {{item.totalMarks}}</td>
+
+                    
+
+                </tr>
+            </tbody>
+        </table> -->
+        <!--  -->
+
+        <div style="display: flex; flex-direction: column; height: 100%;">
+            <div style="margin-bottom: 5px; font-weight: bold; margin-right:auto">
+                <button (click)="onBtnExport()" style="font-weight: bold;">Export to
+                    Excel</button>
+                <!-- <button  class="btn btn-primary mr-1" (click)="show()"style="font-weight: bold;">Show table</button>
+                <button  class="btn btn-primary mr-1" (click)="hide()"style="font-weight: bold;">Hide table</button> -->
+
+
+            </div>
+            <div style="flex: 1 1 0; position: relative;">
+                <div id="gridContainer">
+                    <ag-grid-angular style="width: 100%; height: 500px;" class="ag-theme-alpine" [rowData]="rowData"
+                        [columnDefs]="columnDefs" [pagination]="true"
+                        [defaultExcelExportParams]="defaultExcelExportParams" [addImageToCell]="true"
+                        [rowDragManaged]="true" [rowHeight]="40" [paginationPageSize]=10 row-selection="multiple"
+                        [isFullWidthRow]="isFullWidthRow" [fullWidthCellRenderer]="fullWidthCellRenderer"
+                        (gridReady)="onGridReady($event)">
+                    </ag-grid-angular>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

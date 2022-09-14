@@ -1,0 +1,330 @@
+<div class=" bg-white" style="height: 100vh !important;">
+
+
+
+    <img src="https://vemsstorageaccount.blob.core.windows.net/roomtemplates/MeetingRoom1.jpg" style="position: absolute;height: auto;width: 100%;" />
+    <div style="position: fixed;z-index: 0;top: 0;right: 0;bottom: 0;left: 0;height: 100%;width: 100%;background-color: rgba(0, 0, 0, .8);">
+    </div>
+
+</div>
+
+<div style="position: absolute;top: 20%;left:32%;width: 60%;">
+
+    <div class="col-sm-12 row mt-15px">
+        <div class="col-sm-2 text-center bg-white" style="padding: 20px;border-radius: 10px;margin-left:20px" (click)="openAttendees()">
+            <i class="fa fa-users fa-3x" style="color: #1390e4;"></i>
+            <div class="Poppins-SemiBold fs-13px mt-15px">
+                Attendee
+            </div>
+            <div class="Poppins-Bold fs-16px">
+                {{totalAttendeesCount}}
+            </div>
+        </div>
+        <div class="col-sm-2 text-center bg-white" style="padding: 20px;border-radius: 10px;margin-left:20px" data-toggle="modal" data-target="#messageModal">
+            <i class="fa fa-comments fa-3x" style="color: #1390e4;"></i>
+            <div class="Poppins-SemiBold fs-13px mt-15px">
+                Message
+            </div>
+            <div class="Poppins-Bold fs-16px">
+                {{totalUnreadMessages}}
+            </div>
+        </div>
+        <div class="col-sm-2 text-center bg-white" style="padding: 20px;border-radius: 10px;margin-left:20px">
+            <i class="fa fa-bell fa-3x" style="color: #1390e4;"></i>
+            <div class="Poppins-SemiBold fs-13px mt-15px">
+                Alert
+            </div>
+            <div class="Poppins-Bold fs-16px">
+                0
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-sm-12 row mt-15px">
+
+        <div class="col-sm-2 text-center bg-white" style="padding: 20px;border-radius: 10px;margin-left:20px" data-toggle="modal" data-target="#webinarViewModal">
+            <i class="fa fa-file-movie-o fa-3x" style="color: #1390e4;"></i>
+            <div class="Poppins-SemiBold fs-13px mt-15px">
+                Webcast Views
+            </div>
+            <div class="Poppins-Bold fs-16px">
+                {{webinarViewCount}}
+            </div>
+        </div>
+        <div class="col-sm-2 text-center bg-white" style="padding: 20px;border-radius: 10px;margin-left:20px" data-toggle="modal" data-target="#briefcaseModal1">
+            <i class="fa fa-suitcase fa-3x" style="color: #1390e4;"></i>
+            <div class="Poppins-SemiBold fs-13px mt-15px">
+                Briefcase Items
+            </div>
+            <div class="Poppins-Bold fs-16px">
+                {{briefcaseItemCount}}
+            </div>
+        </div>
+
+        <div class="col-sm-2 text-center bg-white" style="padding: 20px;border-radius: 10px;margin-left:20px" data-toggle="modal" data-target="#representativeChecklist">
+            <i class="fa fa-id-card fa-3x" style="color: #1390e4;"></i>
+            <div class="Poppins-SemiBold fs-13px mt-15px">
+                Rep Checklist
+            </div>
+            <div class="Poppins-Bold fs-16px">
+                {{repChecklistCount}}
+            </div>
+        </div>
+
+    </div>
+    <div class="col-sm-12 row mt-15px">
+        <div class="col-sm-2 text-center" style="padding: 20px;border-radius: 10px;margin-left:20px"></div>
+        <!-- <div class="col-sm-2 text-center bg-white" style="padding: 20px;border-radius: 10px;margin-left:20px">
+            <i class="fa fa-check-square fa-3x" style="color: #1390e4;"></i>
+            <div class="Poppins-SemiBold fs-13px mt-15px">
+                visiting card drops
+            </div>
+            <div class="Poppins-Bold fs-16px">
+                20
+            </div>
+        </div> -->
+        <div class="col-sm-2 text-center" style="padding: 20px;border-radius: 10px;margin-left:20px"></div>
+    </div>
+
+</div>
+
+
+<!-- Message Modal Popup-->
+<div id="messageModal" class="modal fade" role="document" style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'" [style.color]="eventDetails.headerTextColor">
+                <h5 class="modal-title">Messages</h5>
+                <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" class="table table-hover table-striped table-bordered" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                                {{'FirstName' | translate}}
+                            </th>
+                            <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                                {{'LastName' | translate}}
+                            </th>
+
+                            <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                                {{'Date' | translate}}
+                            </th>
+
+                            <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                                {{'Booth' | translate}}
+                            </th>
+                            <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                                {{'Type' | translate}}
+                            </th>
+                            <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                                {{'Replied' | translate}}
+                            </th>
+
+                            <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor='let item of repMessages'>
+
+                            <td style="border: none;vertical-align: middle;" [style.color]="eventDetails.sectionHeaderTextColor" [ngStyle]="{
+                                'font-weight': item.isMessageReadByAdmin!==true  ? '700' : '400'
+                              }">{{item.firstName}}</td>
+                              <td style="border: none;vertical-align: middle;" [style.color]="eventDetails.sectionHeaderTextColor" [ngStyle]="{
+                                'font-weight': item.isMessageReadByAdmin!==true  ? '700' : '400'
+                              }">{{item.lastName}}</td>
+                            <td style="border: none;vertical-align: middle;" [style.color]="eventDetails.sectionHeaderTextColor" [ngStyle]="{
+                                'font-weight': item.isMessageReadByAdmin!==true  ? '700' : '400'
+                              }"> {{item.messageDate | date:'d MMM, y'}}</td>
+                            <td style="border: none;vertical-align: middle;" [style.color]="eventDetails.sectionHeaderTextColor" [ngStyle]="{
+                                'font-weight': item.isMessageReadByAdmin!==true  ? '700' : '400'
+                              }"> {{item.boothName}}</td>
+                            <td style="border: none;vertical-align: middle;" [style.color]="eventDetails.sectionHeaderTextColor" [ngStyle]="{
+                                'font-weight': item.isMessageReadByAdmin!==true  ? '700' : '400'
+                              }"> {{item.isMessage?'Message':'Meeting Request'}}</td>
+
+                            <td style="border: none;vertical-align: middle;" [style.color]="eventDetails.sectionHeaderTextColor" [ngStyle]="{
+                                'font-weight': item.isMessageReadByAdmin!==true  ? '700' : '400'
+                              }"> {{item.reply===null?'No':'Yes'}}</td>
+
+
+                            <td style="border: none;vertical-align: middle;text-align: center;">
+                                <div class="dropdown">
+                                    <a href="#" data-bs-toggle="dropdown" class="text-muted"><i
+                                                class="fa fa-gear"></i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item Poppins-Regular" (click)="getMessageDetails(item)" id="btnDetails">{{'Details'|translate}}</a>
+
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" type="button" class="btn btnOrangeFrontEnd" data-dismiss="modal">{{'Close' | translate}}</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Webinar View Modal Popup -->
+<div id="webinarViewModal" class="modal fade" role="document" style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'" [style.color]="eventDetails.headerTextColor">
+                <h5 class="modal-title">Webinar Views</h5>
+                <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover table-striped table-bordered" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                                {{'Attendee Name' | translate}}
+                            </th>
+
+                            <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                                {{'Webinar Name' | translate}}
+                            </th>
+
+                            <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                                {{'View Date' | translate}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor='let item of allWebinars'>
+                            <td style="border: none;vertical-align: middle;">{{item.attendee.firstName+' '+ item.attendee.lastName }} </td>
+                            <td style="border: none;vertical-align: middle;"> {{item.webinar.displayName }}</td>
+                            <td style="border: none;vertical-align: middle;"> {{item.createdDate | date:'d MMM, y'}}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" type="button" class="btn btnOrangeFrontEnd" data-dismiss="modal">{{'Close' | translate}}</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Briefcase Modal Popup -->
+<div id="briefcaseModal1" class="modal fade" role="document" style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'" [style.color]="eventDetails.headerTextColor">
+                <h5 class="modal-title">Briefcase Items</h5>
+                <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover table-striped table-bordered" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                                {{'Name' | translate}}
+                            </th>
+
+                            <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                                {{'Link' | translate}}
+                            </th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor='let item of allBriefcaseItems'>
+                            <td style="border: none;vertical-align: middle;" [style.color]="eventDetails.sectionHeaderTextColor">{{item.name}} </td>
+                            <td style="border: none;vertical-align: middle;" [style.color]="eventDetails.sectionHeaderTextColor" (click)="openBriefcaseLink(item)">
+                                <span class="linkBtnOrangeFrontEnd" role="button">  View File</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" type="button" class="btn btnOrangeFrontEnd" data-dismiss="modal">{{'Close' | translate}}</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Representative checklist Modal Popup -->
+<div id="representativeChecklist" class="modal fade" role="document" style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'" [style.color]="eventDetails.headerTextColor">
+                <h5 class="modal-title">Checklist Items</h5>
+                <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" [style.color]="eventDetails.sectionHeaderTextColor">
+                <i class="fa fa-plus pull-right" tooltip="Add Checklist" (click)="addChecklist()"></i>
+                <br>
+                <br>
+                <table [style.color]="eventDetails.sectionHeaderTextColor" class="table table-hover table-striped table-bordered" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                                {{'Title' | translate}}
+                            </th>
+                            <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+                                {{'Status' | translate}}
+                            </th>
+
+                            <th style="border: none;" [style.color]="eventDetails.uiAccentColor">
+
+                            </th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor='let item of repChecklist'>
+                            <td [style.color]="eventDetails.sectionHeaderTextColor" style="border: none;vertical-align: middle;">
+                                {{item.checklistItem }}
+                            </td>
+                            <td style="border: none;vertical-align: middle;">
+                                <label [ngClass]="item.isCompleted?'text-success':'text-danger'">{{item.isCompleted?'Completed':'Pending' }}</label>
+                            </td>
+                            <td style="border: none;vertical-align: middle;text-align: center;">
+                                <div class="dropdown">
+                                    <a href="#" data-bs-toggle="dropdown" class="text-muted"><i
+                                                class="fa fa-gear"></i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a *ngIf="!item.isCompleted" class="dropdown-item Poppins-Regular" (click)="markAsComplete(item)" id="btnDetails">{{'MarkAsComplete'|translate}}</a>
+                                        <a class="dropdown-item Poppins-Regular" (click)="deleteRepChecklist(item)" id="btnDetails">{{'Delete'|translate}}</a>
+
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" type="button" class="btn btnOrangeFrontEnd" data-dismiss="modal">{{'Close' | translate}}</button>
+            </div>
+        </div>
+
+    </div>
+</div>

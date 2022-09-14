@@ -1,0 +1,416 @@
+<!-- <p>create-quiz works!</p> -->
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'Quiz'| translate}}</label>
+
+        <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+    </div>
+</div>
+
+<form class="form-group needs-validation mt-4 p-4 h-100 bg-white p-15px" #QuizForm="ngForm">
+
+    <div class="mb-3 row">
+        <label for="QuizLevel" class="col-sm-3 col-form-label Poppins-Regular">{{'QuizLevel'|translate}}</label>
+        <div class="col-sm-9">
+            <select class="form-select Poppins-Regular" required #QuizLevel="ngModel" [(ngModel)]="inputCreateQuizModel.quiz.quizLevel" name="quizLevel">
+                <option value="">{{'PleaseSelect' | translate}}</option>
+                <option *ngIf="isBoothAdmin" value="EventLevel">{{'EventLevel' | translate}}</option>
+                <option value="BoothLevel">{{'BoothLevel' | translate}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="quiztitle" class="col-sm-3 col-form-label Poppins-Regular">{{'QuizTitle'|translate}}</label>
+        <div class="col-sm-9">
+            <textarea class="form-control Poppins-Regular" placeholder="{{'QuizTitle'|translate}}" required #quiztitle="ngModel" [(ngModel)]="inputCreateQuizModel.quiz.title" name="quizTitle"></textarea>
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label for="quizinstructions" class="col-sm-3 col-form-label Poppins-Regular">{{'QuizInstructions'|translate}}</label>
+        <div class="col-sm-9">
+            <textarea class="form-control Poppins-Regular" placeholder="{{'QuizInstructions'|translate}}" required #quizinstructions="ngModel" [(ngModel)]="inputCreateQuizModel.quiz.instructions" name="quizinstructions"></textarea>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label Poppins-Regular" for="PercentNeededToPass">{{'PercentNeededToPass'|translate}}</label>
+        <div class="col-sm-9">
+            <input type="text" maxlength="3" pattern="[0-9]+" class="form-control Poppins-Regular" placeholder="{{'PercentNeededToPass'|translate}}" required #PercentNeededToPass="ngModel" [(ngModel)]="inputCreateQuizModel.quiz.percentneededtopass" name="PercentNeededToPass"
+                value="" (blur)="validatePassingMarks()">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label Poppins-Regular" for="PassMessage ">{{'PassMessage'|translate}}</label>
+        <div class="col-sm-9">
+            <textarea type="text" class="form-control Poppins-Regular" placeholder="{{'PassMessage'|translate}}" required #PassMessage="ngModel" [(ngModel)]="inputCreateQuizModel.quiz.PassMessage" name="PassMessage">{{inputCreateQuizModel.quiz.PassMessage}}</textarea>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label Poppins-Regular" for="FailMessage">{{'FailMessage'|translate}}</label>
+        <div class="col-sm-9">
+            <textarea type="text" class="form-control Poppins-Regular" placeholder="{{'FailMessage'|translate}}" required #FailMessage="ngModel" [(ngModel)]="inputCreateQuizModel.quiz.failMessage" name="FailMessage">{{inputCreateQuizModel.quiz.failMessage}}</textarea>
+
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label Poppins-Regular" for="ReviewMessage">{{'ReviewMessage'|translate}}</label>
+        <div class="col-sm-9">
+            <textarea type="text" class="form-control Poppins-Regular" placeholder="{{'ReviewMessage'|translate}}" required #ReviewMessage="ngModel" [(ngModel)]="inputCreateQuizModel.quiz.reviewMessage" name="ReviewMessage">{{inputCreateQuizModel.quiz.reviewMessage}}</textarea>
+
+        </div>
+    </div>
+
+
+    <div class="mb-3 row  mt-30px">
+        <label for="pollques" class="col-sm-3 col-form-label Poppins-Regular">{{'Isthequizmandatory'|translate}}</label>
+        <div class="col-sm-9" style="display: inline-block;">
+            <div style=" float: left;">
+                <div class="form-check ">
+                    <input type="radio" value="false" id="yes" class="form-check-input" name="IsRequired" checked (click)="isQuizRequired(true)">
+                    <label class="form-check-label Poppins-Regular" for="yes">{{'Yes'|translate}}</label>
+                </div>
+            </div>
+            <div style="margin-left: 50px;float: left;">
+                <div class="form-check">
+                    <input type="radio" value="true" id="no" class="form-check-input" name="IsRequired" (click)="isQuizRequired(false)">
+                    <label class="form-check-label Poppins-Regular" for="no">{{'No'|translate}}</label>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label Poppins-Regular form-check-label" for="ShowUsersScore">{{'ShowUsersScore'|translate}}</label>
+        <div class="col-sm-2  Poppins-Regular">
+            <input type="checkbox" style="margin-left: 0px;" style="padding: 0px;margin-top: 12px;" class="form-check-inline" (click)="setCheckBoxesValues($event,'showUsersScore')" id="ShowUsersScore" name="ShowUsersScore">
+
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label Poppins-Regular form-check-label" for="ShowPassingScore">{{'ShowPassingScore'|translate}}</label>
+        <div class="col-sm-2  Poppins-Regular">
+            <input type="checkbox" style="margin-left: 0px;" style="padding: 0px;margin-top: 12px;" class="form-check-inline" (click)="setCheckBoxesValues($event,'showPassingScore')" id="ShowPassingScore" name="ShowPassingScore">
+
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label Poppins-Regular form-check-label" for="RetestAvailable">{{'RetestAvailable'|translate}}</label>
+        <div class="col-sm-2  Poppins-Regular">
+            <input type="checkbox" style="margin-left: 0px;" style="padding: 0px;margin-top: 12px;" class="form-check-inline" (click)="setCheckBoxesValues($event,'retestAvailable')" id="RetestAvailable" name="RetestAvailable">
+
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label Poppins-Regular form-check-label" for="AllowReviewAfterTest">{{'AllowReviewAfterTest'|translate}}</label>
+        <div class="col-sm-2  Poppins-Regular">
+            <input type="checkbox" style="margin-left: 0px;" style="padding: 0px;margin-top: 12px;" class="form-check-inline" (click)="setCheckBoxesValues($event,'allowReviewAfterTest')" id="AllowReviewAfterTest" name="AllowReviewAfterTest">
+
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label Poppins-Regular form-check-label" for="ShowAnswersOnReview">{{'ShowAnswersOnReview'|translate}}</label>
+        <div class="col-sm-2  Poppins-Regular">
+            <input type="checkbox" style="margin-left: 0px;" style="padding: 0px;margin-top: 12px;" class="form-check-inline" (click)="setCheckBoxesValues($event,'showAnswersOnReview')" id="ShowAnswersOnReview" name="ShowAnswersOnReview">
+
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label Poppins-Regular form-check-label" for="GiveCertifcateOnpassing">{{'GiveCertifcateOnpassing'|translate}}</label>
+        <div class="col-sm-2  Poppins-Regular">
+            <input type="checkbox" style="margin-left: 0px;" style="padding: 0px;margin-top: 12px;" class="form-check-inline" (change)="ifCertifcateEnabled($event)" id="GiveCertifcateOnpassing" name="GiveCertifcateOnpassing">
+
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="QuizTime">{{'QuizTime'|translate}} ({{'InMinutes' |
+            translate}})</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control Poppins-Regular" placeholder="{{'QuizTimeinminutes'|translate}}" required #QuizTime="ngModel" [(ngModel)]="inputCreateQuizModel.quiz.quizTime" name="QuizTime">
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="QuizStartDate">{{'StartDate' | translate}}
+        </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-date-picker #QuizStartDate="ngModel"  [(ngModel)]="inputCreateQuizModel.quiz.quizStartDate " name="QuizStartDate" (ngModelChange)="validateDates()">
+                </app-date-picker>
+            </div>
+            <span *ngIf="QuizStartDate.invalid && QuizStartDate.touched" class="error">{{'StartDaterequired'|
+                translate}}</span>
+        </div>
+
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="QuizEndDate">{{'EndDate' | translate}}
+        </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-date-picker [(ngModel)]="inputCreateQuizModel.quiz.quizEndDate" #QuizEndDate="ngModel"  name="QuizEndDate" [minDate]="endMinDate" (ngModelChange)="validateDates()">
+                </app-date-picker>
+            </div>
+            <span *ngIf="QuizEndDate.invalid && QuizEndDate.touched" class="error">{{'EndDaterequired'| translate}}</span>
+            <!-- <span *ngIf="InvalidDate" class="error">{{'startDateGreaterThanEndDate'| translate}}</span> -->
+
+        </div>
+
+    </div>
+
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="QuizStartTime">{{'StartTime' | translate}}
+        </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-time-picker #QuizStartTime="ngModel" [(ngModel)]="inputCreateQuizModel.quiz.quizStartTime" name="QuizStartTime"  value="" name="|QuizStartTime" (ngModelChange)="validateTime()">
+                </app-time-picker>
+            </div>
+            <span *ngIf="QuizStartTime.invalid && QuizStartTime.touched" class="error">{{'StartTimerequired'|
+                translate}}</span>
+
+        </div>
+
+
+        <label class="col-sm-2 col-form-label Poppins-Regular" for="QuizEndTime">{{'EndTime'| translate}}
+        </label>
+        <div class="col-sm-4">
+            <div class="input-group bootstrap-timepicker timepicker">
+                <app-time-picker #QuizEndTime="ngModel" type="text" [(ngModel)]="inputCreateQuizModel.quiz.quizEndTime"  value="" name="QuizEndTime" (ngModelChange)="validateTime()">
+                </app-time-picker>
+            </div>
+
+            <span *ngIf="QuizEndTime.invalid && QuizEndTime.touched" class="error">{{'EndTimerequired'|
+                translate}}</span>
+            <span *ngIf="invalidTime" class="error">{{'startTimeGreaterThanEndTime'| translate}}</span>
+
+        </div>
+    </div>
+
+
+
+    <div class="mb-3 row" *ngIf="isCertifcateEnabled">
+        <label type="hidden" class="col-sm-2 col-form-label Poppins-Regular">{{'Certifcates' | translate}}</label>
+        <!--   <div *ngFor="let item of certificateTemp; let i=index" class="col-sm-5">
+        
+           <img src="{{item.templateIcon}}" id="SelectCertifcate" height="200" width="200"><br>
+            <input class="form-check-input" type="radio" id="item_{{i}}" name="templateItem" (change)="selectCertificateTemplate($event,item)" [checked]="this.inputCreateQuizModel.quiz.quizTemplateId==item.templateId" value="{{item.templateId}}" checked style="margin-left: 100px;margin-top: 15px;">
+
+         
+        </div>-->
+        <div class="col-sm-9 NgxEditor__Wrapper">
+            <ckeditor [config]="config" [(data)]="inputCreateQuizModel.quiz.quizCertificateTemplate"></ckeditor>
+        </div>
+    </div>
+
+
+
+
+    <!-- <div *ngFor="let question of inputCreateQuizModel.quizQuestions ; let i=index;">
+        <div class="mb-3 row mt-30px mb-30px">
+            <label for="quizquestion" style="float: left;"
+                class="col-sm-3 col-form-label Poppins-SemiBold">{{'Question'|translate}} {{i+1}}</label>
+            <div class="col-sm-9" style="float: left;">
+                <a style="float: left;" tooltip="{{'Delete' | translate}}" (click)="deleteQuestion(i)"><i
+                        class="fa fa-trash"></i></a>
+            </div>
+        </div>
+        <div class="mb-3 row mt-30px">
+            <label for="quizquestion" class="col-sm-3 col-form-label Poppins-Regular">{{'Question'|translate}}</label>
+            <div class="col-sm-9">
+                <textarea class="form-control Poppins-Regular" rows="4" cols="5" #value="ngModel" required
+                    [(ngModel)]="question.question" id="question_{{i}}"
+                    name="question_{{i}}">{{question.question}}</textarea>
+            </div>
+            <label for="choices" class="col-sm-3 col-form-label Poppins-Regular">{{'Choices'| translate}}</label>
+            <div class="col-sm-9 mt-10px">
+                <div class="row" *ngFor="let choices of question.choices| slice:0:6;let choiceIndex=index">
+                    <div class="col-sm-8 mt-10px">
+                        <input type="text" id="choice_{{i}}_{{choiceIndex}}" name="choice_{{i}}_{{choiceIndex}}"
+                            [(ngModel)]="choices.choice" class="form-control" required
+                            placeholder="{{'Choice' | translate}} {{choiceIndex+1}}" /></div>
+                    <div class="col-sm-3" style="padding-top: 10px;">
+                        <label class="form-check-inline col-form-label Poppins-Regular"
+                            for="isAnswer_{{i}}_{{choiceIndex}}">{{'IsAnswer' | translate}}</label>
+                        <input type="radio" id="isAnswer_{{i}}_{{choiceIndex}}" name="IsAnswer_{{i}}"
+                            (click)='selectIsAnswer($event,i,choiceIndex)' />
+                    </div>
+                    <div class="col-sm-1" style="padding-top: 10px;">
+                        <i class="fa fa-trash" style="cursor: pointer;padding-top: 10px;"
+                            (click)='deleteChoice(i,choiceIndex)' tooltip="{{'Delete' | translate}}"></i>
+                    </div>
+                </div>
+                <label for="addChoice" class="col-sm-6 col-form-label text-danger Poppins-SemiBold"
+                    (click)="addChoice(i,choiceIndex)">{{'AddChoice'|translate}}</label>
+            </div>
+
+        </div>
+        <hr>
+    </div> -->
+    <!-- <div class="mb-3 row">
+        <label for="addquestion" class="col-sm-6 col-form-label text-danger Poppins-SemiBold"
+            (click)="addQuestion()">{{'AddQuestion'|translate}}</label>
+    </div> -->
+
+    <div class="mb-12 row">
+        <label style="cursor: pointer;" for="addquestion" class="text-right col-form-label text-danger Poppins-SemiBold" data-toggle="modal" data-target="#addUpdateQuestion" (click)="addQuestion()">{{'AddQuestion'|translate}}</label>
+    </div>
+
+    <div class="mb-3 row">
+        <div class="col-sm-12">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+
+                <thead>
+                    <tr>
+                        <th style="border: none;">
+                            {{'Serial' | translate}}
+                        </th>
+                        <th style="border: none;">
+                            {{'Question' | translate}}
+                        </th>
+                        <th style="border: none;">
+                            {{'Choices' | translate}}
+                        </th>
+                        <th style="border: none;">
+                            {{'Answer' | translate}}
+                        </th>
+                        <th style="border: none;">
+
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody cdkDropList (cdkDropListDropped)="onDrop($event)">
+                    <tr cdkDrag cdkDragLockAxis="y" *ngFor="let question of inputCreateQuizModel.quizQuestions; let i=index;">
+                        <td style="border: none;">
+                            {{question.order}}
+                        </td>
+                        <td style="border: none;">
+                            {{question.question}}
+                        </td>
+                        <td style="border: none;">
+                            <div *ngFor="let choices of question.choices| slice:0:6;let choiceIndex=index">
+                                <label class="Poppins-Regular">
+                                    {{'Choice' | translate}} {{choiceIndex+1}} : {{choices.choice}}
+                                </label>
+                            </div>
+                        </td>
+                        <td style="border: none;">
+                            <div *ngFor="let choices of question.choices| slice:0:6;let choiceIndex=index">
+                                <label *ngIf="choices.isAnswer" class="Poppins-Regular">
+                                    {{choices.choice}}
+                                </label>
+                            </div>
+                        </td>
+                        <td style="border: none;">
+                            <div class="dropdown">
+                                <a href="#" data-bs-toggle="dropdown" class="text-muted"><i class="fa fa-gear"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item Poppins-Regular" id="btnDelete" style="cursor: pointer;" (click)="deleteQuestion(i)"><i class="fa fa-trash mr-10px"
+                                            tooltip="{{'Delete'|translate}}"></i>{{'Delete'|translate}}</a>
+                                    <a class="dropdown-item Poppins-Regular" style="cursor: pointer;" id="btnUpdate" data-toggle="modal" data-target="#addUpdateQuestion" (click)="updateQuestion(i,question)"><i class="fa fa-pencil-square  mr-10px"
+                                            tooltip="{{'Update'|translate}}"></i>{{'Update'|translate}}</a>
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <div class="col-sm-12 text-right">
+            <button type="save" (click)="saveQuiz()" [disabled]="QuizForm.invalid" class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 Poppins-Regular">{{'Save' |
+                translate}}</button>
+            <a data-dismiss="modal" [routerLink]="['/admin/events/Quiz',eventId]" routerLinkActive="router-link-active" class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 ml-20px text-white">{{'Cancel'
+                |
+                translate}}</a>
+        </div>
+
+    </div>
+
+
+
+
+</form>
+
+<!-- Modal Add/Update Question -->
+<div class="modal fade" id="addUpdateQuestion" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{'AddQuestion'|translate}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form method="Post" class="form-group" #AddWhitelistDomainForm="ngForm">
+
+
+                    <div class="mb-3 row mt-30px">
+                        <label for="quizquestion" class="col-sm-3 col-form-label Poppins-Regular">{{'Question'|translate}}</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control Poppins-Regular" rows="4" maxlength="300" cols="5" #value="ngModel" required [(ngModel)]="question.question" id="question" name="question">{{question.question}}</textarea>
+                        </div>
+                        <label for="choices" class="col-sm-3 col-form-label Poppins-Regular">{{'Choices'|
+                            translate}}</label>
+                        <div class="col-sm-9 mt-10px">
+                            <div class="row" *ngFor="let choices of question.choices| slice:0:6;let choiceIndex=index">
+                                <div class="col-sm-8 mt-10px">
+                                    <input type="text" maxlength="80" id="choice_{{choiceIndex}}" name="choice_{{choiceIndex}}" [(ngModel)]="choices.choice" class="form-control" required placeholder="{{'Choice' | translate}} {{choiceIndex+1}}" />
+                                </div>
+                                <div class="col-sm-3" style="padding-top: 10px;">
+                                    <label class="form-check-inline col-form-label Poppins-Regular" for="isAnswer_{{choiceIndex}}">{{'IsAnswer' | translate}}</label>
+                                    <input type="radio" id="isAnswer_{{choiceIndex}}" name="IsAnswer" [checked]="choices.isAnswer" (click)='selectIsAnswer($event,choiceIndex)' />
+                                </div>
+                                <div *ngIf="choiceIndex!==0" class="col-sm-1" style="padding-top: 10px;">
+                                    <i class="fa fa-trash" style="cursor: pointer;padding-top: 10px;" (click)='deleteChoice(choiceIndex)' tooltip="{{'Delete' | translate}}"></i>
+                                </div>
+                            </div>
+                            <label [ngStyle]="{
+                                'display': addedChoice <5 ? 'block' : 'none'
+                              }" for="addChoice" class="col-sm-6 col-form-label text-danger Poppins-SemiBold" (click)="addChoice()">{{'AddChoice'|translate}}</label>
+                        </div>
+
+                    </div>
+
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="save" (click)="saveQuestion()" [disabled]="AddWhitelistDomainForm.invalid" id="btnadddomianname" class="commonbtn btn btn-primary" data-dismiss="modal">
+                    {{'Save'|translate }}
+                </button>
+                <button type="button" #popupCloseBtn class="commonbtn btn  btn-primary  text-white" style="margin-left: 20px;" data-dismiss="modal" (click)='closeModal()'>
+                    {{'Cancel' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

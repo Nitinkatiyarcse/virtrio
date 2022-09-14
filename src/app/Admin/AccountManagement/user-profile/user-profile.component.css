@@ -1,0 +1,19 @@
+::ng-deep input {
+    border: none;
+    background-color: transparent;
+}
+
+::ng-deep input:focus,
+    select:focus,
+    textarea:focus,
+    button:focus {
+        outline: none;
+    }
+
+    ::ng-deep .fa-user-circle-o {
+    color: gray;
+}
+
+::ng-deep select {
+    font-family: 'FontAwesome',
+}

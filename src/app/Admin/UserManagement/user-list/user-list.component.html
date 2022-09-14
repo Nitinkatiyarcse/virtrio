@@ -1,0 +1,118 @@
+<div>
+    <div class="bg-white" style="padding:20px">
+        <div class="text-center pageHeader">
+            <label style="margin-top:20px;">{{'Team'| translate}}</label>
+            <a class="commonbtn btn btn-primary text-white Poppins-Regular" style="float: right; text-align: center;" (click)=exportCSV()>Download</a>
+            <!-- <a id="btnAddUser">
+                <i class="fa fa-user-plus text-primary" type="button" (click)="openAddUserPopup()" tooltip="{{'AddUser' | translate}}" style=" -webkit-transform: scaleX(-1);  transform: scaleX(-1);"></i>
+            </a> -->
+        </div>
+        <div class="row" style="margin:20px">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sl-12 col-xs-12">
+                <div class="input-group mb-3">
+
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><a style="cursor:pointer" id="btnSearch"><i
+                                    class="fa fa-search"></i></a> </div>
+                    </div>
+                    <input type="text" class="form-control" placeholder="{{'Searchbyname,email'| translate}}" style="border-left: none;" name="SearchByNameEmail" #SearchByNameEmail="ngModel" [(ngModel)]="inputUserRolesViewModel.searchString" name="txtSearch" (change)='getSearchedList()'>
+
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-12 col-sl-12 col-xs-12  mb-3">
+                <select class="form-select" id="ddlSorting" name="ddlSorting" name="SortString" (change)='getSearchedList()' #SortString="ngModel" [(ngModel)]="inputUserRolesViewModel.sortString">
+                    <option value="" selected>{{'Sortby'| translate}} </option>
+                    <option value="Name_Asc">{{'NameAsc'| translate}} </option>
+                    <option value="Name_Desc">{{'NameDesc'| translate}} </option>
+                    <option value="RoleName_Asc"> {{'RoleNameAsc'| translate}} </option>
+                    <option value="RoleName_Desc">{{'RoleNameDesc'| translate}}  </option>
+                    <option value="Created_Asc">{{'CreatedDateAsc'| translate}}  </option>
+                    <option value="Created_Desc">{{'CreatedDateDesc'| translate}} </option>
+
+                </select>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-12 col-sl-12 col-xs-12  mb-3 ">
+                <select class="form-select" id="ddlFiterBy" name="FilterString" #FilterString="ngModel" (change)='getSearchedList()' [(ngModel)]="inputUserRolesViewModel.filterString">
+                    <option value="" selected>{{'Filter'| translate}} </option>
+                    <option value="superadmin">{{'SuperAdmin'| translate}}</option>
+                    <option value="eventadmin">{{'EventAdmin'| translate}}</option>
+                    <option value="boothadmin">{{'BoothAdmin'| translate}}</option>
+
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-container row" id="usrListItems" style="margin-top: 25px;">
+
+        <div *ngIf='NoRecordFoundMessage' class="text-danger text-center">
+            {{ 'NoRecordFound' | translate}}
+        </div>
+
+        <div *ngIf='!NoRecordFoundMessage' class="row">
+            <div *ngFor='let item of outputUserRolesViewModel' class="col-xl-4 col-lg-6 col-md-6 col-sl-12 col-xs-12 ">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="list-group-item d-flex align-items-center">
+                            <div class="text-break">
+                                <img src="{{item.userImage}}" class="rounded-circle" alt="" style="height:64px;width:64px;" />
+                                <input type="hidden" />
+                                <input type="hidden" />
+                            </div>
+                            <div class="flex-fill ps-3 pe-3">
+                                <div class="font-weight-600 Poppins-SemiBold text-break">
+                                    <span>{{item.name}}</span> &nbsp;<span>{{item.lastName}}</span>
+                                    <div class="fs-12px mt-1 text-muted text-break Poppins-Regular ">{{item.email}}</div>
+                                    <input type="text" style="border: none;" disabled class="fs-12px bg-white mt-1 text-muted text-break Poppins-Regular" mask="+00 (000) 000-0000" [(ngModel)]="item.mobileNo" />
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <a href="#" data-bs-toggle="dropdown" class="text-muted"><i
+                                class="fa fa-ellipsis-v"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item Poppins-Regular" id="btnDetails" (click)="openUserDetailsPopup(userDetailsModal,item)">{{'Details'| translate}}</a>
+                                    <a class="dropdown-item Poppins-Regular" *ngIf="!item.emailVerified" id="btnResendEmailLink" (click)="resendVerificataionEmail(item)">{{'ResendEmail'| translate}}</a>
+
+                                    <!-- <a class="dropdown-item Poppins-Regular" id="btnEditDetails" (click)="openUpdateUserPopup(userUpdatePopup,item)">{{'Edit'| translate}}</a>
+                                    <a class="dropdown-item Poppins-Regular" id="btnDeleteUser" (click)="DeleteUser(item.userId)">{{'Delete'| translate}}</a> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="" *ngIf='!NoRecordFoundMessage'>
+        <div class="list-group-item d-flex align-items-center" style="background-color: #ebeef4;border: none;height: 50px;vertical-align: middle;">
+            <button class="fa fa-step-backward" [disabled]="isFirstPage" style="margin-right: 15px;vertical-align: middle;margin-top: 2px;cursor:pointer;" id="btnPrev" (click)='getPrevPage()'></button>
+            <label style="margin-right: 10px;margin-bottom: 0px;">{{'Page'| translate}}</label>
+            <input id="txtPageNumber" type="number" class="form-control bg-white" style="width:50px;margin-right: 10px;border-left: none;text-align: center;" name="PageNo" #PageNo="ngModel" [(ngModel)]="pageNumber" [value]='pageNumber' min="1" max="{{totalPages}}"
+                onkeypress="return isNumberKey(event)">
+            <label style="margin-right: 10px;margin-bottom: 0px;"> {{'Of12'| translate}}</label>
+            <span style="margin-right: 10px;margin-bottom: 0px;" id="pgSize">&nbsp;{{totalPages}}</span>
+            <button class="fa fa-step-forward" style="margin: 0px 0px 0px 0px;cursor:pointer;" id="btnNext" [disabled]="isLastPage" (click)='getNextPage()'></button>
+        </div>
+    </div>
+
+
+
+
+    <!-- Upsert User Modal -->
+    <!-- <div class="modal fade" id="adduserModal" tabindex="-1" aria-labelledby="adduserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <app-user-upsert-partial></app-user-upsert-partial>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+
+
+    <!-- User Details Modal -->

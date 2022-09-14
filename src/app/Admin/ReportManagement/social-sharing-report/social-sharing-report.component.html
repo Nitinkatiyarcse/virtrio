@@ -1,0 +1,48 @@
+<!-- <p>Social Sharing-report works!</p> -->
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'Social Sharing Report'}}</label>
+        <label class="col-sm-10 Poppins-Regular text-small"
+            style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+    </div>
+</div>
+
+<div class="flex-container bg-white" id="representativeItems" style="margin-top: 25px;padding: 20px;">
+    <div *ngIf='noRecordFound' class="text-danger text-center">
+        {{ 'NoRecordFound' | translate}}
+    </div>
+    <div *ngIf='!noRecordFound'>
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+            class="table table-hover table-striped table-bordered" cellspacing="0">
+            <thead>
+                <tr>
+                    <th style="border: none;">
+                        {{'ProfilePicture' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'From' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'To' | translate}}
+                    </th>
+                    <th style="border: none;">
+                        {{'Status' | translate}}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let item of attendeeData'>
+                    <td style="border: none;vertical-align: middle;"><img
+                            [src]="item.profileImage?item.profileImage:'https://vemsimageblobstorage.blob.core.windows.net/profileimage/NoImage.png'"
+                            style="height: 50px; width: 50px;border-radius: 50px;" /></td>
+                    <td style="border: none;vertical-align: middle;">{{item.from}}</td>
+                    <td style="border: none;vertical-align: middle;"> {{item.to}}</td>
+                    <td style="border: none;vertical-align: middle;"
+                        [ngClass]="item.isActive?'text-success':'text-danger'" translate> {{item.isActive?'Approved'
+                        :'Pending' }}</td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>

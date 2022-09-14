@@ -1,0 +1,440 @@
+<div>
+
+
+    <div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+        <div class="col-sm-12 text-Medium ">
+            <label *ngIf="IsAdd" class="col-sm-10 text-Medium" style="text-align: left;">{{'CreateRoom'|
+                translate}}</label>
+            <label *ngIf="!IsAdd" class="col-sm-10 text-Medium" style="text-align: left;">{{'RoomDetails'|
+                translate}}</label>
+
+            <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+        </div>
+    </div>
+
+
+
+    <div class="flex-container row bg-white" id="roomListItems" style="margin-top: 25px;padding: 20px;margin-left: 0px;margin-right: 0px;">
+
+        <form class="form-group" #AddRoomForm="ngForm">
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="RoomType">{{'RoomType'| translate}}
+
+                </label>
+                <div class="col-sm-10">
+                    <select id="roomType" required #roomType="ngModel" [(ngModel)]="inputRoomModel.roomTypeId" name="roomtype" class="form-select" (change)='checkRoomType($event)'>
+                        <option value="">{{"SelectRoomType" | translate}}</option>
+                        <option *ngFor="let item of allRoomTypes" value="{{item.roomTypeId}}">{{item.roomType}}</option>
+                    </select>
+
+                    <span *ngIf="roomType.invalid && roomType.touched" class="error">{{'SelectRoomType'|
+                        translate}}</span>
+
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="RoomType">{{'Name'| translate}}
+                </label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control Poppins-Regular" placeholder="{{'Name' | translate}}" required #RoomName="ngModel" maxlength="50" [(ngModel)]="inputRoomModel.name" name="RoomName" value="">
+                    <span *ngIf="RoomName.invalid && RoomName.touched" class="error">{{'Namerequired'|
+                        translate}}</span>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="RoomDesc">{{'RoomDescription' | translate}}
+
+                </label>
+                <div class="col-sm-10">
+                    <textarea class="form-control Poppins-Regular" placeholder="{{'RoomDescription' | translate}}" #RoomDesc="ngModel" maxlength="250" [(ngModel)]="inputRoomModel.roomDesc" name="RoomDesc"></textarea>
+
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="LocationKey">{{'LocationKey'| translate}}
+
+                </label>
+                <div class="col-sm-10">
+                    <input type="text" pattern="[a-zA-Z]+" maxlength="15" class="form-control Poppins-Regular" placeholder="{{'LocationKey' | translate}}" required #LocationKey="ngModel" [(ngModel)]="inputRoomModel.locationKey" name="LocationKey">
+                    <span *ngIf="LocationKey.invalid && LocationKey.touched" class="error">{{'LocationKeyrequired'|
+                        translate}}</span>
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="allLanguages">{{'LanguageAffilation'|
+                    translate}}
+                </label>
+                <div class="col-sm-10" style="display: inline-flex; margin-top: 10px;">
+                    <div class="col-sm-3 Poppins-Regular " *ngFor="let order of allLanguages">
+                        <label>
+
+                            <input type="checkbox" name="{{order.languageId}}" [(ngModel)]="order.isSelected"
+                                (change)='getLanguageValues($event,order.languageId)'>
+                            {{order.language | translate}}
+                        </label>
+                    </div>
+                    <br>
+                    <span class="col-sm-10" *ngIf="languageNotSelected" class="error">{{'SELECT'| translate}}</span>
+                </div>
+
+
+            </div>
+
+
+
+
+
+            <!-- <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="LocationKey">{{'Entitlement'| translate}}
+
+                </label>
+            </div> -->
+
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="Entltilement">{{'Entitlement'|
+                    translate}}</label>
+                <div class="col-sm-10">
+                    <input type="hidden" value='' name="EntitlementId" #EntitlementId="ngModel" [(ngModel)]="inputRoomModel.entitlementId" />
+                    <ng-multiselect-dropdown name="Entltilement" #Entitlement [placeholder]="'SelectEntitlement'| translate" [required]='entitlementRequiredField' [settings]="EntitlementDropdownSettings" [disabled] style="background-color: #fff;" [data]="entitlementDropdownList"
+                        [(ngModel)]="selectedEntitlementsArr" [ngClass]='setEntitlementClass()'>
+                    </ng-multiselect-dropdown>
+                </div>
+            </div>
+
+
+
+            <!-- <div class="mb-3 row">
+                <div class="col-sm-2 Poppins-Regular">
+
+                    <input type="checkbox" style="margin-left: 0px;margin-top: 10px" class="form-check-inline"
+                        name="DefaultSet" [(ngModel)]="isDefaultSet" #DefaultSet (change)="getEntitlementValues($event,'DefaultSet')">
+                    <label class="form-check-label col-sm-2 Poppins-Regular" for="DefaultSet">{{'DefaultSet'|translate}}
+                    </label>
+                </div>
+
+                <div class="col-sm-2 Poppins-Regular">
+
+                    <input type="checkbox" style="margin-left: 0px;margin-top: 10px" class="form-check-inline"
+                        name="Platinum" [(ngModel)]="isPlatinum" #Platinum (change)="getEntitlementValues($event,'Platinum')">
+                    <label class="form-check-label col-sm-2 Poppins-Regular" for="Platinum">{{'Platinum'|translate}}
+                    </label>
+                </div>
+
+                <div class="col-sm-2 Poppins-Regular">
+
+                    <input type="checkbox" style="margin-left: 0px;margin-top: 10px" class="form-check-inline"
+                        name="Gold" [(ngModel)]="isGold" #Gold  (change)="getEntitlementValues($event,'Gold')">
+                    <label class="form-check-label col-sm-2 Poppins-Regular" for="Gold">{{'Gold'|translate}}
+                    </label>
+                </div>
+                <div class="col-sm-2 Poppins-Regular">
+
+                    <input type="checkbox" style="margin-left: 0px;margin-top: 10px" class="form-check-inline"
+                        name="Silver" [(ngModel)]="isSilver" #Silver (change)="getEntitlementValues($event,'Silver')">
+                    <label class="form-check-label col-sm-2 Poppins-Regular" for="Silver">{{'Silver'|translate}}
+                    </label>
+                </div>
+                <div class="col-sm-2 Poppins-Regular">
+
+                    <input type="checkbox" style="margin-left: 0px;margin-top: 10px" class="form-check-inline"
+                        name="Press" [(ngModel)]="isPress" #Press (change)="getEntitlementValues($event,'Press')">
+                    <label class="form-check-label col-sm-2 Poppins-Regular" for="Press">{{'Press'|translate}}
+                    </label>
+                </div>
+
+                <div class="col-sm-2 Poppins-Regular">
+
+                    <input type="checkbox" style="margin-left: 0px;margin-top: 10px" class="form-check-inline"
+                        name="VIP" [(ngModel)]="isVIP" #VIP (change)="getEntitlementValues($event,'VIP')">
+                    <label class="form-check-label col-sm-2 Poppins-Regular" for="VIP">{{'VIP'|translate}}
+                    </label>
+                </div>
+
+            </div> -->
+
+            <!-- <div class="mb-3 row">
+                <div class="col-sm-10  Poppins-Regular">
+                    <input type="checkbox" style="margin-left: 0px;margin-top:10px;" class="form-check-inline" name="EnableTimeWindow"
+                        #EnableTimeWindow (change)="timeWindowCheckChanged()" [checked]="hasTimeWindow">
+                    <label class="form-check-label col-sm-10 Poppins-Bold"
+                        for="EnableTimeWindow">{{'TimeWindow'|translate}}
+                    </label>
+                </div>
+            </div>
+
+            <div *ngIf="hasTimeWindow" class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular"
+                    for="Timewindow">{{'SelectTimeWindow'| translate}}</label>
+
+                <div class="col-sm-10">
+                    <select id="Timewindow" [(ngModel)]="inputRoomModel.selectedtimewindow" name="Timewindow"
+                        class="form-select">
+                        <option value="1" selected>Specify Start Time Only</option>
+                        <option value="2">according to deatil time</option>
+
+                    </select>
+                </div>
+            </div> -->
+            <div class="mb-3 row">
+
+                <label class="col-sm-2 col-form-label Poppins-Bold" for="EnableTimeBracket">{{'TimeBracket'|translate}}
+
+                </label>
+
+                <div class="col-sm-10">
+                    <input type="checkbox" style="margin-left: 0px;margin-top:10px;" class="form-check-inline " [(ngModel)]="inputRoomModel.enableTimeBracket" name="EnableTimeBracket" #EnableTimeBracket (change)="timeBracketChangedChanged()" [checked]="timeBracketEnabled">
+                </div>
+
+            </div>
+
+
+            <div *ngIf="this.inputRoomModel.enableTimeBracket">
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="RoomStartDate">{{'StartDate' |
+                        translate}}
+                    </label>
+                    <div class="col-sm-10">
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-date-picker [minDate]="roomStartMinDate" [maxDate]="" [(ngModel)]="inputRoomModel.startDate" #RoomStartDate="ngModel" required="" name="RoomStartDate" (ngModelChange)="validateRoomDates()">
+                            </app-date-picker>
+                        </div>
+                        <span *ngIf="RoomStartDate.invalid && RoomStartDate.touched" class="error">{{'StartDaterequired'| translate}}</span>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="RoomStartTime">{{'StartTime' |
+                        translate}}
+                    </label>
+                    <div class="col-sm-10">
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-time-picker #RoomStartTime="ngModel" [(ngModel)]="inputRoomModel.startTime" name="RoomStartTime" required="" value="" name="RoomStartTime" (ngModelChange)="validateRoomTime()">
+                            </app-time-picker>
+                        </div>
+                        <span *ngIf="RoomStartTime.invalid && RoomStartTime.touched" class="error">{{'StartTimerequired'| translate}}</span>
+
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="RoomStartDate">{{'EndDate' | translate}}
+                    </label>
+                    <div class="col-sm-10">
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <!-- <app-date-picker [(ngModel)]="inputRoomModel.endDate" #RoomEndDate="ngModel" required="" name="RoomEndDate" [minDate]="createroomEndMinDate" [maxDate]="roomEndMaxDate" (ngModelChange)="validateRoomDates()"> </app-date-picker> -->
+                            <app-date-picker [(ngModel)]="inputRoomModel.endDate" #RoomEndDate="ngModel" required="" name="RoomEndDate" (ngModelChange)="validateRoomDates()"> </app-date-picker>
+                        </div>
+                        <span *ngIf="RoomEndDate.invalid && RoomEndDate.touched" class="error">{{'EndDaterequired'| translate}}</span>
+                        <span *ngIf="InvalidDate" class="error">
+                            {{'startDateGreaterThanEndDate'| translate}}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label Poppins-Regular" for="RoomEndTime">{{'EndTime' | translate}}
+                    </label>
+                    <div class="col-sm-10">
+
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <app-time-picker #RoomEndTime="ngModel" [(ngModel)]="inputRoomModel.endTime" name="RoomEndTime" required="" value="" name="RoomEndTime" (ngModelChange)="validateRoomTime()">
+                            </app-time-picker>
+                        </div>
+                        <span *ngIf="RoomEndTime.invalid && RoomEndTime.touched" class="error">{{'EndTimerequired'|
+                            translate}}</span>
+                        <span *ngIf="InvalidTime" class="error">
+                            {{'startTimeGreaterThanEndTime'| translate}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="mb-3 row" *ngIf="this.inputRoomModel.enableTimeBracket">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="TimeZone">{{'TimeZone'| translate}}</label>
+                <div class="col-sm-10">
+                    <select id="timeZone" required [(ngModel)]="inputRoomModel.timezoneId" name="timeZone" class="form-select" (change)="selectTimeZone($event.target.value);" #timeZone="ngModel">
+                        <option value="">{{'SelectTimezone' | translate}}</option>
+                        <option *ngFor="let item of allTimezones" value="{{item.timeZoneId}}">{{item.timeZoneName}}
+                            ({{item.offset}})</option>
+                    </select>
+                    <span *ngIf="timeZone.invalid && timeZone.touched" class="error">{{'TimeZonerequired'|
+                        translate}}</span>
+                </div>
+
+            </div>
+
+
+            <div class="mb-3 row">
+
+                <label class="col-sm-2 col-form-label Poppins-Bold" for="RoomVisibleToAttendeesMessage">{{'RoomVisibleToAttendees'|translate}}
+
+                </label>
+
+                <div class="col-sm-10">
+                    <input type="checkbox" style="margin-left: 0px;margin-top:10px;" class="form-check-inline " [(ngModel)]="inputRoomModel.roomVisibleToAttendees" name="RoomVisibleToAttendees" #RoomVisibleToAttendees (change)="roomVisibleToAttendeesChanged()" [checked]="roomVisibleToAttendees">
+                </div>
+
+            </div>
+
+            <div class="mb-3 row" *ngIf="roomVisibleToAttendees">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="RoomVisibleToAttendeesMessage">{{'Message'|
+                    translate}}
+
+                </label>
+                <div class="col-sm-10">
+                    <textarea id="RoomVisibleToAttendeesMessage" required class="error" [(ngModel)]="inputRoomModel.roomVisibleToAttendeesMessage" class="form-control" #RoomVisibleToAttendeesMessage name="RoomVisibleToAttendeesMessage"></textarea>
+                    <span *ngIf="RoomVisibleToAttendeesMessage.invalid && RoomVisibleToAttendeesMessage.touched" class="error">{{'MessageRequired'| translate}}</span>
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="MetaData">{{'MetaData'| translate}}
+
+                </label>
+                <div class="col-sm-10">
+                    <textarea [(ngModel)]="inputRoomModel.metadata" class="form-control" #MetaData name="MetaData"></textarea>
+
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Bold" for="EnableAttendeeToAttendeeVideoChat">{{'EnableAttendeeToAttendeeVideoChat'|translate}}
+
+                </label>
+
+                <div class="col-sm-10  Poppins-Regular">
+                    <input type="checkbox" style="margin-left: 0px;margin-top:10px;" class="form-check-inline  " [(ngModel)]="inputRoomModel.enableAttendeeToAttendeeVideoChat" name="EnableAttendeeToAttendeeVideoChat" #EnableAttendeeToAttendeeVideoChat (change)="enableAttendeeToAttendeeVideoChatChanged()"
+                        [checked]="enableAttendeeToAttendeeVideoChat">
+
+                </div>
+            </div>
+
+            <div class="mb-3 row" *ngIf="enableAttendeeToAttendeeVideoChat">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="VideoChatTimeRestrictionInMinute">{{'InMinutes'| translate}}
+
+                </label>
+                <div class="col-sm-10">
+                    <input type="number" required [(ngModel)]="inputRoomModel.videoChatTimeRestrictionInMinute" class="form-control" #VideoChatTimeRestrictionInMinute name="VideoChatTimeRestrictionInMinute" />
+
+                </div>
+            </div>
+
+
+
+
+            <div class="mb-3 row" *ngIf="isBooth">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="BoothLogo">{{'UploadBoothLogo'|translate}}
+                    <span class="fs-10px Poppins-Regular">{{'MaxSizeTwoHunderd' | translate}}</span>
+                </label>
+
+                <div class="col-sm-10  Poppins-Regular">
+                    <input id="fileupload" type="file" (change)="onFileChange($event)" name="BoothLogo" *ngIf="!inputRoomModel.boothLogo">
+
+                    <img src="{{inputRoomModel.boothLogo}}" id="UploadedBoothImage" *ngIf="inputRoomModel.boothLogo" style="width:100px;height: auto;">
+                    <i class="fa fa-times-circle" tooltip="{{'Delete' | translate}}" (click)="removeBoothIcon()" style="cursor: pointer;vertical-align: top;margin-left: 5px;" *ngIf="inputRoomModel.boothLogo"></i>
+                </div>
+            </div>
+
+            <div class="mb-3 row" *ngIf="isBooth">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="RoomShow">{{'2DOr3D'|translate}}
+
+                </label>
+
+                <div class="row col-sm-10  Poppins-Regular">
+                    <div class="col-sm-3 Poppins-Regular" *ngIf="typeOfScreenType=='Both' || typeOfScreenType=='2D'">
+                        <div class="form-check form-check-inline">
+                            <input type="radio" value="" id="BoothOption2DRadio" style="margin-top: 12px;padding: 0px;" class="form-check-input" name="RoomShow" #2D (change)="getBoothShowOption($event,'2D')" [checked]="inputRoomModel.boothTypeTwoDOrThreeD === '2D'">
+                            <label class="form-check-label col-sm-12 Poppins-Regular" style="margin-left: 0px;margin-top: 10px" for="2D">{{'2D'|translate}}</label>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-3 Poppins-Regular" *ngIf="typeOfScreenType=='Both' || typeOfScreenType=='3D'">
+                        <div class="form-check form-check-inline">
+                            <input type="radio" value="" id="BoothOptionOption3DRadio" style="margin-top: 12px;padding: 0px;" class="form-check-input" name="RoomShow" #3D (change)="getBoothShowOption($event,'3D')" [checked]="inputRoomModel.boothTypeTwoDOrThreeD === '3D'">
+                            <label class="form-check-label col-sm-12 Poppins-Regular" style="margin-left: 0px;margin-top: 10px" for="3D">{{'3D'|translate}}
+                            </label>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="IsWallEnabled">{{'Wall'|translate}}
+
+                </label>
+
+                <div class="col-sm-10  Poppins-Regular">
+                    <input type="checkbox" style="margin-left: 0px;margin-top:10px;" class="form-check-inline  " [(ngModel)]="inputRoomModel.isWallEnabled" name="IsWallEnabled" #IsWallEnabled (change)="enableIsWallEnabledChanged()" [checked]="isWallEnabled">
+
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="IsChatEnabled">{{'ChatEnabled'|translate}}
+
+                </label>
+
+                <div class="col-sm-10  Poppins-Regular">
+                    <input type="checkbox" style="margin-left: 0px;margin-top:10px;" class="form-check-inline  " [(ngModel)]="inputRoomModel.isChatEnabled" name="IsChatEnabled" #IsChatEnabled (change)="enableisChatEnabledChanged()" [checked]="isChatEnabled">
+
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="IsKnockingEnabled">{{'Knocking'|translate}}
+
+                </label>
+
+                <div class="col-sm-10  Poppins-Regular">
+                    <input type="checkbox" style="margin-left: 0px;margin-top:10px;" class="form-check-inline  " [(ngModel)]="inputRoomModel.isKnockingEnabled" name="IsKnockingEnabled" #IsKnockingEnabled (change)="enableisKnockingEnabledChanged()" [checked]="isKnockingEnabled">
+
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label Poppins-Regular" for="IsVideoChatEnabled">{{'VideoChat'|translate}}
+
+                </label>
+
+                <div class="col-sm-10  Poppins-Regular">
+                    <input type="checkbox" style="margin-left: 0px;margin-top:10px;" class="form-check-inline " [(ngModel)]="inputRoomModel.isVideoChatEnabled" name="IsVideoChatEnabled" #IsVideoChatEnabled (change)="enableIsVideoChatEnabledChanged()" [checked]="isVideoChatEnabled">
+
+                </div>
+            </div>
+
+            <input type="hidden" [(ngModel)]="inputRoomModel.createdBy" name="CreatedBy" #CreatedBy />
+            <input type="hidden" [(ngModel)]="inputRoomModel.modifiedBy" name="ModifiedBy" #ModifiedBy />
+            <input type="hidden" [(ngModel)]="inputRoomModel.eventId" name="EventId" #EventId />
+            <input type="hidden" [(ngModel)]="inputRoomModel.roomId" name="RoomId" #RoomId />
+
+            <div class="mb-3 row" id="ThirdPartyAnalyticsScripts">
+                <div class="col-sm-12 text-muted Poppins-Regular text-right" style="font-size:15px; margin-top:20px;">
+                    <button type="submit" (click)="upsertRoom()" [disabled]="AddRoomForm.invalid" class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 Poppins-Regular">{{'Save'
+                        | translate}}</button>
+                    <a class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 ml-20px text-white" [routerLink]="['/admin/events/rooms/',inputRoomModel.eventId]">{{'Cancel'| translate}}</a>
+                </div>
+            </div>
+        </form>
+
+
+
+    </div>
+
+
+</div>

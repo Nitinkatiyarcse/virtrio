@@ -1,0 +1,45 @@
+import { Data } from 'ngx-bootstrap/positioning/models';
+
+export class events {
+  UserEventId: string;
+  AssignDate: Date;
+  UserEventsIsActive: boolean;
+  EventId: string;
+  EventName: string;
+  EventDesc: string;
+  EventLogo: string;
+  EventStartDate: Date;
+  EventEndDate: Date;
+  EventStartTime: Date;
+  EventEndTime: Date;
+  MetaTags: string;
+  GAEnabled: boolean;
+  GAScript: string;
+  ThirdPartyAnalyticsEnabled: boolean;
+  ThirdPartyAnalyticsScript: string;
+  IsLinkTermsAndConditions: boolean;
+  TermsAndConditions: string;
+  IsLinkPrivacyPolicy: boolean;
+  PrivacyPolicy: string;
+  CreatedBy: string;
+  CreatedDate: Date;
+  ModifiedBy: string;
+  ModifiedDate: Date;
+  IsActive: boolean;
+  IsDeleted: boolean;
+  IsPublished: boolean;
+  SearchString: string;
+  SortString: string;
+  FilterString: string;
+  PageNo: number;
+  totalRecordCount: number;
+  totalPage: number;
+  pageSize: number;
+  TimeZones: [];
+  Languages: [];
+  EventUrl: string;
+  RoleId: string;
+  TimeZone: string;
+  RoleName:string;
+  socialMedia:string;
+}

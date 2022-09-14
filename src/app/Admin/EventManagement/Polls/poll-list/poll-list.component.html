@@ -1,0 +1,63 @@
+<!-- <p>poll-list works!</p> -->
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'Poll'| translate}}</label>
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2"
+            routerLink="../../createpoll/{{eventId}}">
+            <i class="fa fa-plus text-primary" type="button" tooltip="{{'AddPoll' | translate}}"
+                style=" -webkit-transform: scaleX(-1);  transform: scaleX(-1);"></i>
+        </a>
+        <label class="col-sm-10 Poppins-Regular text-small"
+            style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+    </div>
+</div>
+
+
+
+<div class="flex-container bg-white" id="surveyListItems" style="margin-top: 25px;padding: 20px;">
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+        class="table table-hover table-striped table-bordered" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    <a style="cursor: pointer;"> {{'PollTitle' | translate}}</a>
+                </th>
+                <th>
+                    <a style="cursor: pointer;"> {{'PollLevel' | translate}}</a>
+                </th>
+                <th>
+                    <a style="cursor: pointer;"> {{'Required' | translate}}</a>
+                </th>
+                <th>
+                    <a style="cursor: pointer;"> {{'SendNow?' | translate}}</a>
+                </th>
+
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let item of pollsViewModel'>
+                <td style="border: none;">{{item.polls.pollTitle}}</td>
+                <td style="border: none;">{{item.polls.pollLevel | translate}}</td>
+
+                <td>{{item.polls.isRequired?'Yes':'No'}}</td>
+                <td>{{item.polls.sendNow?'Yes':'No'}}</td>
+
+                <td style="border: none;">
+                    <div class="dropdown">
+                        <a href="#" data-bs-toggle="dropdown" class="text-muted"><i class="fa fa-gear"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item Poppins-Regular" id="btnDetails"
+                                [routerLink]="['/admin/events/pollsDetails',item.polls.pollId,eventId]"
+                                routerLinkActive="router-link-active">{{'Details'|translate}}</a>
+                            <a class="dropdown-item Poppins-Regular" id="btnDelete"
+                                (click)="deletePoll(item.polls.pollId)">{{'Delete'|translate}}</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

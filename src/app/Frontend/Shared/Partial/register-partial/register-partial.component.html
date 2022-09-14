@@ -1,0 +1,322 @@
+<div *ngIf="!isfuturedateModal" class="modal-header" [style.background]="registrationModel.headerBackgroundColor+'!important'" [style.color]="registrationModel.headerTextColor">
+    <h5 class="modal-title">{{'Register'|translate}}</h5>
+    <button [style.color]="registrationModel.headerTextColor" type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="goBackToMainPage()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div *ngIf="isfuturedateModal" class="modal-header" [style.background]="registrationModel.headerBackgroundColor+'!important'" [style.color]="registrationModel.headerTextColor">
+    <h5 class="modal-title">{{'Alert'|translate}}</h5>
+
+</div>
+<div class="modal-body">
+    <div class="container bg-white" style="padding:0px,20px;max-height: 100vh;">
+        <span style="font-size: larger;" *ngIf="isfuturedateModal">
+            Registeration has not been started yet. Please try later
+    </span>
+
+        <form class="form-group" #registerAttendee="ngForm" autocomplete="off">
+            <input [style.color]="registrationModel.sectionHeaderTextColor" autocomplete="false" name="hidden" type="text" style="display:none;">
+            <div style="overflow-x: hidden;overflow-y: auto;max-height: 400px;" *ngIf="!isfuturedateModal">
+                <div class="row" *ngIf="registrationModel.enableFirstNameLastName">
+                    <div class="col-sm-12">
+                        <div class="input-group mb-4 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 " style="float: left;">
+                            <input [style.color]="registrationModel.sectionHeaderTextColor" type="text" autofocus class="form-control Poppins-Regular text-BColor col-sm-12 fs-14px" placeholder="{{'FirstName' | translate}}" name="firstName" #firstName="ngModel" [(ngModel)]="registrationModel.firstName"
+                                required style="height: 48px;" />
+                        </div>
+                        <div class=" input-group mb-4  col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <input [style.color]="registrationModel.sectionHeaderTextColor" type="text " class="form-control Poppins-Regular text-BColor  col-sm-12  fs-14px" placeholder="{{ 'LastName' | translate}}" name="lastName" #lastName="ngModel" [(ngModel)]="registrationModel.lastName "
+                                required style=" height: 48px; " />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div *ngIf="registrationModel.enableEmail" class="input-group mb-4 {{enableMobile?'col-sm-6':'col-sm-12'}}" style="float: left;">
+                            <input [style.color]="registrationModel.sectionHeaderTextColor" type="text" class="form-control Poppins-Regular text-BColor col-sm-12  fs-14px" placeholder="{{'EmailAddress' | translate}}" name="emailAddress" #emailAddress="ngModel" [(ngModel)]="registrationModel.emailAddress"
+                                required style="height: 48px; " pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" />
+                        </div>
+
+
+                        <div *ngIf="registrationModel.enableMobile" class="input-group mb-4 {{enableMobile?'col-sm-6':'col-sm-12'}}" style="float: left;">
+                            <input [style.color]="registrationModel.sectionHeaderTextColor" type="text" class="form-control Poppins-Regular text-BColor col-sm-12  fs-14px" placeholder="{{'Mobile' | translate}}" name="mobile" #mobile="ngModel" [(ngModel)]="registrationModel.mobile"
+                                maxlength="10" required style="height: 48px; " />
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div *ngIf="registrationModel.enableSetupProfile">
+
+                    <div *ngFor="let item of registrationModel.standardFields">
+
+                        <div *ngIf="item.selected">
+                            <div *ngIf="item.options!=null">
+                                <div class="input-group mb-4 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 ">
+                                    <select class="form-select Poppins-Regular text-BColor col-sm-12 fs-14px" [required]="item.required?'required':null" style="height: 48px;" name="{{item.label}}" [(ngModel)]="item.value==null?'':item.value" (change)="bindItemValue(item,$event)">
+                                        <option value="">Select {{item.label}}</option>
+                                        <option *ngFor="let selectItem of item.options.split('\n')"
+                                            value="{{selectItem}}">
+                                            {{selectItem}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div *ngIf="item.options==null">
+                                <div *ngIf="item.label!=='Country' && item.label!=='Date of Birth' && item.label!=='Upload Resume' && item.label!=='Upload Profile Pic'" class="input-group mb-4 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 " style="float: left;">
+                                    <input [style.color]="registrationModel.sectionHeaderTextColor" type="{{item.type}}" class="form-control Poppins-Regular text-BColor col-sm-12 fs-14px" [required]="item.required?'required':null" placeholder="{{item.label | translate}}" name="{{item.label}}"
+                                        [(ngModel)]="item.value" style="height: 48px;" (change)="bindItemValue(item,$event)" />
+                                </div>
+                                <div *ngIf="item.label==='Country'" class="input-group mb-4 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 " style="float: left;">
+                                    <select class="form-select Poppins-Regular text-BColor col-sm-12 fs-14px" [required]="item.required?'required':null" name="{{item.label}}" [(ngModel)]="selectedCountry" style="height: 48px;" (change)="bindItemValue(item,$event)">
+                                        <option value="">{{'Select '+ item.label}}</option>
+                                        <option *ngFor="let countryItem of countryList" value="{{countryItem.name}}">
+                                            {{countryItem.name}}
+                                        </option>
+                                    </select>
+
+                                </div>
+                                <div *ngIf="item.label==='Date of Birth'" class="input-group mb-4 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 ">
+                                    <div class="Poppins-Regular fs-10px">{{'DateOfBirth' | translate}}</div>
+                                    <div class="input-group bootstrap-timepicker timepicker">
+                                        <app-date-picker [maxDate]="todayDate" [(ngModel)]="item.value" #DateofBirth="ngModel" [required]="item.required?'required':null" name="DateofBirth">
+                                        </app-date-picker>
+                                    </div>
+                                </div>
+
+                                <div class="row col-sm-12 mt-10px mb-10px" *ngIf="item.label=='Upload Resume'">
+                                    <div class="Poppins-Regular  col-sm-3" style="float: left;margin-top: 10px;margin-bottom: 10px;">{{'UploadResume' | translate}}
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input [style.color]="registrationModel.sectionHeaderTextColor" *ngIf="!item.value" type="file" #FileUploadControl (change)="onFileChange($event,item)" style="margin-left: 20px;" required type="file">
+                                        <a *ngIf="item.value" href="{{item.value}}" class="btn btn-link" target="_blank">{{'File'| translate}}</a>
+                                        <i *ngIf="item.value" class="fa fa-times" tooltip="{{'Delete' | translate}}" (click)="deleteResume(item)"></i>
+                                    </div>
+                                </div>
+
+                                <div class="row col-sm-12  mt-10px mb-10px" *ngIf="item.label=='Upload Profile Pic'">
+                                    <div class="Poppins-Regular col-sm-3" style="float: left;margin-top: 10px;margin-bottom: 10px;">{{'UploadProfilePic' | translate}}
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input [style.color]="registrationModel.sectionHeaderTextColor" *ngIf="!item.value" type="file" #FileUploadControl (change)="onProfilePicFileChange($event,item)" style="margin-left: 20px;" [required]="item.required?'required':null">
+                                        <img *ngIf="item.value" src="{{item.value}}" height="64px" width="64px">
+
+                                        <i *ngIf="item.value" class="fa fa-times" tooltip="{{'Delete' | translate}}" (click)="deleteProfilePic(item)"></i>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div *ngFor="let item of registrationModel.customFields">
+                        <div *ngIf="item.type=='select'">
+                            <div class="input-group mb-4 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                                <select class="form-select Poppins-Regular text-BColor col-sm-12 fs-14px" [required]="item.required?'required':null" style="height: 48px;" name="{{item.name}}" [(ngModel)]="item.value==null?'':item.value" (change)="bindItemValue(item,$event)">
+                                    <option value="">Select {{item.name}}</option>
+                                    <option *ngFor="let selectItem of item.options" value="{{selectItem}}">
+                                        {{selectItem}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div *ngIf="item.type=='text'">
+                            <div class="input-group mb-4 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                                <input [style.color]="registrationModel.sectionHeaderTextColor" type="text" placeholder="{{item.name}}" name="{{item.name}}" [required]="item.required?'required':null" name="{{item.name}}" [(ngModel)]="item.value" class="form-control Poppins-Regular text-BColor col-sm-12 fs-14px"
+                                    style="height: 48px;" (change)="bindItemValue(item,$event)" />
+                            </div>
+                        </div>
+                        <div class="row col-sm-12" *ngIf="item.type=='radio'">
+                            <div class="col-sm-12">
+                                <label [style.color]="registrationModel.uiAccentColor" class="form-label col-sm-12 Poppins-SemiBold" style="text-transform: capitalize;">{{item.name}}</label>
+                                <div *ngFor="let radioItem of item.options" class="input-group mb-4 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" style="float: left;">
+                                    <div class="form-check">
+                                        <input [style.color]="registrationModel.sectionHeaderTextColor" class="form-check-input" type="radio" name="{{item.name}}" value="{{radioItem}}" id="{{radioItem}}" (change)="bindRadioButtonItemValue(item,$event)" checked>
+                                        <label [style.color]="registrationModel.sectionHeaderTextColor" class="form-check-label" for="{{radioItem}}" style="text-transform: capitalize;">
+                                            {{radioItem}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="item.type=='check'" class="row col-sm-12">
+                            <div class="col-sm-12">
+                                <label [style.color]="registrationModel.uiAccentColor" class="form-label col-sm-12 Poppins-SemiBold" style="text-transform: capitalize;">{{item.name}}</label>
+                                <div *ngFor="let checkItem of item.options" class="input-group mb-4 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" style="float: left;">
+                                    <div class="form-check">
+                                        <input [style.color]="registrationModel.sectionHeaderTextColor" class="form-check-input" type="checkbox" name="{{item.name}}" id="{{checkItem}}" value="{{checkItem}}" (change)="bindCheckboxItemValue(item,$event)">
+                                        <label [style.color]="registrationModel.sectionHeaderTextColor" class="form-check-label" for="{{checkItem}}" style="text-transform: capitalize;">
+                                            {{checkItem}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- <div class="row col-sm-12">
+                    <div class="col-sm-12">
+                        <label [style.color]="registrationModel.uiAccentColor" class="Poppins-Regular"> {{'Resume' | translate}}</label>
+                        <input [style.color]="registrationModel.sectionHeaderTextColor" *ngIf="!registrationModel.resumeLink" type="file" #FileUploadControl (change)="onFileChange($event,i)" style="margin-left: 20px;">
+                        <a *ngIf="registrationModel.resumeLink" href="{{registrationModel.resumeLink}}" class="btn btn-link" target="_blank">{{'File'| translate}}</a>
+                        <i *ngIf="registrationModel.resumeLink" class="fa fa-times" tooltip="{{'Delete' | translate}}" (click)="deleteResume()"></i>
+                    </div>
+                </div> -->
+            </div>
+
+            <div class="col-sm-12  Poppins-Regular mt-20px" *ngIf="!isfuturedateModal">
+
+                <div class="row">
+                    <span>
+                        <input [style.color]="registrationModel.sectionHeaderTextColor" type="checkbox"
+                            class="form-check-inline" name="CheckedTermAndCondition"
+                            (change)="checkAgreeTermsConditions($event)" #CheckedTermAndCondition
+                            style="margin-top: 5px;">
+                        <label class="form-check-label Poppins-Regular "
+                            [style.color]="registrationModel.sectionHeaderTextColor" for="CheckedTermAndCondition">{{'I
+                            Agree
+                            to'|translate}}</label>
+                        <label class="form-check-label Poppins-Regular ml-5px mr-5px" for="CheckedTermAndCondition"
+                            [style.color]="registrationModel.sectionHeaderTextColor">{{'Virtual
+                            Event'|translate}}</label>
+                        <a *ngIf="registrationModel.isTermAndConditionLink" target="_blank" role="button"
+                            [style.color]="registrationModel.headerTextColor"
+                            href="{{registrationModel.termsAndConditions}}">
+                            {{'TermsAndConditions' | translate}}</a>
+                        <a *ngIf="!registrationModel.isTermAndConditionLink" data-toggle="modal" role="button"
+                            [style.color]="registrationModel.headerTextColor" data-target="#termsAndConditionsModal1">
+                            {{'TermsAndConditions' | translate}}</a>
+                    </span>
+                </div>
+
+
+            </div>
+
+
+        </form>
+        <div class=" col-sm-12 " *ngIf="!isfuturedateModal">
+            <a *ngIf="registrationModel.enableFacebook" (click)="signInWithFB()" class="fb btn btn-primary Poppins-SemiBold fs-14px" style="margin-right: 15px;cursor: pointer;width: 205px;">
+                <i class=" fab fa-facebook fa-fw "></i> Signup with Facebook
+            </a>
+
+            <a *ngIf="registrationModel.enableGoogle" (click)="signInWithGoogle()" class="fb btn btn-danger Poppins-SemiBold fs-14px" style="margin-right: 15px;cursor: pointer;width: 205px;">
+                <i class=" fab fa-google fa-fw "></i> Signup with Google
+            </a>
+
+            <!-- <a *ngIf="registrationModel.enableLinkedIn" (click)="signInWithLinkedIn()" class="fb btns col-sm-2 Poppins-SemiBold fs-14px" style="margin-right: 15px;cursor: pointer;">
+                    <i class=" fab fa-linkedin fa-fw "></i> Login with LinkedIn
+                </a> -->
+        </div>
+
+
+
+
+        <!-- <div class=" col-sm-12 text-center ">
+        <a href=" # " class=" fb btns col-sm-2 Poppins-SemiBold fs-14px " style=" margin-right: 15px; ">
+            <i class=" fab fa-facebook fa-fw "></i> Login with Facebook
+        </a>
+
+        <a href=" # " class=" google btns col-sm-2 Poppins-SemiBold fs-14px " style=" margin-right: 15px; ">
+            <i class=" fab fa-google fa-fw "></i> Login with Facebook
+        </a>
+
+        <a href=" # " class=" twitter btns col-sm-2 Poppins-SemiBold fs-14px " style=" margin-right: 15px; ">
+            <i class=" fab fa-linkedin fa-fw "></i> Login with LinkedIn
+        </a>
+
+
+
+    </div> -->
+
+
+    </div>
+</div>
+<div class="modal-footer" *ngIf="!isfuturedateModal">
+
+    <button [style.background]="registrationModel.headerBackgroundColor" [style.color]="registrationModel.headerTextColor" type="submit" data-dismiss="modal" (click)="submitRegisterForm()" [disabled]="registerAttendee.invalid" class="btn  btnOrangeFrontEnd">{{'Register'
+        | translate}} </button>
+    <button [style.background]="registrationModel.headerBackgroundColor" [style.color]="registrationModel.headerTextColor" type="button" class=" btn btnOrangeFrontEnd" style="margin-left: 20px;" data-dismiss="modal" (click)="goBackToMainPage()">
+        {{'Cancel' | translate}}
+    </button>
+</div>
+
+
+<!-- Modal for Terms and conditions-->
+<div class="modal fade" id="termsAndConditionsModal1" style="z-index: 1000;" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header" [style.background]="registrationModel.headerBackgroundColor+'!important'" [style.color]="registrationModel.headerTextColor">
+                <h5 class="modal-title">{{'TermsAndConditions'|translate}}</h5>
+                <button [style.color]="registrationModel.headerTextColor" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" [style.color]="registrationModel.sectionHeaderTextColor">
+                <div *ngIf="!registrationModel.isTermAndConditionLink" [innerHTML]="registrationModel.termsAndConditions | safeHtml"></div>
+            </div>
+            <div class="modal-footer">
+                <button [style.background]="registrationModel.headerBackgroundColor" [style.color]="registrationModel.headerTextColor" type="button" data-dismiss="modal" class="btn btnOrangeFrontEnd" style="margin-left: 20px;">
+                    {{'Close' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Future date Popup -->
+<div id="futureDateModal" class="modal fade" role="document" style="margin-top: 0px !important;margin-bottom: 0px !important;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alerts</h5>
+                <!-- <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal"
+                    aria-label="Close" (click)="stopVideo()">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->
+            </div>
+            <div class="modal-body">
+
+
+
+                <span style="font-size: larger;">
+                        Event has not been started yet. Please try later
+                </span>
+
+
+                <!-- <div class="modal-content"> -->
+
+                <!-- <p style="text-align: center;">Event has not been started yet. Please try later</p> -->
+                <!-- <div class="modal-body mb-0 p-0">
+                        <div id="welcomeVideoIFrame"
+                            *ngIf="eventDetails.videoType=='youtube' || eventDetails.videoType== 'vimeoUrl'"
+                            class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                            <iframe height="100%" width="100%" class="embed-responsive-item" allowfullscreen controls=""
+                                [src]="welcomeVideoSrc | safe">
+                            </iframe>
+
+
+                        </div>
+                        <div *ngIf="eventDetails.videoType=='uploadFile'">
+                            <video height="100%" width="100%" controls  controlsList="nodownload"  [src]="welcomeVideoSrc | safe"></video>
+
+
+                        </div>-->
+
+                <!-- </div> -->
+            </div>
+            <!-- <div class="modal-footer">
+                    <button class="btn btnOrangeFrontEnd" [style.background]="eventDetails.headerBackgroundColor"
+                        [style.color]="eventDetails.headerTextColor+'!important'" type="button" data-dismiss="modal"
+                        (click)="closeWelcomeVideo(eventDetails.videoUrl)">{{'Close' | translate}}</button>
+                </div> -->
+        </div>
+
+    </div>
+</div>
+<!-- </div> -->

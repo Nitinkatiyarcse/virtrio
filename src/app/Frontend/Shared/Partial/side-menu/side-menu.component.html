@@ -1,0 +1,24 @@
+<div class="position-absolute top-0 end-0" style="padding: 20px;z-index: 1000;">
+    <i class="fa fa-navicon text-white fa-2x " style="cursor: pointer;" (click)="openNav()"></i>
+</div>
+<div id="mySidenav" class="sidenav" [ngStyle]="{
+  'width': IsOpen  ? '250px' : '0px'
+}">
+    <a class="closebtn" style="cursor: pointer;z-index: 10000;" (click)="closeNav()"><i class="fa fa-times"></i></a>
+    <a *ngIf="!this.isUserLoggedIn" class="fs-14px Poppins-Regular" style="color: #0c0c0d;cursor: pointer;" (click)="openLoginPopup()">{{'Login' | translate}}</a>
+    <a *ngIf="!this.isUserLoggedIn &&  loginPageDetails.includeRegisterBox" class="fs-14px Poppins-Regular" style="color: #0c0c0d;cursor: pointer;" (click)="openRegisterPopup()">{{'Register' | translate}}</a>
+    <a *ngIf="!this.isUserLoggedIn" class="fs-14px Poppins-Regular" style="color: #0c0c0d;cursor: pointer;" href="/{{clientName}}/{{eventName}}/{{registrationset}}">{{'EventDetails' | translate}}</a>
+    <a *ngIf="this.isUserLoggedIn" class="fs-14px Poppins-Regular" style="color: #0c0c0d;cursor: pointer;" (click)="openRooms()">{{'Rooms' | translate}}</a>
+    <a *ngIf="this.isUserLoggedIn" class="fs-14px Poppins-Regular" style="color: #0c0c0d;cursor: pointer;" (click)="logoutUser()">{{'Logout' | translate}}</a>
+    <a  href="/new/imsec/Default" target="_blank" class="fs-14px Poppins-Regular" style="color: #0c0c0d;cursor: pointer;" >{{'NewUI' | translate}}</a>
+    
+    <!--<a class="fs-14px Poppins-Regular" style="color: #0c0c0d;" (click)="openPollPopup()">{{'Poll' | translate}}</a> -->
+    <!-- 
+
+  <a class="isSmallerDevice fs-14px Poppins-Regular" style="color: #0c0c0d;" (click)="openPollPopup()">{{'English' | translate}}</a>
+  <a class="isSmallerDevice fs-14px Poppins-Regular" style="color: #0c0c0d;" (click)="openPollPopup()">{{'Japanese' | translate}}</a> -->
+
+
+
+
+</div>

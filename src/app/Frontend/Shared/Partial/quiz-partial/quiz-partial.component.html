@@ -1,0 +1,56 @@
+<div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'" [style.color]="eventDetails.headerTextColor">
+    <div class="col-sm-8">
+        <h5 class="modal-title">Quiz</h5>
+        <h5 class="modal-title">{{quiz[0].quiz.title}} </h5>
+    </div>
+
+    <button [style.color]="eventDetails.headerTextColor" *ngIf="showClose" type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+</div>
+<div class="modal-body">
+    <div *ngIf="showInstruction">
+        <div class="col-sm-12 Poppins-Regular">
+            {{quiz[0].quiz.instructions}}
+        </div>
+        <br>
+        <div *ngIf="quiz[0].quiz.showPassingScore">
+            <div class="row col-sm-12">
+                <div class="col-sm-6 Poppins-Regular" [style.color]="eventDetails.uiAccentColor">{{'Passing Scores' | translate}}</div>
+
+                <div class="col-sm-6 Poppins-SemiBold">{{quiz[0].quiz.percentNeededToPass}}</div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!showInstruction" [style.color]="eventDetails.sectionHeaderTextColor">
+        <div *ngIf="presentQuestion">
+            <h5 class="modal-title"><span class="Poppins-Bold text-right" style="float: right;">Time Left :- <span id="timer"> {{timerData}}</span></span>
+            </h5>
+
+
+
+            Question : {{presentQuestion.question}}
+            <div *ngIf="presentQuestion.choices.length>0">
+                <div *ngFor="let item of presentQuestion.choices;let i=index">
+                    <input type="radio" class="form-radio" id="choices_{{i}}" name="presentQuestion.questionId" (change)="submitChoice($event,i)" />
+                    <label class="form-radio-label Poppins-Regular">{{item.choice}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isPassed && inputAttendeeQuizModel.passMessage?.length>0">
+        <div class="Poppins-SemiBold text-success col-sm-12">{{inputAttendeeQuizModel.passMessage}}</div>
+        <br>
+        <a class="btn btn-success Poppins-SemiBold" style="cursor: pointer;" (click)="downloadCertificate()">{{'Download Certificate' | translate}}</a>
+    </div>
+    <div *ngIf="isFailed && inputAttendeeQuizModel.passMessage?.length>0">
+        <span class="Poppins-SemiBold text-danger">{{inputAttendeeQuizModel.passMessage}}</span>
+    </div>
+</div>
+<div class="modal-footer">
+    <button [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" type="button" *ngIf="showInstruction" class="btn btnOrangeFrontEnd" style="width:250px" data-dismiss="modal" (click)="acceptAndContinue()">{{'Accept And Continue' | translate}}</button>
+    <button [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" type="button" *ngIf="showNextButton" class="btn btnOrangeFrontEnd" data-dismiss="modal" (click)="openNextQuestion()">{{'Next' | translate}}</button>
+    <!-- <button [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" type="button" *ngIf="showPreviousButton" class="btn btnOrangeFrontEnd" data-dismiss="modal" (click)="openPreviousQuestion()">{{'Previous' | translate}}</button> -->
+    <button [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" type="button" *ngIf="showSubmitButton" class="btn btnOrangeFrontEnd" data-dismiss="modal" (click)="submitQuiz()">{{'Submit' | translate}}</button>
+    <button [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor" type="button" *ngIf="showClose" class="btn btnOrangeFrontEnd" data-dismiss="modal" (click)="closeModal()">{{'Close' | translate}}</button>
+</div>

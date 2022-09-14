@@ -1,0 +1,49 @@
+select#timeZone.ng-invalid
+{
+    border-left:5px solid red;
+    border-radius:8px;
+}
+
+select#timeZone.ng-valid
+{
+    border-left:5px solid green;
+    border-radius:8px;
+}
+
+select#roomType.ng-invalid
+{
+    border-left:5px solid red;
+    border-radius:8px;
+}
+
+select#roomType.ng-valid
+{
+    border-left:5px solid green;
+    border-radius:8px;
+}
+
+
+textarea#RoomVisibleToAttendeesMessage.ng-invalid
+  {
+      border-left:5px solid red;
+      border-radius:8px;
+  }
+  
+  textarea#RoomVisibleToAttendeesMessage.ng-valid
+  {
+      border-left:5px solid green;
+      border-radius:8px;
+  }
+
+
+   
+  .validField {  border-left:5px solid green;border-radius: 8px; display: block;  }
+  .invalidField {  border-left:5px solid red;border-radius: 8px; display: block;  }
+  
+  ::ng-deep .multiselect-dropdown .dropdown-btn {width: -webkit-fill-available !important}
+  ::ng-deep .multiselect-dropdown .dropdown-btn:focus {outline: none !important}
+
+  ::ng-deep span.selected-item.ng-star-inserted {
+    max-width: 100% !important;
+}
+  

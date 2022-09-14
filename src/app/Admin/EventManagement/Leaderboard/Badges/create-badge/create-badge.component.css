@@ -1,0 +1,36 @@
+
+.multiselect-dropdown[_ngcontent-xhp-c60] .dropdown-btn[_ngcontent-xhp-c60] .selected-item[_ngcontent-xhp-c60] {
+    border: 1px solid #337ab7;
+    margin-right: 4px;
+    background: #337ab7;
+    padding: 0 5px;
+    color: #fff;
+    border-radius: 2px;
+    float: left;
+    display: flex;
+    max-width: 100% !important;
+}
+
+p {
+    font-family: Lato;
+}
+
+.validField {
+    border-left: 5px solid green;
+    border-radius: 8px;
+    display: block;
+}
+
+.invalidField {
+    border-left: 5px solid red;
+    border-radius: 8px;
+    display: block;
+}
+
+ ::ng-deep .multiselect-dropdown .dropdown-btn {
+    width: -webkit-fill-available !important
+}
+
+ ::ng-deep .multiselect-dropdown .dropdown-btn:focus {
+    outline: none !important
+}

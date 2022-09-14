@@ -1,0 +1,64 @@
+<div class="pageHeader bg-white " style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'Quiz'| translate}}</label>
+        <a style="float: right;text-align: right;margin-top:25px;" class="col-sm-2" routerLink="../../CreateQuiz/{{eventId}}">
+            <i class="fa fa-plus text-primary" type="button" tooltip="{{'AddQuiz' | translate}}" style=" -webkit-transform: scaleX(-1);  transform: scaleX(-1);"></i>
+        </a>
+        <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+
+    </div>
+</div>
+
+
+
+<div class="flex-container bg-white" id="surveyListItems" style="margin-top: 25px;padding: 20px;">
+
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-striped table-bordered" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    {{'Title'|translate}}
+                </th>
+                <th>
+                    {{'QuizLevel'|translate}}
+                </th>
+                <th>
+                    {{'QuizTime'|translate}}  ({{'InMinutes' | translate}})
+                </th>
+                <th>
+                    {{'QuizStartDate'|translate}}
+                </th>
+                <th>
+                    {{'QuizEndDate'|translate}}
+                </th>
+
+
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of  this.allQuiz">
+                <td>
+                    <a style="cursor: pointer;"> {{item.quiz.title}}</a>
+                </td>
+                <td>{{item.quiz.quizLevel | translate}}</td>
+                <td>{{item.quiz.quizTime | translate}}</td>
+                <td>{{item.quiz.quizStartDate | date: 'mediumDate'}} {{item.quiz.quizStartTime | date: 'shortTime'}}</td>
+                <td>{{item.quiz.quizEndDate | date: 'mediumDate'}} {{item.quiz.quizEndTime | date: 'shortTime'}}</td>
+
+                <td>
+                    <div class="dropdown">
+                        <a href="#" data-bs-toggle="dropdown" class="text-muted"><i class="fa fa-gear"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item Poppins-Regular" id="btnDetails" [routerLink]="['/admin/events/QuizDetails',item.quiz.quizId,eventId]" routerLinkActive="router-link-active">{{'Details'|translate}}</a>
+
+                            <a class="dropdown-item Poppins-Regular" id="btnDelete" style="cursor: pointer;" (click)="deleteQuiz(item.quiz)">{{'Delete'|translate}}</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

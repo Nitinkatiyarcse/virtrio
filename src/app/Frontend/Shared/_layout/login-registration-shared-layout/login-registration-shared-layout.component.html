@@ -1,0 +1,187 @@
+<div class="language" *ngIf="languages.length>1">
+    <button [style.background]="eventDetails.headerBackgroundColor" [style.color]="eventDetails.headerTextColor"
+        type="button" *ngFor="let item of languages" class="btn btn-link text-white Poppins-Bold LangHeader"
+        [ngClass]="{selected: selectedLan==item}" (click)="changeLanguage(item)">{{item | translate}}</button>
+</div>
+<app-side-menu></app-side-menu>
+<div class="position-sticky top-25 float-right w-50px text-white p-10x stickySocialMedia" style="top: 25%;background-color: #ffffff;
+border-radius: 10px 0px 0px 10px;width: 50px;">
+
+    <div *ngIf="((!isLoggedIn && manageRegistrationPage.inviteothersbeforeregistration) || (isLoggedIn && manageRegistrationPage.inviteothersafterregistration)) "
+        style="background-color: #D4E4BC;color:black; height: 60px; width: 50px; text-align: center; padding-top: 7px; border-radius: 10px 0px 0px 0px;">
+        <img src="../../../../assets/Images/share.png" height="24px" width="24px">
+        <br>
+        <span class="POppins-Regular fs-10px">{{'Share' |translate}}</span>
+    </div>
+    <share-buttons
+        *ngIf="((!isLoggedIn && manageRegistrationPage.inviteothersbeforeregistration) || (isLoggedIn && manageRegistrationPage.inviteothersafterregistration)) "
+        theme="material-dark" image="{{eventDetails.eventLogo}}"></share-buttons>
+
+    <div *ngIf="((!isLoggedIn && manageRegistrationPage.inviteothersbeforeregistration) || (isLoggedIn && manageRegistrationPage.inviteothersafterregistration)) "
+        style="background-color: #ffffff;  height: 50px; width: 50px; text-align: center; padding-top: 7px; border-radius: 0px 0px 0px 0px; border: 2px solid black !important;
+            margin-top: 2px;" data-toggle="modal" data-target="#inviteEmailModal">
+        <i class="fa fa-envelope"
+            style="color: black;height: 32px;width: 32px;vertical-align: middle;margin-top: 8px;"></i>
+    </div>
+</div>
+<div class="grandParentContaniner">
+    <div class="parentContainer" style="background-color:{{eventDetails.uiColor}} !important">
+        <div class="container">
+            <div class="AttendeeMainHeader" [ngStyle]="backgroundStyle">
+
+                <div class="position-absolute top-0 start-0" style="padding: 20px;z-index: 1000;">
+                    <a href="/{{clientName}}/{{eventName}}/{{registrationSet}}"> <img
+                            [ngStyle]="eventDetails.eventLogo!==noImageEventLogoPath && eventDetails.eventLogo? {'visibility':'hidden'}:{'visibility':'hidden'}"
+                            src="{{eventDetails.eventLogo}}" style="height: auto;width: 100px;" /></a>
+                </div>
+
+                <div class="row text-center">
+                    <!-- <div class="position-absolute col-sm-12 eventRegisterAndDetailsDiv">
+
+                        <div class="col-sm-12 mt-10px">
+                             <img
+                                [ngStyle]="eventDetails.eventLogo!==noImageEventLogoPath && eventDetails.eventLogo? {'visibility':'visible'}:{'visibility':'hidden'}"
+                                style="width: 250px;height:auto;" class="attendeeHeaderCenterLogo"
+                                src="{{eventDetails.eventLogo}}" />
+                            </div>
+
+                    </div> -->
+                </div>
+
+
+
+            </div>
+        </div>
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<app-footer></app-footer>
+
+<!-- Modal for privacy policy-->
+<div class="modal fade" id="privacyPolicymodal" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'"
+                [style.color]="eventDetails.headerTextColor">
+                <h5 class="modal-title">{{'PrivacyPolicy'|translate}}</h5>
+                <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="!eventDetails.isLinkPrivacyPolicy" [innerHTML]="eventDetails.privacyPolicy | safeHtml">
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button [style.background]="eventDetails.headerBackgroundColor"
+                    [style.color]="eventDetails.headerTextColor" type="button"
+                    class="commonbtn btn  Poppins-Regular btn-primary  text-white " data-dismiss="modal">
+                    {{'Close' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal for Terms and conditions-->
+<div class="modal fade" id="termsAndConditionsModal" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'"
+                [style.color]="eventDetails.headerTextColor">
+                <h5 class="modal-title">{{'TermsAndConditions'|translate}}</h5>
+                <button [style.color]="eventDetails.headerTextColor" type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="!eventDetails.isLinkTermsAndConditions"
+                    [innerHTML]="eventDetails.termsAndConditions | safeHtml"></div>
+            </div>
+            <div class="modal-footer">
+                <button [style.background]="eventDetails.headerBackgroundColor"
+                    [style.color]="eventDetails.headerTextColor" type="button"
+                    class="commonbtn btn  Poppins-Regular btn-primary  text-white " data-dismiss="modal">
+                    {{'Close' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal sending email invitation-->
+<div class="modal fade" id="inviteEmailModal" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form class="form-group" #inviteEmailModalForm="ngForm">
+                <div class="modal-header" [style.background]="eventDetails.headerBackgroundColor+'!important'"
+                    [style.color]="eventDetails.headerTextColor">
+                    <h5 class="modal-title">{{'InviteAFriend'|translate}}</h5>
+                    <button [style.color]="eventDetails.headerTextColor" type="button" class="close"
+                        data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="mb-3 row" *ngIf="!isLoggedIn">
+                        <label class="col-sm-12 col-form-label Poppins-Regular fs-10px"
+                            [style.color]="eventDetails.uiAccentColor" style="padding-bottom: 0px !important;"
+                            for="From">{{'From'| translate}}
+                        </label>
+                        <input type="email" class="col-sm-10 form-control Poppins-Regular"
+                            [style.color]="eventDetails.sectionHeaderTextColor"
+                            pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" placeholder="{{'From' | translate}}"
+                            required #From="ngModel" maxlength="50" [(ngModel)]="inviteToFriendModel.from" name="From"
+                            value="" />
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-12 col-form-label Poppins-Regular fs-10px"
+                            [style.color]="eventDetails.uiAccentColor" style="padding-bottom: 0px !important;"
+                            for="From">{{'To'| translate}}
+                        </label>
+                        <input type="text" class="col-sm-10 form-control Poppins-Regular"
+                            [style.color]="eventDetails.sectionHeaderTextColor"
+                            placeholder="{{'PleaseInputEmilsSeperatedByCommaInCaseOfMoreThanOne' | translate}}" required
+                            #To="ngModel" maxlength="300" [(ngModel)]="inviteToFriendModel.to" name="To" value="" />
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-12 col-form-label Poppins-Regular fs-10px"
+                            [style.color]="eventDetails.uiAccentColor" style="padding-bottom: 0px !important;"
+                            for="PersonalMessage">{{'PersonalMessage'| translate}}
+                        </label>
+                        <textarea name="PersonalMessage" id="PersonalMessage"
+                            [style.color]="eventDetails.sectionHeaderTextColor"
+                            [(ngModel)]="inviteToFriendModel.personalMessage" class="form-control Poppins-Regular"
+                            value="" required maxlength="300"></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button [style.background]="eventDetails.headerBackgroundColor"
+                        [style.color]="eventDetails.headerTextColor" type="button" id="inviteEmailBtn"
+                        class="btn btnOrangeFrontEnd" [disabled]="inviteEmailModalForm.invalid" data-dismiss="modal"
+                        (click)="sendInvitationmail()">{{'Invite' |
+                        translate}}</button>
+                    <button [style.background]="eventDetails.headerBackgroundColor"
+                        [style.color]="eventDetails.headerTextColor" type="button" class="btn btnOrangeFrontEnd"
+                        data-dismiss="modal">
+                        {{'Close' | translate}}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<ngx-spinner type="ball-clip-rotate-multiple" size="medium" style="z-index: 10000;"></ngx-spinner>

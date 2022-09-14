@@ -1,0 +1,87 @@
+<div class="pageHeader bg-white" style="border:none;text-align: left;padding:10px">
+    <div class="col-sm-12 text-Medium">
+        <label class="col-sm-10 text-Medium" style="text-align: left;">{{'AddEntitlementGroup'| translate}}</label>
+        <label class="col-sm-10 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+    </div>
+</div>
+<div class="flex-container row bg-white" id="roomListItems" style="margin-top: 25px;padding: 20px;margin-left: 0px;margin-right: 0px;">
+    <form class="form-group" #EntitlementGroupForm="ngForm">
+        <div class="mb-3 row">
+            <label class="col-sm-3 col-form-label Poppins-Regular" for="RoomType">
+                {{'GroupName'| translate}}
+            </label>
+            <div class="col-sm-9">
+                <input type="text" id="grpName" name="grpName" [(ngModel)]="grpName" class="form-control" placeholder="{{'GroupName' | translate}}" required>
+            </div>
+        </div>
+
+
+        <div class="mb-3 row">
+            <label class="col-sm-3 col-form-label Poppins-Regular" for="RoomType">
+                {{'RegistrationCreteria' | translate}}
+            </label>
+            <div class="col-sm-9 row" style="display: inline-block;">
+                <input type="checkbox" id="registrationCreteriaChecked" name="registrationCreteriaChecked" style="width:30px" (click)="selectRegistrationCreteria($event)" />
+                <button *ngIf="isSelectRegistrationCreteriaChecked" type="button" class="btn btn-primary col-sm-3" style="float: right;" (click)="addRegistrationCreteria()">{{'AddRegistrationCreteriaRule' | translate}}</button>
+            </div>
+        </div>
+        <div *ngIf="isSelectRegistrationCreteriaChecked">
+            <div *ngFor="let item of registrationCretiria;let i=index">
+                <hr>
+                <div class="mb-3 row">
+                    <label class="col-sm-3 col-form-label Poppins-Regular" for="RoomType">
+                        {{'SelectType'| translate}}
+                    </label>
+                    <div class="col-sm-8">
+                        <select class="form-select" id="registrationCreteria_{{i}}" #id="ngModel" [(ngModel)]="item.selectedValue" name="registrationCreteria_{{i}}" (change)="changeMasterCreteriaValue($event,i)" required>
+                            <option value="">{{'Select' | translate}}</option>
+                            <option 
+                                *ngFor="let masterItem of masterRegistrationCreteria;let masterRegistrationCreteriaIndex=index"
+                                value="{{masterItem.type}}^^^^^{{masterRegistrationCreteriaIndex}}^^^^^{{masterItem.name}}">
+                                {{masterItem.name}}</option> 
+                              
+                        </select>
+                    </div>
+                    <div class="col-sm-1">
+                        <i class="fa fa-trash" style="cursor: pointer;" (click)="deleteRegistrationCreteria(i)"></i>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label *ngIf="item.type=='text' || item.type=='select'" class="col-sm-3 col-form-label Poppins-Regular" for="RoomType">
+                        {{'AddValue'| translate}}
+                    </label>
+                    <div class="col-sm-8">
+                        <input *ngIf="item.type=='text'" type="text" value="{{item.value}}" #text="ngModel" id="txt_{{i}}" name="txt_{{i}}" [(ngModel)]="item.value" class="form-control" required />
+                        <select *ngIf="item.type=='select'" class="form-select" (change)="selectMasterItemOption($event,i)">
+                            <option *ngFor="let masterItemOPtions of item.options" value="{{masterItemOPtions}}"
+                                required>
+                                {{masterItemOPtions}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="mb-3 row">
+            <label class="col-sm-3 col-form-label Poppins-Regular" for="RoomType">
+                {{'CourseCreteria' | translate}}
+            </label>
+            <div class="col-sm-9 row" style="display: inline-block;">
+                <input type="checkbox" id="courseCreteriaChecked" name="courseCreteriaChecked" style="width:30px" (click)="selectCourseCreteria($event)" />
+                <button *ngIf="isSelectCourseCreteriaChecked" type="button" class="btn btn-primary col-sm-3" style="float: right;" (click)="addCourseCreteria()">{{'AddCourseCreteria' | translate}}</button>
+            </div>
+        </div>
+        <div class="mb-3 row text-right" id="ThirdPartyAnalyticsScripts">
+            <div class="col-sm-12 text-muted Poppins-Regular text-right" style="font-size:15px; margin-top:20px;margin-left:20px">
+                <button type="submit" (click)="saveData()" [disabled]="EntitlementGroupForm.invalid" class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 Poppins-Regular">{{'Save' | translate}}</button>
+                <a class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 ml-20px text-white" [routerLink]="['/admin/events/eventgroupentitlement',eventId]">{{'Cancel'| translate}}</a>
+            </div>
+        </div>
+    </form>
+
+</div>

@@ -1,0 +1,109 @@
+<!-- <p>badge-add-rule-model works!</p> -->
+<div class="text-center pageHeader">{{'AddRule'|translate}}
+    <i class="fa fa-times" type="button" data-dismiss="modal" style="cursor:pointer;float:right;" (click)="closeModal()"></i>
+</div>
+
+<form method="Post" class="form-group" #AddRule="ngForm">
+
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <label class="form-lable Poppins-Regular">{{'QualificationRule'| translate}}</label>
+        </div>
+        <div class="col-sm-10">
+            <input type="text" name="QualificationRule" #QualificationRule="ngModel" [(ngModel)]="rule.name" class="form-control Poppins-Regular" value="" required maxlength="30" />
+            <span *ngIf="QualificationRule.invalid && QualificationRule.touched" class="error">{{'QualificationRuleRequired'| translate}}</span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <label class="form-lable Poppins-Regular">{{'Count'| translate}}</label>
+        </div>
+        <div class="col-sm-10">
+            <input type="text" name="Count" #Count="ngModel" [(ngModel)]="rule.count" class="form-control Poppins-Regular" value="" required maxlength="30" />
+            <span *ngIf="Count.invalid && Count.touched" class="error">{{'CountRequired'| translate}}</span>
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <label class="form-lable Poppins-Regular">{{'Grouping'| translate}}</label>
+        </div>
+        <div class="col-sm-10">
+            <input type="text" name="Grouping" #Grouping="ngModel" [(ngModel)]="rule.grouping" class="form-control Poppins-Regular" value="" required maxlength="30" />
+            <span *ngIf="Grouping.invalid && Grouping.touched" class="error">{{'GroupingRequired'| translate}}</span>
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <label class="form-lable Poppins-Regular">{{'Track'| translate}}</label>
+        </div>
+        <div class="col-sm-10">
+            <input type="text" name="Track" #Track="ngModel" [(ngModel)]="rule.Track" class="form-control Poppins-Regular" value="" required maxlength="30" />
+            <span *ngIf="Track.invalid && Track.touched" class="error">{{'TrackRequired'| translate}}</span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <label class="form-lable Poppins-Regular">{{'CountMethod'| translate}}</label>
+        </div>
+        <div class="col-sm-10">
+            <input type="text" name="CountMethod" #CountMethod="ngModel" [(ngModel)]="rule.countMethod" class="form-control Poppins-Regular" value="" required maxlength="30" />
+            <span *ngIf="CountMethod.invalid && CountMethod.touched" class="error">{{'CountMethodRequired'| translate}}</span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <label class="form-lable Poppins-Regular">{{'CustomProfileField'| translate}}</label>
+        </div>
+        <div class="col-sm-10">
+            <input type="text" name="CustomProfileField" #CustomProfileField="ngModel" [(ngModel)]="rule.customProfileField" class="form-control Poppins-Regular" value="" required maxlength="30" />
+            <span *ngIf="CustomProfileField.invalid && CustomProfileField.touched" class="error">{{'CustomProfileFieldRequired'| translate}}</span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <label class="form-lable Poppins-Regular">{{'Quiz/Servey/Game'| translate}}</label>
+        </div>
+        <div class="col-sm-10">
+            <input type="text" name="QuizServeyGame" #QuizServeyGame="ngModel" [(ngModel)]="rule.quizServeyGame" class="form-control Poppins-Regular" value="" required maxlength="30" />
+            <span *ngIf="QuizServeyGame.invalid && QuizServeyGame.touched" class="error">{{'QuizServeyGameRequired'| translate}}</span>
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <label class="form-lable Poppins-Regular">{{'MessageBoard'| translate}}</label>
+        </div>
+        <div class="col-sm-10">
+            <input type="text" name="MessageBoard" #MessageBoard="ngModel" [(ngModel)]="rule.messageBoard" class="form-control Poppins-Regular" value="" required maxlength="30" />
+            <span *ngIf="MessageBoard.invalid && MessageBoard.touched" class="error">{{'MessageBoardRequired'| translate}}</span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <label class="form-lable Poppins-Regular">{{'Duration'| translate}}</label>
+        </div>
+        <div class="col-sm-10">
+            <input type="text" name="Duration" #Duration="ngModel" [(ngModel)]="rule.duration" class="form-control Poppins-Regular" value="" required maxlength="30" />
+            <span *ngIf="Duration.invalid && Duration.touched" class="error">{{'DurationRequired'| translate}}</span>
+        </div>
+    </div>
+
+    <div class="" style="text-align: center;">
+        <button type="button" id="addToChatQueue" class="btn btn-primary col-sm-5" (click)="AddBadgeRule()">
+            {{'Save'|translate }}
+        </button>
+        <button type="button" class="btn  btn-primary  text-white  col-sm-5" style="margin-left: 20px;" data-dismiss="modal" (click)="closeModal()">
+            {{'Cancel' | translate}}
+        </button>
+    </div>
+</form>

@@ -1,0 +1,397 @@
+<div>
+
+    <div class="text-center pageHeader bg-white" style="border:none;text-align: left;padding:10px">
+        <label class="col-sm-12 text-Medium" style="text-align: left;">{{'ManageRegistrationPage'| translate}}</label>
+        <label class="col-sm-12 Poppins-Regular text-small" style="word-break: break-all;text-align: left;">{{eventName}}</label>
+    </div>
+
+
+    <div class="flex-container row bg-white" id="usrListItems" style="margin-top: 25px;padding: 20px;margin-left: 0px;margin-right: 0px;">
+
+        <form class="form-group" [formGroup]="registrationPageForm" (ngSubmit)="onSubmit()">
+
+            <div class="mb-3 row">
+                <div class="col-sm-10  Poppins-Regular">
+                    <input type="radio" style="margin-left: 0px;" [checked]="vE247Registation" (change)="changeRegistrationMode($event,'ve247')" class="form-check-inline" name="RegistrationMode" id="VE247Registation">
+                    <label class="form-check-label  Poppins-Regular" for="VE247Registation">{{'VE247Registation'|translate}}
+                    </label>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-sm-10  Poppins-Regular">
+                    <input type="radio" style="margin-left: 0px;" class="form-check-inline" id="ThirdPartyRegistration" [checked]="thirdPartyRegistration" name="RegistrationMode" (change)="changeRegistrationMode($event,'thirdParty')">
+                    <label class="form-check-label  Poppins-Regular" for="ThirdPartyRegistration">{{'ThirdPartyRegistration'|translate}}
+                    </label>
+                </div>
+            </div>
+
+
+            <div *ngIf="vE247Registation">
+
+                <div class="mb-3 row">
+                    <label class="form-check-label  Poppins-Bold">{{'RegistrationMode'|translate}}</label>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="enableFirstNameLastName" disabled [checked]="true" formControlName="enableFirstNameLastName" #enableFirstNameLastName>
+                        <label class="form-check-label  Poppins-Regular" for="enableFirstNameLastName">{{'FirstName'|translate}} , {{'LastName'|translate}}
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="enableEmail" disabled [checked]="true" formControlName="enableEmail" #enableEmail>
+                        <label class="form-check-label col-sm-2 Poppins-Regular" for="enableEmail">{{'Email'|translate}}
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="EnableMobile" formControlName="enableMobile" #EnableMobile>
+                        <label class="form-check-label col-sm-2 Poppins-Regular" for="EnableMobile">{{'Mobile'|translate}}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label class="form-check-label  Poppins-Regular " style="color:lightgray;">{{'CheckSocialMediaLoginThatYouWillAccept'|translate}}</label>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="EnableFacebook" [checked]="true" formControlName="enableFacebook" #EnableFacebook>
+                        <label class="form-check-label col-sm-2 Poppins-Regular" for="EnableFacebook">{{'Facebook'|translate}}
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="EnableGoogle" formControlName="enableGoogle" #EnableGoogle>
+                        <label class="form-check-label col-sm-2 Poppins-Regular" for="EnableGoogle">{{'Google'|translate}}
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="EnableLinkedIn" formControlName="enableLinkedIn" #EnableLinkedIn>
+                        <label class="form-check-label col-sm-2 Poppins-Regular" for="EnableLinkedIn">{{'LinkedIn'|translate}}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="EnableSSO" formControlName="enableSSO" #EnableSSO (change)="changeEnableSSO()">
+                        <label class="form-check-label col-sm-2 Poppins-Regular" for="EnableSSO">{{'SSO'|translate}}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-3 row" *ngIf="enableSSO">
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="EnableMarketo" formControlName="enableMarketo" #EnableMarketo (change)="changeEnableUserAuthenticationToken()">
+                        <label class="form-check-label col-sm-2 Poppins-Regular" for="EnableMarketo">{{'Marketo'|translate}}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-3 row" *ngIf="enableMarketo">
+                    <label class="col-sm-3 Poppins-Regular" for="UserAuthenticationToken">{{'UserAuthenticationToken'|translate}}</label>
+                </div>
+
+                <div class="mb-3 row" *ngIf="enableMarketo">
+                    <input type="text" class="Poppins-Regular" placeholder="{{'UserAuthenticationToken'|translate}}" formControlName="UserAuthenticationToken" #UserAuthenticationToken name="UserAuthenticationToken" value="">
+                    <!-- <span *ngIf="UserAuthenticationToken.invalid && UserAuthenticationToken.touched" class="error">{{'EventNamerequired'| translate}}</span> -->
+                </div>
+
+                <div class="mb-3 row" *ngIf="enableSSO">
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="EnableEloqua" formControlName="enableEloqua" #EnableEloqua>
+                        <label class="form-check-label col-sm-2 Poppins-Regular" for="EnableEloqua">{{'Eloqua'|translate}}
+                        </label>
+                    </div>
+                </div>
+
+
+                <div class="mb-3 row">
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="EnableAPI" formControlName="enableAPI" #EnableAPI>
+                        <label class="form-check-label col-sm-2 Poppins-Regular" for="EnableAPI">{{'API'|translate}}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-sm-10  Poppins-Bold">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="EnableSetupProfile" formControlName="enableSetupProfile" #EnableSetupProfile (change)="ChangeEnableSetupProfile()">
+                        <label class="form-check-label  Poppins-Bold" for="EnableSetupProfile">{{'SetupProfile'|translate}}</label>
+                        <br>
+                        <label class="form-check-label Poppins-Regular" style="color: lightgray;" for="EnableSetupProfile">{{'SetupProfileText'|translate}}</label>
+                    </div>
+                </div>
+
+
+
+
+                <div class="mb-3 row" *ngIf="enableSetupProfile">
+                    <label class="form-check-label col-sm-2 Poppins-Regular" for="StandardFields">{{'StandardFields'|translate}}
+                        <sup>
+                            <i class="fa fa-info-circle p-1" data-placement="bottom"
+                                tooltip="{{'Selectwhichstandardfieldstoinclude' | translate}}">
+                            </i>
+                        </sup>
+                    </label>
+                    <div class="col-sm-10  Poppins-Regular">
+                        <table class="table bordered">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;">
+                                        <!-- {{'FirstName'|translate}} , {{'LastName'|translate}} -->
+                                    </th>
+                                    <th style="text-align: center;">
+                                        {{'Required?' | translate}}
+                                    </th>
+                                    <th style="text-align: center;">
+                                        {{'Includeonprofilecard' | translate}}
+                                    </th>
+                                    <th style="text-align: center;">
+                                        {{'Options' | translate}}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody cdkDropList (cdkDropListDropped)="onDrop($event)">
+                                <ng-container formArrayName="standardFields">
+                                    <tr cdkDrag cdkDragLockAxis="y" *ngFor="let item of standardFields().controls   ; let i=index;" [formGroupName]="i">
+                                        <td style="text-align: center;" class="drag-handle">
+                                            <ng-container [ngTemplateOutlet]="dragHandleTmpl"> </ng-container>
+                                            <input class="" type="checkbox" style="margin-right: 5px; margin-top: 2px;" formControlName="selected" [checked]="item.selected">
+                                            <input type="{{item.type}}" [value]="item.label" class="no-border" formControlName="label" style="border:none;">
+
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <div class="form-check-inline">
+                                             <input class="" type="checkbox" style="margin-right: 5px; margin-top: 2px;;" readonly formControlName="required" [checked]="item.required">
+                                            </div>
+                                        </td>
+                                        <td style="text-align: center;"><input style="margin-right: 5px; margin-top: 12px;" class="" type="checkbox" formControlName="includeonprofilecard" [checked]="item.includeonprofilecard"></td>
+
+                                        <!-- <td style="text-align: center;"><input style="margin-right: 5px; margin-top: 12px;" class="" type="checkbox" [checked]="item.includeonCreteriaRule" formControlName="includeonCreteriaRule"></td> -->
+
+                                        <td style="text-align: center;">
+                                            <div>
+                                                <!-- <input type="hidden" value='cefd899c-b035-4cc2-9008-7a169639aa0b' name="LanguageId"  formControlName="getByIdViewModel.LanguageId" /> -->
+                                            </div>
+                                            <!-- <div *ngIf="i==5 || i==1">
+                                            <textarea [hidden]="myForm.controls.isNameOnly.value == 'true'" class="form-control" formControlName="options">{{item.options}}</textarea>
+                                        </div> -->
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+
+                <div class="row col-sm-12">
+                    &nbsp;
+                </div>
+
+                <div class="mb-3 row" *ngIf="enableSetupProfile">
+                    <label class="form-check-label col-sm-2 Poppins-Regular" for="StandardFields">{{'CustomFields'|translate}}
+                        <sup>
+                            <i class="fa fa-info-circle p-1" data-placement="bottom"
+                                tooltip="{{'Selectwhichstandardfieldstoinclude' | translate}}">
+                            </i>
+                        </sup>
+                    </label>
+                    <div class="col-sm-10  Poppins-Regular">
+                        <table class="table bordered">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;">
+                                    </th>
+                                    <th style="text-align: center;">
+                                        {{'Required?' | translate}}
+                                    </th>
+                                    <th style="text-align: center;">
+                                        {{'Includeonprofilecard' | translate}}
+                                    </th>
+                                    <th style="text-align: center;">
+                                        {{'Options' | translate}}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody cdkDropList (cdkDropListDropped)="onDropCustomFields($event)">
+                                <ng-container formArrayName="customFields">
+                                    <tr cdkDrag cdkDragLockAxis="y" *ngFor="let items of customFields().controls  | slice:0:30 ; let i=index;" [formGroupName]="i">
+                                        <td style="text-align: center;">
+                                            <input type="text" class="no-border" [value]="items.name" formControlName="name" style="margin-left: 20px; border:none;">
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="" style="margin-right: 20px; margin-top: 12px;" [checked]='items.required' formControlName="required" />
+
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="" style="margin-right: 5px; margin-top: 12px;" [checked]='items.includeonprofilecard' formControlName="required" />
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <textarea class="col-sm-10 form-control" formControlName="options">{{items.options}}</textarea>
+                                            <div class="col-sm-2" class="form-check-inline" style="
+                                    vertical-align: top;margin-top: 12px;">
+                                                <i style="cursor: pointer;" tooltip="{{'Delete'| translate}}" (click)="removecustomFields(i)" class="fa fa-trash"></i>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                </ng-container>
+                            </tbody>
+
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4"><button type="button" (click)="addCustomField(template)" class="btn btn-link" (click)="showCustomFieldType()">{{'AddCustomField' |
+                                            translate}}</button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+
+                        </table>
+
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="mb-3 row">
+                    <label class="form-check-label col-sm-2 Poppins-Bold">{{'OtherSettings'|translate}}</label>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="Viewotherattendeesboothrepresentativesbeforeregistration" formControlName="viewotherattendeesboothrepresentativesbeforeregistration" #Viewotherattendeesboothrepresentativesbeforeregistration>
+                        <label class="form-check-label  Poppins-Regular" for="Viewotherattendeesboothrepresentativesbeforeregistration">{{'Viewotherattendeesboothrepresentativesbeforeregistration'|translate}}</label>
+
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="Viewotherattendeesboothrepresentativesafterregistration" formControlName="viewotherattendeesboothrepresentativesafterregistration" #Viewotherattendeesboothrepresentativesafterregistration>
+                        <label class="form-check-label  Poppins-Regular" for="Viewotherattendeesboothrepresentativesafterregistration">{{'Viewotherattendeesboothrepresentativesafterregistration'|translate}}</label>
+
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="Requestforameetingsetupwithboothrepresentativesinterviewsscreeningetc" formControlName="requestforameetingsetupwithboothrepresentativesinterviewsscreeningetc" #Requestforameetingsetupwithboothrepresentativesinterviewsscreeningetc>
+                        <label class="form-check-label  Poppins-Regular" for="Requestforameetingsetupwithboothrepresentativesinterviewsscreeningetc">{{'Requestforameetingsetupwithboothrepresentativesinterviewsscreeningetc'|translate}}</label>
+
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="RequiresEvenAdmintoapproveregistrations" formControlName="requiresEvenAdmintoapproveregistrations" #RequiresEvenAdmintoapproveregistrations>
+                        <label class="form-check-label  Poppins-Regular" for="RequiresEvenAdmintoapproveregistrations">{{'RequiresEvenAdmintoapproveregistrations'|translate}}</label>
+
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="ProfileMandatorytocompleteregistrations" formControlName="profileMandatorytocompleteregistrations" #ProfileMandatorytocompleteregistrations>
+                        <label class="form-check-label  Poppins-Regular" for="ProfileMandatorytocompleteregistrations">{{'ProfileMandatorytocompleteregistrations'|translate}}</label>
+
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="Leavemessageforboothreps" formControlName="leavemessageforboothreps" #Leavemessageforboothreps>
+                        <label class="form-check-label  Poppins-Regular" for="Leavemessageforboothreps">{{'Leavemessageforboothreps'|translate}}</label>
+
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="Inviteothersbeforeregistration" formControlName="inviteothersbeforeregistration" #Inviteothersbeforeregistration>
+                        <label class="form-check-label  Poppins-Regular" for="Inviteothersbeforeregistration">{{'Inviteothersbeforeregistration'|translate}}</label>
+
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-sm-10  Poppins-Regular">
+                        <input type="checkbox" style="margin-left: 0px;" class="form-check-inline" name="Inviteothersafterregistration" formControlName="inviteothersafterregistration" #Inviteothersafterregistration>
+                        <label class="form-check-label  Poppins-Regular" for="Inviteothersafterregistration">{{'Inviteothersafterregistration'|translate}}</label>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div *ngIf="thirdPartyRegistration">
+                <div class="mb-3 row">
+                    <label class="col-sm-2  Poppins-Regular">{{'ThirdPartyURL'| translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control Poppins-Regular" placeholder="{{'ThirdPartyURL' | translate}}" formControlName="thirdPartyURL">
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" formControlName="userId" />
+            <input type="hidden" formControlName="registrationSetId" />
+            <!-- <input type="hidden" formControlName="thankyouPageRegistrationSetId" /> -->
+            <input type="hidden" formControlName="manageRegistrationPageId" />
+
+
+            <div class="mb-3 row">
+                <div class="col-sm-12 text-right">
+                    <button class="commonbtn btn btn-primary btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 Poppins-Regular" type="submit">{{'Save'|translate}}</button>
+                    <button class="commonbtn col-sm-2 btn btn-primary text-white btn-lg col-lg-2 col-xl-2 col-md-2 col-sl-12 ml-20px" type="button" (click)='goBack()'>{{'Cancel'|translate}}</button>
+                </div>
+            </div>
+        </form>
+        <!-- {{registrationPageForm.value | json}} -->
+    </div>
+    <ng-template #template>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">{{'AddCustomField' | translate}}</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <label class="text-small" style="font-size: smaller;margin-bottom: 0px;color: gray;">{{'Name' |
+                translate}}</label>
+            <input type="text" class="form-control" [(ngModel)]='selecteName' placeholder="{{'Name' | translate}}" />
+            <br>
+            <label class="text-small" style="font-size: smaller;margin-bottom: 0px;color: gray;">{{'Type' |
+                translate}}</label>
+            <select class="form-select" [(ngModel)]='selectedType'>
+                <option value="text">text</option>
+                <option value="select">Dropdown</option>
+                <option value="radio">Radio button</option>
+                <option value="check">Checkbox list</option>
+            </select>
+            <br>
+
+            <label class="form-check-inline">{{'Required?' | translate}}</label> <input type="checkbox" [(ngModel)]='isRequired' />
+            <div *ngIf="selectedType!='text'">
+
+                <label class="text-small" style="font-size: smaller;margin-bottom: 0px;color: gray;">{{'Options' |
+                    translate}}</label>
+                <textarea class=" form-control" [(ngModel)]='selectedOptions'></textarea>
+            </div>
+
+
+            <br>
+            <label class="form-check-inline">{{'IncludeOnProfileCard' | translate}}</label>
+            <input type="checkbox" [(ngModel)]='includeonprofilecard' />
+            <br>
+
+
+            <button type="button" class="btn btn-primary text-white align-center" style="text-align: center;margin-left: 40%;" (click)="modalRef.hide()" (click)="submitExternalField()">Submit</button>
+
+        </div>
+    </ng-template>
+</div>
